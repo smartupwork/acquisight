@@ -1,6 +1,16 @@
 @extends('auth.layout')
 @section('login-content')
 <div class="container-xxl">
+    @if (Session::get('success'))
+            <div class=" alert alert-success">
+                {{ Session::get('success') }}
+            </div>
+        @endif
+        @if (Session::get('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
     <div class="row vh-100 d-flex justify-content-center">
         <div class="col-12 align-self-center">
             <div class="card-body">
@@ -12,8 +22,7 @@
                                      <a href="index.html" class="logo logo-admin">
                                      <img src="{{ url('assets/images/admin-logo.svg')}}" height="50" alt="logo" class="auth-logo"> 
                                     </a>
-                                    <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started Rizz</h4>
-                                    <p class="text-muted fw-medium mb-0">Sign IN to continue to Rizz.</p>
+                                    <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started</h4>
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -32,16 +41,10 @@
                                     @error('password') <span>{{ $message }}</span> @enderror
 
                                     <div class="form-group row mt-3">
-                                        <div class="col-sm-6">
-                                            <div class="form-check form-switch form-switch-success">
-                                                <input class="form-check-input" type="checkbox" id="customSwitchSuccess">
-                                                <label class="form-check-label" for="customSwitchSuccess">Remember me</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 text-end">
-                                            <a href="auth-recover-pw.html" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?
+                                        {{-- <div class="col-sm-6 text-end">
+                                            <a href="" class="text-muted font-16"><i class="dripicons-lock"></i> Forgot password?
                                             </a>
-                                        </div><!--end col-->
+                                        </div>    <!--end col--> --}}
                                     </div><!--end form-group-->
                                     <div class="form-group mb-0 row">
                                         <div class="col-12">
@@ -54,14 +57,8 @@
                                 </form><!--end form-->
                                 <div class="text-center mb-2">
                                     <p class="text-muted">Don't have an account ? 
-                                        <a href="auth-register.html" class="text-primary ms-2">Free Resister</a>
+                                        <a href="{{ route('register') }}" class="text-primary ms-2">Resister</a>
                                     </p>
-                                    <h6 class="px-3 d-inline-block">Or Login With</h6>
-                                </div>
-                                <div class="d-flex justify-content-center"> 
-                                    <a href="" class="d-flex justify-content-center align-items-center thumb-md bg-blue-subtle text-blue rounded-circle me-2"> <i class="fab fa-facebook align-self-center"></i> </a> 
-                                    <a href="" class="d-flex justify-content-center align-items-center thumb-md bg-info-subtle text-info rounded-circle me-2"> <i class="fab fa-twitter align-self-center"></i> </a> 
-                                    <a href="" class="d-flex justify-content-center align-items-center thumb-md bg-danger-subtle text-danger rounded-circle"> <i class="fab fa-google align-self-center"></i> </a> 
                                 </div>
                             </div><!--end card-body-->
                         </div><!--end card-->

@@ -37,16 +37,16 @@
                         </button>
                     </li>
                     <li class="mx-3 welcome-text">
-                        <h3 class="mb-0 fw-bold text-truncate">Good Morning, John!</h3>
+                        <h3 class="mb-0 fw-bold text-truncate">Welcome, John</h3>
                     </li>
                 </ul>
                 <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
-                    <li class="topbar-item">
+                    {{-- <li class="topbar-item">
                         <a class="nav-link nav-icon" href="javascript:void(0);" id="light-dark-mode">
                             <i class="icofont-moon dark-mode"></i>
                             <i class="icofont-sun light-mode"></i>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="dropdown topbar-item">
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown"
@@ -88,7 +88,7 @@
     <div class="startbar d-print-none">
         <!--start brand-->
         <div class="brand">
-            <a href="index.html" class="logo">
+            <a href="{{ route('admin.dashboard') }}" class="logo">
                 <span>
                     <img src="{{ url('assets/images/admin-logo.svg') }}" alt="logo" class="logo-sm" style="width:200px; height:150px; margin-right:50px;">
                 </span>
@@ -113,7 +113,7 @@
                             <div class="collapse " id="sidebarDashboards">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="index.html">Analytics</a>
+                                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Analytics</a>
                                     </li><!--end nav-item-->
                                 </ul><!--end nav-->
                             </div><!--end startbarDashboards-->

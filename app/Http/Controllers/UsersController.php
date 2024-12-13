@@ -5,13 +5,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\UserAccountActivatedMail;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
     public function index(){
 
         $users = User::orderBy('id', 'ASC')->paginate(10);
-        // dd($users);
         return view('backend.admin.user.user_index')->with('users', $users);
     }
 
@@ -23,11 +24,11 @@ class UsersController extends Controller
     {
    
         $validatedData = $request->validate([
-            'name' => 'string|required|max:30',
-            'email' => 'string|required|unique:users',
+            'name' => 'required|string|max:30',
+            'email' => 'required|unique:users',
             'role' => 'required|integer|in:1,2,3,4,5',
             'status' => 'required|in:active,inactive',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = new User();
@@ -37,13 +38,12 @@ class UsersController extends Controller
         $user->roles_id = $validatedData['role'];
         $user->status = $validatedData['status'];
         $status = $user->save();
-        // dd($status);
+
         if ($status) {
-            request()->session('success', 'Successfully added user');
+            return redirect()->route('users.index')->with('success', 'User Created successfully!');
         } else {
-            request()->session('error', 'Error occurred while adding user');
+            return redirect()->route('users.index')->with('success', 'Sorry, something went wrong.');
         }
-        return redirect()->route('users.index');
     }
 
     public function edit($id){
@@ -54,29 +54,26 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
 
-        // dd($request);
         $user = User::findOrFail($id);
         $validatedData = $request->validate([
             'name' => 'string|required|max:30',
             'email' => 'string|required',
             'role' => 'required|integer|in:1,2,3,4,5',
             'status' => 'required|in:active,inactive',
-            // 'password' => 'required|string|min:8|confirmed',
-        ]);
+        ]);    
 
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
-        // $user->password = $validatedData['password'];
         $user->roles_id = $validatedData['role'];
         $user->status = $validatedData['status'];
         
-        $status= $user->update();
-        if ($status) {
-            request()->session('success', 'Successfully updated');
+        $save= $user->update();
+        if ($save) {
+            return redirect()->route('users.index')->with('success', 'User updated successfully!');
         } else {
             request()->session('error', 'Error occured while updating');
         }
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('error', 'Sorry, something wrong.');
     }
 
     public function delete($id){

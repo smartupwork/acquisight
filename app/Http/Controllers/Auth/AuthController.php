@@ -13,32 +13,34 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // Create a login.blade.php view
+        return view('auth.login');
     }
 
     public function login(Request $request)
     {
+
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+            'email' => 'required|email|exists:users',
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            $user = Auth::user();
-            $roleName = Role::where('id', $user->roles_id)->value('name');
+        $user = User::where('email', $request->email)->first();
 
-            // Redirect based on roles_id
-            switch ($roleName) {
-                case 'Admin': // Admin
-                    return redirect()->route('admin.dashboard');
-                default:
-                    if (in_array($roleName, ['Employee', 'Seller', 'Buyer', 'Broker'])) {
-                        return redirect()->route('user.dashboard');
-                    }
-            }
+        if (!$user || !Hash::check($request->password, $user->password)) {
+
+            return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
+        if($user->status == 'inactive'){
+            return redirect()->route('login')->with('success', 'You will be notified via email when your account has been activated.');
+        }
+
+
+        if ($user->roles_id == 1) {
+            return redirect()->route('admin.dashboard');
+        } else {
+            return redirect()->route('user.dashboard');
+        }
     }
 
     public function logout(Request $request)
@@ -47,33 +49,38 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login'); // Redirect to the login page
+        return redirect('/login');
     }
 
 
     public function showRegisterForm()
     {
-        return view('auth.register'); // Create a register.blade.php view
+        return view('auth.register');
     }
 
     public function register(Request $request)
     {
 
-
-        // dd($request);
-        // exit;
         $request->validate([
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'role' => 'required',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'roles_id' => $request->role,
+            'status' => 'active',
         ]);
 
-        return redirect('/login')->with('success', 'Account created successfully. Please login.');
+        if($user){
+            return redirect('/login')->with('success', 'Account created successfully. Please login.');
+        }else{
+            return redirect('/login')->with('error', 'Sorry, something went wrong.');
+        }
+        
     }
 }

@@ -33,16 +33,16 @@
                             <i class="iconoir-menu-scale"></i>
                         </button>
                     </li>
-                    <h3 class="mb-0 fw-bold text-truncate">Good Morning, {{ $users->name }}!</h3>
+                    <h3 class="mb-0 fw-bold text-truncate">Welcome Back</h3>
 
                 </ul>
                 <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
-                    <li class="topbar-item">
+                    {{-- <li class="topbar-item">
                         <a class="nav-link nav-icon" href="javascript:void(0);" id="light-dark-mode">
                             <i class="icofont-moon dark-mode"></i>
                             <i class="icofont-sun light-mode"></i>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="dropdown topbar-item">
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown"
