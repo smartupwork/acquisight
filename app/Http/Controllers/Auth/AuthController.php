@@ -27,15 +27,16 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-
             return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
         }
 
-        if($user->status == 'inactive'){
-            return redirect()->route('login')->with('success', 'You will be notified via email when your account has been activated.');
-        }
+        // if($user->status == 'inactive'){
+        //     return redirect()->route('login')->with('success', 'You will be notified via email when your account has been activated.');
+        // }
 
-
+      
+        Auth::login($user);
+       
         if ($user->roles_id == 1) {
             return redirect()->route('admin.dashboard');
         } else {

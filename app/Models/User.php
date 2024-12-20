@@ -53,5 +53,10 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function deals()
+    {
+        return $this->hasMany(Deal::class, 'user_id');
+    }
+
 
 }

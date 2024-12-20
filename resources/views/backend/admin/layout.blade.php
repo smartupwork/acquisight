@@ -122,7 +122,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarApplications">
-                                <i class="iconoir-view-grid menu-icon"></i>
+                                <i class="fas fa-id-badge menu-icon"></i>
                                 <span>Users</span>
                             </a>
                             <div class="collapse " id="sidebarApplications">
@@ -133,9 +133,26 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('users.create')}}">User Add</a>
                                     </li>
-                                </ul><!--end nav-->
-                            </div><!--end startbarApplications-->
-                        </li><!--end nav-item-->
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarApplications">
+                                <i class="fas fa-suitcase menu-icon"></i>
+                                <span>Deals</span>
+                            </a>
+                            <div class="collapse " id="sidebarApplications">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('deals.index')}}">Deals List</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="">Deals Add</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul><!--end navbar-nav--->
                 </div>
             </div><!--end startbar-collapse-->
@@ -148,6 +165,9 @@
         <div class="page-content">
             @yield('admin-dasboard-content')
             @yield('admin-user-index-content')
+            @yield('admin-deals-index-content')
+            @yield('admin-deal-create-content')
+            
             
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">
