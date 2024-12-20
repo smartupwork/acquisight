@@ -62,4 +62,15 @@ class DealController extends Controller
             return redirect()->route('deals.index')->with('success', 'Sorry, something went wrong.');
         }
     }
+
+    public function delete($id){
+        $delete = Deal::findorFail($id);
+        $status = $delete->delete();
+        if ($status) {
+            request()->session('success', 'User Successfully deleted');
+        } else {
+            request()->session('error', 'There is an error while deleting users');
+        }
+        return redirect()->route('deals.index');
+    }
 }

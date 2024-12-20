@@ -38,4 +38,5 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/deals', [DealController::class, 'index'])->name('deals.index');
     Route::get('/deals/create', [DealController::class, 'create'])->name('deals.create'); // Show create user form
     Route::post('/deals/store', [DealController::class, 'store'])->name('deals.store');
+    Route::post('/deals/delete/{id}', [DealController::class, 'delete'])->name('deals.destroy');
 });

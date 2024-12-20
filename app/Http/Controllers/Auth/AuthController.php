@@ -50,7 +50,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/login-view');
     }
 
 
@@ -78,9 +78,9 @@ class AuthController extends Controller
         ]);
 
         if($user){
-            return redirect('/login')->with('success', 'Account created successfully. Please login.');
+            return redirect('/login-view')->with('success', 'Account created successfully. Please login.');
         }else{
-            return redirect('/login')->with('error', 'Sorry, something went wrong.');
+            return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
         }
         
     }
