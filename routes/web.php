@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\SellerController;
 use App\Http\Middleware\CustomAuthMiddleware;
 
 Route::get('/', function () {
@@ -14,8 +15,13 @@ Route::get('/', function () {
 Route::get('/login-view', [AuthController::class, 'showLoginForm'])->name('login-view');
 Route::post('/login', [AuthController::class, 'login'])->name('loggedIn');
 
+// general register
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('registerIn');
+
+// seller register
+Route::get('/seller/register/{token}', [AuthController::class, 'showSellerRegistrationForm'])->name('seller.register');
+Route::post('/seller/register', [AuthController::class, 'registerSeller'])->name('seller.register.submit');
 
 
 Route::middleware(['customAuth'])->group(function () {
@@ -39,4 +45,9 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/deals/create', [DealController::class, 'create'])->name('deals.create'); // Show create user form
     Route::post('/deals/store', [DealController::class, 'store'])->name('deals.store');
     Route::post('/deals/delete/{id}', [DealController::class, 'delete'])->name('deals.destroy');
+    Route::get('/deals/{deal}/invite-contact', [DealController::class, 'showInviteContactForm'])->name('deals.inviteView');
+    Route::post('/deals/{deal}/invite-contact', [DealController::class, 'sendInvite'])->name('deals.sendInvite');
+
+    Route::get('/seller/deals', [SellerController::class, 'index'])->name('seller.index');
+
 });

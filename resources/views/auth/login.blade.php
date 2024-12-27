@@ -57,7 +57,7 @@
                                 </form><!--end form-->
                                 <div class="text-center mb-2">
                                     <p class="text-muted">Don't have an account ? 
-                                        <a href="{{ route('register') }}" class="text-primary ms-2">Resister</a>
+                                        <a href="{{ route('register') }}" class="text-primary ms-2">Register</a>
                                     </p>
                                 </div>
                             </div><!--end card-body-->

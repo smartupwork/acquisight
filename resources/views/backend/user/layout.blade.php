@@ -120,15 +120,15 @@
                             <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarApplications">
                                 <i class="iconoir-view-grid menu-icon"></i>
-                                <span>Users</span>
+                                <span>Deals</span>
                             </a>
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="apps-contact-list.html">User List</a>
+                                        <a class="nav-link" href="{{ route('seller.index') }}">Deals List</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
-                                        <a class="nav-link" href="apps-calendar.html">User Add</a>
+                                        <a class="nav-link" href="">Deals Add</a>
                                     </li><!--end nav-item-->
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
@@ -144,7 +144,7 @@
     <div class="page-wrapper">
         <div class="page-content">
             @yield('user-dasboard-content')
-
+            @yield('seller-deals-index-content')
 
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">

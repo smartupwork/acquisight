@@ -7,7 +7,7 @@
                     <div class="card-body">
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
-                                <p class="text-dark mb-0 fw-semibold fs-14">Users</p>
+                                <p class="text-dark mb-0 fw-semibold fs-14">Files</p>
                                 <h3 class="mt-2 mb-0 fw-bold">11</h3>
                             </div>
                             <!--end col-->
@@ -21,7 +21,7 @@
                         </div>
                         <!--end row-->
                         <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">8.5%</span>
-                            New Users Today</p>
+                            New Files Today</p>
                     </div>
                     <!--end card-body-->
                 </div>
@@ -59,7 +59,7 @@
                     <div class="card-body">
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
-                                <p class="text-dark mb-0 fw-semibold fs-14">Contacts</p>
+                                <p class="text-dark mb-0 fw-semibold fs-14">Logs</p>
                                 <h3 class="mt-2 mb-0 fw-bold">231</h3>
                             </div>
                             <!--end col-->
@@ -73,7 +73,7 @@
                         </div>
                         <!--end row-->
                         <p class="mb-0 text-truncate text-muted mt-3"><span class="text-danger">8%</span>
-                            Contacts Rate Weekly</p>
+                            Logging Rate</p>
                     </div>
                     <!--end card-body-->
                 </div>

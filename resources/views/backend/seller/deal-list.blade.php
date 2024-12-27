@@ -1,5 +1,5 @@
-@extends('backend.admin.layout')
-@section('admin-deals-index-content')
+@extends('backend.user.layout')
+@section('seller-deals-index-content')
     <div class="container-xxl">
         @if (Session::get('success'))
             <div class=" alert alert-success">
@@ -16,12 +16,6 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
-                            <div class="col d-flex justify-content-between align-items-center">
-                                <h4 class="card-title">Add Deals</h4>
-                                <a href="{{ route('deals.create') }}">
-                                    <button type="button" class="btn btn-info">Create Deal</button>
-                                </a>
-                            </div><!--end col-->
                         </div> <!--end row-->
                     </div><!--end card-header-->
                     <div class="card-body pt-0">
@@ -39,32 +33,20 @@
                                 <tbody>
                                     @foreach ($deals as $deal)
                                         <tr>
-                                            <td>{{ $deal->name }}</td>
-                                            <td>{{ $deal->description }}</td>
+                                            <td>{{ $deal->deal_name }}</td>
+                                            <td>{{ $deal->deal_description }}</td>
                                             <td>
-                                                @if ($deal->status == 1)
+                                                @if ($deal->deal_status == 1)
                                                     <span class="badge bg-primary" style="">Active</span>
                                                 @else
                                                     <span class="badge bg-warning">Inactive</span>
                                                 @endif
                                             </td>
-                                            <td>{{ $deal->created_at }}</td>
+                                            <td>{{ $deal->deal_created_at }}</td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
                                                 <a href="" class="btn btn-primary btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                    title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                                <a href="{{ route('deals.inviteView', $deal->id) }}" class="btn btn-info btn-sm float-left mr-1"
-                                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                    title="invite" data-placement="bottom"><i
-                                                        class="fas fa-envelope"></i></a>
-                                                <form method="POST" action="{{ route('deals.destroy', [$deal->id]) }}">
-                                                    @csrf
-                                                    <button class="btn btn-danger btn-sm dltBtn" data-id={{ $deal->id }}
-                                                        style="height:30px; width:30px;border-radius:50%"
-                                                        data-toggle="tooltip" data-placement="bottom" title="Delete"><i
-                                                            class="fas fa-trash-alt"></i></button>
-                                                </form>
-
+                                                    title="Upload" data-placement="bottom"><i class="fas fa-upload"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

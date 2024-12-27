@@ -21,6 +21,8 @@
 
 @yield('login-content')
 @yield('register-content')
+@yield('seller-register-content')
+
 
 </body> <!--end body-->
 

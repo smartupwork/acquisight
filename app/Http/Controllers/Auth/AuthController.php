@@ -8,6 +8,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\DealInvitation;
 
 class AuthController extends Controller
 {
@@ -34,9 +35,9 @@ class AuthController extends Controller
         //     return redirect()->route('login')->with('success', 'You will be notified via email when your account has been activated.');
         // }
 
-      
+
         Auth::login($user);
-       
+
         if ($user->roles_id == 1) {
             return redirect()->route('admin.dashboard');
         } else {
@@ -77,11 +78,54 @@ class AuthController extends Controller
             'status' => 'active',
         ]);
 
-        if($user){
+        if ($user) {
             return redirect('/login-view')->with('success', 'Account created successfully. Please login.');
-        }else{
+        } else {
             return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
         }
-        
+    }
+
+    public function showSellerRegistrationForm($token)
+    {
+        $invitation = DealInvitation::where('token', $token)->firstOrFail();
+
+        if ($invitation->accepted == 1) {
+            return redirect()->route('deals.list')->with('info', 'You are already registered.');
+        }
+
+        return view('auth.seller.register', ['token' => $token, 'email' => $invitation->email]);
+    }
+
+    public function registerSeller(Request $request)
+    {
+       
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $invitation = DealInvitation::where('token', $request->token)->firstOrFail();
+
+        if ($invitation->accepted == 1) {
+            return redirect()->route('deals.list')->with('info', 'You are already registered.');
+        }
+
+      
+        $seller = User::create([
+            'name' => $request->name,
+            'email' => $invitation->email,
+            'password' => Hash::make($request->password),
+            'roles_id' => 3,
+            'status' => 'active',
+        ]);
+
+        $invitation->update(['accepted' => 1]);
+
+        if ($seller) {
+            return redirect('/login-view')->with('success', 'You are registered as Seller. Please login.');
+        } else {
+            return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
+        }
     }
 }
