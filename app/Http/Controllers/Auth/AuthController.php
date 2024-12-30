@@ -98,6 +98,7 @@ class AuthController extends Controller
 
     public function registerSeller(Request $request)
     {
+       // register seller by using token
        
         $request->validate([
             'name' => 'required|string|max:255',

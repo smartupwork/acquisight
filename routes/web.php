@@ -48,6 +48,8 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/deals/{deal}/invite-contact', [DealController::class, 'showInviteContactForm'])->name('deals.inviteView');
     Route::post('/deals/{deal}/invite-contact', [DealController::class, 'sendInvite'])->name('deals.sendInvite');
 
+    // seller routes
+
     Route::get('/seller/deals', [SellerController::class, 'index'])->name('seller.index');
 
 });

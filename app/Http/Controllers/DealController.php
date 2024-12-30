@@ -96,6 +96,8 @@ class DealController extends Controller
 
     public function sendInvite(Request $request, $dealId)
     {
+
+        // send invite and deal creation
       
         // $request->validate(['email' => 'required|email']);
 

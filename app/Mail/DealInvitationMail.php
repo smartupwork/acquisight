@@ -27,6 +27,8 @@ class DealInvitationMail extends Mailable
 
     public function build()
     {
+        //invitation mail data 
+        
         return $this->subject('You’re Invited to Collaborate on a Deal')
             ->view('emails.deal-invitation')
             ->with([

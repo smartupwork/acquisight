@@ -17,6 +17,8 @@ class CustomAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // check for authenticated user
+        
         if (!Auth::check()) {
             return redirect('/login-view')->withErrors(['message' => 'Please log in to access this resource.']);
         }
