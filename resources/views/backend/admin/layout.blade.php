@@ -168,7 +168,9 @@
             @yield('admin-deals-index-content')
             @yield('admin-deal-create-content')
             @yield('admin-deals-invite-content')
-            
+            @yield('admin-deals-view-content')
+            @yield('admin-files-index-content')
+    
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">
                     <div class="row">

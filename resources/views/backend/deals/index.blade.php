@@ -50,6 +50,9 @@
                                             </td>
                                             <td>{{ $deal->created_at }}</td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
+                                                <a href="{{ route('deals.view', $deal->id) }}" class="btn btn-success btn-sm float-left mr-1"
+                                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                                    title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
                                                 <a href="" class="btn btn-primary btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
                                                     title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DealInvitationMail;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Carbon;
+
 
 class DealController extends Controller
 {
@@ -98,13 +101,13 @@ class DealController extends Controller
     {
 
         // send invite and deal creation
-      
+
         // $request->validate(['email' => 'required|email']);
 
         $deal = Deal::findOrFail($dealId);
-      
+
         $token = Str::random(40);
-      
+
         DealInvitation::create([
             'deal_id' => $deal->id,
             'email' => $request->email,
@@ -117,6 +120,91 @@ class DealController extends Controller
         Mail::to($request->email)->send(new DealInvitationMail($deal, $link));
 
         return redirect()->route('deals.index')->with('success', 'Invitation sent successfully!');
+    }
+
+
+
+
+    public function viewDeal($id)
+    {
+        $deal = Deal::findOrFail($id);
+        $mainFolderPath = public_path("deals_main/{$deal->name}_{$deal->id}");
+
+        $foldersData = [];
+
+        if (File::exists($mainFolderPath)) {
+            $folders = File::directories($mainFolderPath);
+
+            foreach ($folders as $folder) {
+                $foldersData[] = [
+                    'name' => basename($folder),
+                    'last_modified' => Carbon::createFromTimestamp(File::lastModified($folder))->toDateTimeString(),
+                    'size' => $this->getFolderSize($folder),
+                ];
+            }
+        }
+
+        return view('backend.deals.view', [
+            'deal' => $deal,
+            'folders' => $foldersData,
+        ]);
+    }
+
+    private function getFolderSize($folderPath)
+    {
+        $size = 0;
+
+        foreach (File::allFiles($folderPath) as $file) {
+            $size += $file->getSize();
+        }
+
+        return $this->formatSizeUnits($size);
+    }
+
+    private function formatSizeUnits($size)
+    {
+        if ($size >= 1073741824) {
+            return number_format($size / 1073741824, 2) . ' GB';
+        } elseif ($size >= 1048576) {
+            return number_format($size / 1048576, 2) . ' MB';
+        } elseif ($size >= 1024) {
+            return number_format($size / 1024, 2) . ' KB';
+        } elseif ($size > 1) {
+            return $size . ' bytes';
+        } elseif ($size == 1) {
+            return $size . ' byte';
+        } else {
+            return '0 bytes';
+        }
+    }
+
+    public function viewFolderFiles($id, $folderName)
+    {
+        $deal = Deal::findOrFail($id); // Ensure the deal exists
+
+        $folderPath = public_path("deals_main/{$deal->name}_{$deal->id}/{$folderName}");
+
+        if (!File::exists($folderPath) || !File::isDirectory($folderPath)) {
+            abort(404, "Folder not found.");
+        }
+
+        // Get files in the folder
+        $files = File::files($folderPath);
+
+        $filesData = [];
+        foreach ($files as $file) {
+            $filesData[] = [
+                'name' => $file->getFilename(),
+                'size' => $this->formatSizeUnits($file->getSize()),
+                'last_modified' => \Carbon\Carbon::createFromTimestamp($file->getMTime())->toDateTimeString(),
+            ];
+        }
+
+        return view('backend.seller.view-folder-files', [
+            'deal' => $deal,
+            'folderName' => $folderName,
+            'files' => $filesData,
+        ]);
     }
 
 
