@@ -50,19 +50,35 @@
                                             </td>
                                             <td>{{ $deal->created_at }}</td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
-                                                <a href="{{ route('deals.view', $deal->id) }}" class="btn btn-success btn-sm float-left mr-1"
+                                                <a href="{{ route('deals.view', $deal->id) }}"
+                                                    class="btn btn-success btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
                                                     title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                                                <a href="" class="btn btn-primary btn-sm float-left mr-1"
+
+                                                <a href="javascript:void(0)" class="btn btn-success btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                    title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                                <a href="{{ route('deals.inviteView', $deal->id) }}" class="btn btn-info btn-sm float-left mr-1"
+                                                    title="Copy Deal Link" data-placement="bottom"
+                                                    onclick="copyToClipboard('{{ route('deals.view', $deal->id) }}')">
+                                                    <i class="fas fa-copy"></i>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="btn btn-primary btn-sm float-left mr-1"
+                                                    style="height:30px; width:30px;border-radius:50%" data-bs-toggle="modal"
+                                                    data-bs-target="#editDealModal"
+                                                    onclick="loadDealData({{ $deal->id }})">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+
+                                                <a href="{{ route('deals.inviteView', $deal->id) }}"
+                                                    class="btn btn-info btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
                                                     title="invite" data-placement="bottom"><i
                                                         class="fas fa-envelope"></i></a>
+
                                                 <form method="POST" action="{{ route('deals.destroy', [$deal->id]) }}">
                                                     @csrf
-                                                    <button class="btn btn-danger btn-sm dltBtn" data-id={{ $deal->id }}
+                                                    <button class="btn btn-danger btn-sm dltBtn"
+                                                        data-id={{ $deal->id }}
                                                         style="height:30px; width:30px;border-radius:50%"
                                                         data-toggle="tooltip" data-placement="bottom" title="Delete"><i
                                                             class="fas fa-trash-alt"></i></button>
@@ -81,6 +97,44 @@
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!--end col-->
+        </div>
+    </div>
+
+    <div class="modal fade" id="editDealModal" tabindex="-1" aria-labelledby="editDealModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDealModalLabel">Edit Deal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('deals.update') }}" method="POST">
+                        @csrf <!-- CSRF Token -->
+                        <input type="hidden" id="dealId" name="deal_id">
+
+                        <div class="mb-3">
+                            <label for="dealName" class="form-label">Deal Name</label>
+                            <input type="text" class="form-control" id="dealName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dealDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="dealDescription" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dealStatus" class="form-label">Status</label>
+                            <select class="form-select" id="dealStatus" name="status" required>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+            </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -113,5 +167,42 @@
                     });
             })
         })
+
+
+        function copyToClipboard(dealUrl) {
+            // Create a temporary input element
+            const tempInput = document.createElement('input');
+            tempInput.value = dealUrl; // Set the dynamic URL value
+            document.body.appendChild(tempInput);
+
+            // Select and copy the value
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+
+            // Optionally, show a success message
+            alert('Deal link copied to clipboard: ' + dealUrl);
+        }
+
+        function loadDealData(dealId) {
+
+            $.ajax({
+                url: '/deals/' + dealId + '/edit', // Route to fetch deal details
+                method: 'GET',
+                success: function(response) {
+                    // Populate the modal fields
+                    $('#dealId').val(response.id);
+                    $('#dealName').val(response.name);
+                    $('#dealDescription').val(response.description);
+                    $('#dealStatus').val(response.status.toString());
+                },
+                error: function(xhr) {
+                    alert('Failed to load deal details.');
+                }
+            });
+        }
     </script>
 @endsection

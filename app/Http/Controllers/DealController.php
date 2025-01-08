@@ -58,27 +58,27 @@ class DealController extends Controller
             'Misc'
         ];
 
-        // Ensure the main directory 'deals_main' exists
+
         $dealsMainPath = public_path('deals_main');
         if (!file_exists($dealsMainPath)) {
             mkdir($dealsMainPath, 0777, true);
         }
 
-        // Create the main folder inside 'deals_main'
+
         $mainFolderPath = $dealsMainPath . "/{$deal->name}_{$deal->id}";
         if (!file_exists($mainFolderPath)) {
             mkdir($mainFolderPath, 0777, true);
         }
 
         foreach ($defaultFolders as $folder) {
-            // Create subfolders inside the main folder
+
             $subFolderPath = $mainFolderPath . '/' . $folder;
 
             if (!file_exists($subFolderPath)) {
                 mkdir($subFolderPath, 0777, true);
             }
 
-            // Save each folder record to the database
+
             DealFolder::create(['deal_id' => $deal->id, 'folder_name' => $folder]);
         }
 
@@ -99,10 +99,6 @@ class DealController extends Controller
 
     public function sendInvite(Request $request, $dealId)
     {
-
-        // send invite and deal creation
-
-        // $request->validate(['email' => 'required|email']);
 
         $deal = Deal::findOrFail($dealId);
 
@@ -205,6 +201,36 @@ class DealController extends Controller
             'folderName' => $folderName,
             'files' => $filesData,
         ]);
+    }
+
+    public function edit($id)
+    {
+        $deal = Deal::findOrFail($id);
+
+        return response()->json([
+            'id' => $deal->id,
+            'name' => $deal->name,
+            'description' => $deal->description,
+            'status' => $deal->status, // Ensure this is either 0 or 1
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+
+        $id = $request->deal_id;
+
+        $deal = Deal::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'status' => 'required',
+        ]);
+
+        $deal->update($request->all());
+
+        return redirect()->route('deals.index')->with('success', 'Deal Updated successfully!');
     }
 
 

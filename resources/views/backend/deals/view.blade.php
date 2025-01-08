@@ -1,6 +1,17 @@
 @extends('backend.admin.layout')
 @section('admin-deals-view-content')
+
     <div class="container-xxl">
+        @if (Session::get('success'))
+            <div class=" alert alert-success">
+                {{ Session::get('success') }}
+            </div>
+        @endif
+        @if (Session::get('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="clearfix">
@@ -10,16 +21,6 @@
                                 aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i> {{ $deal->name }}
                                 <span class="badge rounded text-blue bg-blue-subtle ms-1">32</span></a>
                         </li>
-                        {{-- <li class="nav-item" role="presentation">
-                            <a class="nav-link fw-semibold py-2" data-bs-toggle="tab" href="#images" role="tab"
-                                aria-selected="false" tabindex="-1"><i class="fa-regular fa-image me-1"></i> Images <span
-                                    class="badge rounded text-blue bg-blue-subtle ms-1">85</span></a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link fw-semibold py-2" data-bs-toggle="tab" href="#audio" role="tab"
-                                aria-selected="false" tabindex="-1"><i class="fa-solid fa-headphones me-1"></i> Audio <span
-                                    class="badge rounded text-blue bg-blue-subtle ms-1">21</span></a>
-                        </li> --}}
                     </ul>
                 </div>
 
@@ -53,13 +54,16 @@
                                                                 class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                                 <i class="fa-regular fa-folder-open me-1 text-blue"></i>
                                                             </div>
-                                                            <a href="{{ route('folders.view', ['id' => $deal->id, 'folderName' => $folder['name']]) }}" class="text-body">{{ $folder['name'] }}</a>
+                                                            <a href="{{ route('folders.view', ['id' => $deal->id, 'folderName' => $folder['name']]) }}"
+                                                                class="text-body">{{ $folder['name'] }}</a>
                                                         </td>
                                                         <td class="text-end">{{ $folder['last_modified'] }}</td>
                                                         <td class="text-end">{{ $folder['size'] }}</td>
                                                         <td class="text-end">
-                                                            <a href="#"><i
-                                                                    class="las la-download text-secondary fs-18"></i></a>
+                                                            <a href="#" data-toggle="modal" class="open-upload-modal" data-folder-name="{{ $folder['name'] }}" data-target="#uploadFileModal">
+                                                                <i class="las la-upload text-secondary fs-18"></i>
+                                                            </a>
+
                                                             <a href="#"><i
                                                                     class="las la-pen text-secondary fs-18"></i></a>
                                                             <a href="#"><i
@@ -76,359 +80,56 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="images" role="tabpanel">
-                                <div class="table-responsive">
-                                    <table class="table mb-0">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="border-top-0">Name</th>
-                                                <th class="border-top-0 text-end">Last Modified</th>
-                                                <th class="border-top-0 text-end">Size</th>
-                                                <th class="border-top-0 text-end">Members</th>
-                                                <th class="border-top-0 text-end">Action</th>
-                                            </tr><!--end tr-->
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-danger-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-image fs-18 align-self-center mb-0 text-danger"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">img52315.jpeg</a>
-                                                </td>
-                                                <td class="text-end">18 Jul 2024</td>
-                                                <td class="text-end"> 2.3 MB</td>
-                                                <td class="text-end">
-                                                    <div class="img-group d-flex justify-content-end">
-                                                        <a class="user-avatar position-relative d-inline-block"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-2.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-5.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-3.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-danger-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-image fs-18 align-self-center mb-0 text-danger"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">img63695.jpeg</a>
-                                                </td>
-                                                <td class="text-end">08 Dec 2024</td>
-                                                <td class="text-end"> 3.7 MB</td>
-                                                <td class="text-end">
-                                                    <div class="img-group d-flex justify-content-end">
-                                                        <a class="user-avatar position-relative d-inline-block"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-3.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-10.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-danger-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-image fs-18 align-self-center mb-0 text-danger"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">img00021.jpeg</a>
-                                                </td>
-                                                <td class="text-end">30 Nov 2024</td>
-                                                <td class="text-end"> 1.5 MB</td>
-                                                <td class="text-end">
-                                                    <div class="img-group d-flex justify-content-end">
-                                                        <a class="user-avatar position-relative d-inline-block"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-7.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-2.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-danger-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-image fs-18 align-self-center mb-0 text-danger"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">img36251.jpeg</a>
-                                                </td>
-                                                <td class="text-end">09 Sep 2024</td>
-                                                <td class="text-end"> 3.2 MB</td>
-                                                <td class="text-end">
-                                                    -
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-danger-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-image fs-18 align-self-center mb-0 text-danger"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">img362511.jpeg</a>
-                                                </td>
-                                                <td class="text-end">14 Aug 2024</td>
-                                                <td class="text-end"> 12.7 MB</td>
-                                                <td class="text-end">
-                                                    <div class="img-group d-flex justify-content-end">
-                                                        <a class="user-avatar position-relative d-inline-block"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-2.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-3.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-8.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-danger-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-image fs-18 align-self-center mb-0 text-danger"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">img963852.jpeg</a>
-                                                </td>
-                                                <td class="text-end">12 Aug 2024</td>
-                                                <td class="text-end"> 5.2 MB</td>
-                                                <td class="text-end">
-                                                    <div class="img-group d-flex justify-content-end">
-                                                        <a class="user-avatar position-relative d-inline-block"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-1.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-4.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                        <a class="user-avatar position-relative d-inline-block ms-n2"
-                                                            href="#">
-                                                            <img src="assets/images/users/avatar-6.jpg" alt="avatar"
-                                                                class="thumb-md shadow-sm rounded-circle">
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                        </tbody>
-                                    </table> <!--end table-->
-                                </div><!--end /div-->
-                            </div>
-                            <div class="tab-pane" id="audio" role="tabpanel">
-                                <div class="table-responsive">
-                                    <table class="table mb-0">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="border-top-0">Name</th>
-                                                <th class="border-top-0 text-end">Last Modified</th>
-                                                <th class="border-top-0 text-end">Size</th>
-                                                <th class="border-top-0 text-end">Action</th>
-                                            </tr><!--end tr-->
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-secondary-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-microphone fs-18 align-self-center mb-0 text-secondary"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">audio52315..</a>
-                                                </td>
-                                                <td class="text-end">18 Jul 2024</td>
-                                                <td class="text-end"> 2.3 MB</td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-secondary-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-microphone fs-18 align-self-center mb-0 text-secondary"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">audio63695..</a>
-                                                </td>
-                                                <td class="text-end">08 Dec 2024</td>
-                                                <td class="text-end"> 3.7 MB</td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-secondary-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-microphone fs-18 align-self-center mb-0 text-secondary"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">audio00021..</a>
-                                                </td>
-                                                <td class="text-end">30 Nov 2024</td>
-                                                <td class="text-end"> 1.5 MB</td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-secondary-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-microphone fs-18 align-self-center mb-0 text-secondary"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">audio36251..</a>
-                                                </td>
-                                                <td class="text-end">09 Sep 2024</td>
-                                                <td class="text-end"> 3.2 MB</td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-secondary-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-microphone fs-18 align-self-center mb-0 text-secondary"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">audio362511..</a>
-                                                </td>
-                                                <td class="text-end">14 Aug 2024</td>
-                                                <td class="text-end"> 12.7 MB</td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                            <tr>
-                                                <td>
-                                                    <div
-                                                        class="d-inline-flex justify-content-center align-items-center thumb-md bg-secondary-subtle rounded mx-auto me-1">
-                                                        <i
-                                                            class="fa-solid fa-microphone fs-18 align-self-center mb-0 text-secondary"></i>
-                                                    </div>
-                                                    <a href="#" class="text-body">audio963852..</a>
-                                                </td>
-                                                <td class="text-end">12 Aug 2024</td>
-                                                <td class="text-end"> 5.2 MB</td>
-                                                <td class="text-end">
-                                                    <a href="#"><i
-                                                            class="las la-download text-secondary fs-18"></i></a>
-                                                    <a href="#"><i class="las la-pen text-secondary fs-18"></i></a>
-                                                    <a href="#"><i
-                                                            class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                </td>
-                                            </tr><!--end tr-->
-                                        </tbody>
-                                    </table> <!--end table-->
-                                </div><!--end /div-->
-                            </div>
                         </div>
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!--end col-->
         </div>
     </div>
+    <div class="modal fade" id="uploadFileModal" tabindex="-1" aria-labelledby="uploadFileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadFileModalLabel">Upload File</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('folder.upload') }}" enctype="multipart/form-data">
+                        @csrf
+                        <!-- Hidden inputs -->
+                        
+                        <input type="hidden" name="deal_name" value="{{ $deal->name }}" required>
+                        <input type="hidden" name="folder_name" value="" required>
+                        <input type="hidden" name="deal_id" value="{{ $deal->id }}" required>
+    
+                        <!-- File upload input -->
+                        <div class="form-group">
+                            <label for="fileUpload">Choose a file</label>
+                            <input type="file" class="form-control" id="fileUpload" name="file" required>
+                        </div>
+    
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+    // When the upload icon is clicked
+    $('.open-upload-modal').on('click', function () {
+        // Get the folder name from the data attribute
+        var folderName = $(this).data('folder-name');
+
+        // Populate the hidden input with the folder name
+        $('#uploadFileModal input[name="folder_name"]').val(folderName);
+    });
+});
+        </script>
 @endsection

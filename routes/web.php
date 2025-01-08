@@ -6,6 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FolderController;
 use App\Http\Controllers\SellerController;
 use App\Http\Middleware\CustomAuthMiddleware;
 
@@ -50,7 +51,12 @@ Route::middleware(['customAuth'])->group(function () {
     Route::post('/deals/{deal}/invite-contact', [DealController::class, 'sendInvite'])->name('deals.sendInvite');
     Route::get('/deals/{deal}/view-deal', [DealController::class, 'viewDeal'])->name('deals.view');
     Route::get('/deals/{id}/folders/{folderName}', [FileController::class, 'viewFolderFiles'])->name('folders.view');
+    Route::get('/deals/{id}/edit', [DealController::class, 'edit'])->name('deals.edit');
+    Route::post('/deals/update', [DealController::class, 'update'])->name('deals.update');
 
+    // folder routes 
+    Route::post('/deals/folder/update', [FolderController::class, 'store'])->name('folder.upload');
+    
     
     // seller routes
 

@@ -90,7 +90,7 @@
         <div class="brand">
             <a href="{{ route('admin.dashboard') }}" class="logo">
                 <span>
-                    <img src="{{ url('assets/images/admin-logo.svg') }}" alt="logo" class="logo-sm" style="width:200px; height:150px; margin-right:50px;">
+                    <img src="{{ url('assets/images/admin-logo.jpg') }}" alt="logo" class="logo-sm" style="width:150px; height:40px; margin-right:50px;">
                 </span>
             </a>
         </div>
