@@ -45,8 +45,8 @@
                     </li> --}}
 
                     <li class="dropdown topbar-item">
-                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown"
-                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="{{ url('assets/images/user-avatar.jpg') }}" alt=""
                                 class="thumb-lg rounded-circle">
                         </a>
@@ -88,7 +88,8 @@
         <div class="brand">
             <a href="index.html" class="logo">
                 <span>
-                    <img src="{{ url('assets/images/admin-logo.svg') }}" alt="logo" class="logo-sm" style="width:200px; height:150px; margin-right:50px;">
+                    <img src="{{ url('assets/images/admin-logo.svg') }}" alt="logo" class="logo-sm"
+                        style="width:200px; height:150px; margin-right:50px;">
                 </span>
             </a>
         </div>
@@ -127,9 +128,6 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('seller.index') }}">Deals List</a>
                                     </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="">Deals Add</a>
-                                    </li><!--end nav-item-->
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->
                         </li><!--end nav-item-->
@@ -145,6 +143,8 @@
         <div class="page-content">
             @yield('user-dasboard-content')
             @yield('seller-deals-index-content')
+            @yield('seller-deals-view-content')
+            @yield('seller-files-index-content')
 
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">

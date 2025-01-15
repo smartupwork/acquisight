@@ -137,12 +137,12 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarApplications">
+                            <a class="nav-link" href="#sidebarProjects" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarProjects">
                                 <i class="fas fa-suitcase menu-icon"></i>
                                 <span>Deals</span>
                             </a>
-                            <div class="collapse " id="sidebarApplications">
+                            <div class="collapse " id="sidebarProjects">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('deals.index')}}">Deals List</a>

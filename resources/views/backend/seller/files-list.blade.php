@@ -1,5 +1,5 @@
-@extends('backend.admin.layout')
-@section('admin-files-index-content')
+@extends('backend.user.layout')
+@section('seller-files-index-content')
     <div class="container-xxl">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -28,10 +28,10 @@
                                     <table class="table mb-0">
                                         <thead class="table-light">
                                             <tr>
-                                                <th class="border-top-0">Folder Name</th>
-                                                <th class="border-top-0 text-end">Last Modified</th>
+                                                <th class="border-top-0">File Name</th>
+                                                <th class="border-top-0">Last Modified</th>
                                                 {{-- <th class="border-top-0 text-end">Size</th> --}}
-                                                <th class="border-top-0 text-end">Action</th>
+                                                {{-- <th class="border-top-0 text-end">Action</th> --}}
                                             </tr><!--end tr-->
                                         </thead>
                                         <tbody>
@@ -45,16 +45,16 @@
                                                             </div>
                                                             <a href="" target="_blank" class="text-body">{{ $file['file_name'] }}</a>
                                                         </td>
-                                                        <td class="text-end">{{ $file['updated_at'] }}</td>
+                                                        <td>{{ $file['created_at'] }}</td>
                                                         {{-- <td class="text-end">{{ $file['size'] }}</td> --}}
-                                                        <td class="text-end">
+                                                        {{-- <td class="text-end">
                                                             <a href="#"><i
                                                                     class="las la-download text-secondary fs-18"></i></a>
                                                             <a href="#"><i
                                                                     class="las la-pen text-secondary fs-18"></i></a>
                                                             <a href="#"><i
                                                                     class="las la-trash-alt text-secondary fs-18"></i></a>
-                                                        </td>
+                                                        </td> --}}
                                                     </tr>
                                                 @endforeach
                                             @else

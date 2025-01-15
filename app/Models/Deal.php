@@ -8,6 +8,7 @@ class Deal extends Model
 {
     protected $fillable = [
         'user_id',
+        'drive_deal_id',
         'name',
         'description',
         'status'

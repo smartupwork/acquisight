@@ -50,16 +50,20 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/deals/{deal}/invite-contact', [DealController::class, 'showInviteContactForm'])->name('deals.inviteView');
     Route::post('/deals/{deal}/invite-contact', [DealController::class, 'sendInvite'])->name('deals.sendInvite');
     Route::get('/deals/{deal}/view-deal', [DealController::class, 'viewDeal'])->name('deals.view');
-    Route::get('/deals/{id}/folders/{folderName}', [FileController::class, 'viewFolderFiles'])->name('folders.view');
+    Route::get('/deals/files/{id}', [FileController::class, 'viewFolderFiles'])->name('deal.file.list');
     Route::get('/deals/{id}/edit', [DealController::class, 'edit'])->name('deals.edit');
     Route::post('/deals/update', [DealController::class, 'update'])->name('deals.update');
 
+    // Route::get('/test-integration', [DealController::class, 'testIntegration']);
+
     // folder routes 
-    Route::post('/deals/folder/update', [FolderController::class, 'store'])->name('folder.upload');
+    Route::post('/deals/folder/update', [FileController::class, 'store'])->name('folder.upload');
     
     
     // seller routes
 
     Route::get('/seller/deals', [SellerController::class, 'index'])->name('seller.index');
+    Route::get('/seller/deals/{deal}/view-deal', [SellerController::class, 'viewDeal'])->name('seller.deals.view');
+    Route::get('/seller/deals/files/{id}', [SellerController::class, 'viewFolderFiles'])->name('seller.deal.file.list');
 
 });

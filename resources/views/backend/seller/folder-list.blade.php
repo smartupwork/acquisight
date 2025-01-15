@@ -1,5 +1,5 @@
-@extends('backend.admin.layout')
-@section('admin-deals-view-content')
+@extends('backend.user.layout')
+@section('seller-deals-view-content')
 
     <div class="container-xxl">
         @if (Session::get('success'))
@@ -56,7 +56,7 @@
                                                                 <i class="fa-regular fa-folder-open me-1 text-blue"></i>
                                                             </div>
                                                             <!-- Link to view the folder in Google Drive -->
-                                                            <a href="{{ route('deal.file.list', ['id' => $folder->id]) }}"
+                                                            <a href="{{ route('seller.deal.file.list', ['id' => $folder->id]) }}"
                                                                 class="text-body">{{ $folder->folder_name }}</a>
                                                         </td>
                                                         <td class="text-end">
@@ -71,10 +71,10 @@
                                                                 data-drive-folder-id="{{ $folder->drive_folder_id }}">
                                                                 <i class="las la-upload text-secondary fs-18"></i>
                                                             </a>
-                                                            <a href="#"><i
+                                                            {{-- <a href="#"><i
                                                                     class="las la-pen text-secondary fs-18"></i></a>
                                                             <a href="#"><i
-                                                                    class="las la-trash-alt text-secondary fs-18"></i></a>
+                                                                    class="las la-trash-alt text-secondary fs-18"></i></a> --}}
                                                         </td>
                                                     </tr>
                                                 @endforeach

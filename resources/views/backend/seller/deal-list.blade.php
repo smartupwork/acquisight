@@ -44,18 +44,19 @@
                                             </td>
                                             <td>{{ $deal->deal_created_at }}</td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
-                                                <a href="" class="btn btn-primary btn-sm float-left mr-1"
+                                                <a href="{{ route('seller.deals.view', $deal->id) }}"
+                                                    class="btn btn-success btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                    title="Upload" data-placement="bottom"><i class="fas fa-upload"></i></a>
+                                                    title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
+                                                {{-- <a href="" class="btn btn-primary btn-sm float-left mr-1"
+                                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                                    title="Upload" data-placement="bottom"><i class="fas fa-upload"></i></a> --}}
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{-- <button type="button" class="btn btn-sm btn-primary csv">Export CSV</button>
-                        <button type="button" class="btn btn-sm btn-primary sql">Export SQL</button>
-                        <button type="button" class="btn btn-sm btn-primary txt">Export TXT</button>
-                        <button type="button" class="btn btn-sm btn-primary json">Export JSON</button> --}}
+                        
                         </div>
                     </div><!--end card-body-->
                 </div><!--end card-->

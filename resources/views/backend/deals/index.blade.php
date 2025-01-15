@@ -56,9 +56,9 @@
                                                     title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
 
                                                 <a href="javascript:void(0)" class="btn btn-success btn-sm float-left mr-1"
-                                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                                    style="height:30px; width:30px; border-radius:50%" data-toggle="tooltip"
                                                     title="Copy Deal Link" data-placement="bottom"
-                                                    onclick="copyToClipboard('{{ route('deals.view', $deal->id) }}')">
+                                                    onclick="copyToClipboard('{{ 'https://drive.google.com/drive/folders/' . $deal->drive_deal_id }}')">
                                                     <i class="fas fa-copy"></i>
                                                 </a>
 
@@ -94,9 +94,9 @@
                         <button type="button" class="btn btn-sm btn-primary txt">Export TXT</button>
                         <button type="button" class="btn btn-sm btn-primary json">Export JSON</button> --}}
                         </div>
-                    </div><!--end card-body-->
-                </div><!--end card-->
-            </div> <!--end col-->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -127,13 +127,13 @@
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
-                   
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
@@ -170,27 +170,23 @@
 
 
         function copyToClipboard(dealUrl) {
-            // Create a temporary input element
             const tempInput = document.createElement('input');
-            tempInput.value = dealUrl; // Set the dynamic URL value
+            tempInput.value = dealUrl; // Assign the Google Drive folder URL to the input
             document.body.appendChild(tempInput);
 
-            // Select and copy the value
             tempInput.select();
             tempInput.setSelectionRange(0, 99999); // For mobile devices
             document.execCommand('copy');
 
-            // Remove the temporary input element
             document.body.removeChild(tempInput);
 
-            // Optionally, show a success message
             alert('Deal link copied to clipboard: ' + dealUrl);
         }
 
         function loadDealData(dealId) {
 
             $.ajax({
-                url: '/deals/' + dealId + '/edit', // Route to fetch deal details
+                url: '/deals/' + dealId + '/edit',
                 method: 'GET',
                 success: function(response) {
                     // Populate the modal fields

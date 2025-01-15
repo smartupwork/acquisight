@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DealInvitation;
+use App\Models\Deal;
+use App\Services\GoogleDriveService;
+use Google\Service\Drive\Permission;
 
 class AuthController extends Controller
 {
@@ -90,29 +93,28 @@ class AuthController extends Controller
         $invitation = DealInvitation::where('token', $token)->firstOrFail();
 
         if ($invitation->accepted == 1) {
-            return redirect()->route('deals.list')->with('info', 'You are already registered.');
+            return redirect()->route('login-view')->with('info', 'You are already registered.');
         }
 
         return view('auth.seller.register', ['token' => $token, 'email' => $invitation->email]);
     }
 
-    public function registerSeller(Request $request)
+    public function registerSeller(Request $request, GoogleDriveService $googleDriveService)
     {
-       // register seller by using token
-       
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
+
         $invitation = DealInvitation::where('token', $request->token)->firstOrFail();
 
         if ($invitation->accepted == 1) {
-            return redirect()->route('deals.list')->with('info', 'You are already registered.');
+            return redirect()->route('login-view')->with('success', 'You are already registered, Please Login.');
         }
 
-      
         $seller = User::create([
             'name' => $request->name,
             'email' => $invitation->email,
@@ -121,7 +123,25 @@ class AuthController extends Controller
             'status' => 'active',
         ]);
 
-        $invitation->update(['accepted' => 1]);
+
+        $invitation->update(['accepted' => 1, 'token' => '']);
+
+        $deal = Deal::findOrFail($invitation->deal_id);
+
+        
+        if ($deal->drive_deal_id) {
+            try {
+                
+                $googleDriveService->shareGoogleDriveFolder(
+                    $deal->drive_deal_id,
+                    $seller->email
+                );
+            } catch (\Exception $e) {
+                
+                \Log::error('Failed to grant Drive access: ' . $e->getMessage());
+                return redirect('/login-view')->with('error', 'Registration failed due to a Drive access issue.');
+            }
+        }
 
         if ($seller) {
             return redirect('/login-view')->with('success', 'You are registered as Seller. Please login.');

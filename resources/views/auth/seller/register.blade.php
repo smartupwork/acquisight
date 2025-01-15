@@ -1,6 +1,6 @@
 @extends('auth.layout')
 @section('seller-register-content')
-   {{-- seller registeration blade --}}
+    {{-- seller registeration blade --}}
     <div class="container-xxl">
         <div class="row vh-100 d-flex justify-content-center">
             <div class="col-12 align-self-center">
@@ -32,8 +32,8 @@
                                         @enderror
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="email">Email</label>
-                                            <input type="text" class="form-control" id="email" name="email" value="{{ $email }}"
-                                                placeholder="Enter email">
+                                            <input type="text" class="form-control" id="email" name="email"
+                                                value="{{ $email }}" placeholder="Enter email">
                                         </div>
                                         @error('email')
                                             <span>{{ $message }}</span>
@@ -41,12 +41,16 @@
 
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="userpassword">Password</label>
-                                            <input type="password" class="form-control" name="password" id="userpassword" placeholder="Enter password">
+                                            <input type="password" class="form-control" name="password" id="userpassword"
+                                                placeholder="Enter password">
                                         </div>
-                                        @error('password') <span>{{ $message }}</span> @enderror
+                                        @error('password')
+                                            <span>{{ $message }}</span>
+                                        @enderror
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="userpassword">Confirm Password</label>
-                                            <input type="password" class="form-control" name="password_confirmation" id="userpassword" placeholder="Confirm password">
+                                            <input type="password" class="form-control" name="password_confirmation"
+                                                id="userpassword" placeholder="Confirm password">
                                         </div>
                                         <div class="form-group row mt-3">
                                         </div><!--end form-group-->
@@ -59,15 +63,18 @@
                                                 </div>
                                             </div><!--end col-->
                                         </div>
-                                        
+
                                         <div class="form-group row mt-3">
                                             <div class="col-12">
                                                 <div class="form-check form-switch form-switch-success">
-                                                    <input class="form-check-input" type="checkbox" id="customSwitchSuccess">
-                                                    <label class="form-check-label" for="customSwitchSuccess">By registering you agree to the<a href="#" class="text-primary">Terms of Use</a></label>
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="customSwitchSuccess">
+                                                    <label class="form-check-label" for="customSwitchSuccess">By registering
+                                                        you agree to the<a href="#" class="text-primary">Terms of
+                                                            Use</a></label>
                                                 </div>
-                                            </div><!--end col--> 
-                                        </div><!--end form-group-->
+                                            </div>
+                                        </div>
                                     </form><!--end form-->
                                 </div><!--end card-body-->
                             </div><!--end card-->
@@ -77,4 +84,15 @@
             </div><!--end col-->
         </div><!--end row-->
     </div><!-- container -->
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function(event) {
+            const isChecked = document.getElementById("customSwitchSuccess").checked;
+
+            if (!isChecked) {
+                event.preventDefault();
+                alert("You must agree to the Terms of Use before proceeding.");
+            }
+        });
+    </script>
 @endsection

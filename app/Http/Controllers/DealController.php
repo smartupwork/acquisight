@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\DealInvitationMail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Carbon;
+use Google\Client;
+use Google\Service\Drive;
+use App\Services\GoogleDriveService;
 
 
 class DealController extends Controller
@@ -22,20 +25,24 @@ class DealController extends Controller
         return view('backend.deals.index')->with('deals', $deals);
     }
 
+    // public function testIntegration()
+    // {
+    //     $googleDriveService = new \App\Services\GoogleDriveService();
+    //     $googleDriveService->testAccessToSharedFiles();
+    // }
 
     public function create()
     {
         return view('backend.deals.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, GoogleDriveService $googleDriveService)
     {
-        $request->validate(
-            [
-                'name' => 'required|string',
-                'status' => 'required'
-            ]
-        );
+        $request->validate([
+            'name' => 'required|string',
+            'status' => 'required',
+        ]);
+
 
         $deal = Deal::create([
             'name' => $request->name,
@@ -44,7 +51,12 @@ class DealController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        $defaultFolders = [
+
+        $dealFolderId = $googleDriveService->createDealFolder($deal->name, $deal->id);
+
+        $deal->update(['drive_deal_id' => $dealFolderId]);
+
+        $subfolders = [
             'Corporate Documentation',
             'Tax Returns',
             'Financial Statements',
@@ -55,38 +67,23 @@ class DealController extends Controller
             'HR and Employees',
             'Products and Services',
             'Licenses',
-            'Misc'
+            'Misc',
         ];
 
 
-        $dealsMainPath = public_path('deals_main');
-        if (!file_exists($dealsMainPath)) {
-            mkdir($dealsMainPath, 0777, true);
+        foreach ($subfolders as $subfolderName) {
+
+            $subfolderId = $googleDriveService->createSubfolder($subfolderName, $dealFolderId);
+
+
+            DealFolder::create([
+                'deal_id' => $deal->id,
+                'folder_name' => $subfolderName,
+                'drive_folder_id' => $subfolderId, // Save the Google Drive folder ID
+            ]);
         }
 
-
-        $mainFolderPath = $dealsMainPath . "/{$deal->name}_{$deal->id}";
-        if (!file_exists($mainFolderPath)) {
-            mkdir($mainFolderPath, 0777, true);
-        }
-
-        foreach ($defaultFolders as $folder) {
-
-            $subFolderPath = $mainFolderPath . '/' . $folder;
-
-            if (!file_exists($subFolderPath)) {
-                mkdir($subFolderPath, 0777, true);
-            }
-
-
-            DealFolder::create(['deal_id' => $deal->id, 'folder_name' => $folder]);
-        }
-
-        if ($deal) {
-            return redirect()->route('deals.index')->with('success', 'Deal Created successfully!');
-        } else {
-            return redirect()->route('deals.index')->with('error', 'Sorry, something went wrong.');
-        }
+        return redirect()->route('deals.index')->with('success', 'Deal and folders created successfully!');
     }
 
 
@@ -124,21 +121,7 @@ class DealController extends Controller
     public function viewDeal($id)
     {
         $deal = Deal::findOrFail($id);
-        $mainFolderPath = public_path("deals_main/{$deal->name}_{$deal->id}");
-
-        $foldersData = [];
-
-        if (File::exists($mainFolderPath)) {
-            $folders = File::directories($mainFolderPath);
-
-            foreach ($folders as $folder) {
-                $foldersData[] = [
-                    'name' => basename($folder),
-                    'last_modified' => Carbon::createFromTimestamp(File::lastModified($folder))->toDateTimeString(),
-                    'size' => $this->getFolderSize($folder),
-                ];
-            }
-        }
+        $foldersData = DealFolder::where('deal_id', $id)->get();
 
         return view('backend.deals.view', [
             'deal' => $deal,
