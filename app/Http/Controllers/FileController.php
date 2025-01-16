@@ -50,7 +50,7 @@ class FileController extends Controller
     public function viewFolderFiles($id)
     {
         $files = DealFile::where('folder_id', $id)->get();
-
+        
         return view('backend.files.index', compact('files', 'id'));
     }
 

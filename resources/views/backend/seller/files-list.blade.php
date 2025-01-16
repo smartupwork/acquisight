@@ -43,7 +43,7 @@
                                                                 class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                                 <i class="fa-regular fa-file me-1 text-blue"></i>
                                                             </div>
-                                                            <a href="" target="_blank" class="text-body">{{ $file['file_name'] }}</a>
+                                                            <a href="{{ $file['file_path'] }}" target="_blank" class="text-body">{{ $file['file_name'] }}</a>
                                                         </td>
                                                         <td>{{ $file['created_at'] }}</td>
                                                         {{-- <td class="text-end">{{ $file['size'] }}</td> --}}
