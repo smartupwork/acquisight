@@ -124,7 +124,7 @@ class AuthController extends Controller
         ]);
 
 
-        $invitation->update(['accepted' => 1, 'token' => '']);
+        $invitation->update(['accepted' => 1, 'token' => null]);
 
         $deal = Deal::findOrFail($invitation->deal_id);
 
