@@ -10,7 +10,7 @@
                                 <div class="card-body p-0 bg-black auth-header-box rounded-top">
                                     <div class="text-center p-3">
                                         <a href="index.html" class="logo logo-admin">
-                                            <img src="{{ url('assets/images/admin-logo.svg') }}" height="50"
+                                            <img src="{{ url('assets/images/admin-logo.jpg') }}" height="50"
                                                 alt="logo" class="auth-logo">
                                         </a>
                                         <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started</h4>
