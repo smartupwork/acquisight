@@ -113,7 +113,7 @@
                         <!-- File upload input -->
                         <div class="form-group">
                             <label for="fileUpload">Choose a file</label>
-                            <input type="file" class="form-control" id="fileUpload" name="file" required>
+                            <input type="file" class="form-control" id="fileUpload" name="files[]" multiple required>
                         </div>
 
                         <!-- Submit button -->

@@ -15,7 +15,8 @@ use Illuminate\Support\Carbon;
 use Google\Client;
 use Google\Service\Drive;
 use App\Services\GoogleDriveService;
-
+use App\Mail\AlertInviteMail;
+use App\Models\User;
 
 class DealController extends Controller
 {
@@ -97,20 +98,28 @@ class DealController extends Controller
     public function sendInvite(Request $request, $dealId)
     {
 
+        $user = User::where('id', Auth::id())->first();
+
+        $invite_sender_email = $user->email;
+
+        $seller_email = $request->email;
+
         $deal = Deal::findOrFail($dealId);
 
         $token = Str::random(40);
 
         DealInvitation::create([
             'deal_id' => $deal->id,
-            'email' => $request->email,
+            'email' => $seller_email,
             'token' => $token,
             'accepted' => 0
         ]);
 
         $link = route('seller.register', ['token' => $token]);
 
-        Mail::to($request->email)->send(new DealInvitationMail($deal, $link));
+        Mail::to($seller_email)->send(new DealInvitationMail($deal, $link));
+
+        Mail::to($invite_sender_email)->send(new AlertInviteMail($deal, $link, $seller_email));
 
         return redirect()->route('deals.index')->with('success', 'Invitation sent successfully!');
     }

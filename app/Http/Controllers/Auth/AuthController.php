@@ -23,6 +23,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
 
+        
         $request->validate([
             'email' => 'required|email|exists:users',
             'password' => 'required',
@@ -43,7 +44,10 @@ class AuthController extends Controller
 
         if ($user->roles_id == 1) {
             return redirect()->route('admin.dashboard');
-        } else {
+        }elseif($user->roles_id == 3) {
+            return redirect()->route('seller.index');
+        }
+        else {
             return redirect()->route('user.dashboard');
         }
     }

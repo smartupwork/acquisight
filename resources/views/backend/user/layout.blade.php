@@ -86,10 +86,11 @@
     <div class="startbar d-print-none">
         <!--start brand-->
         <div class="brand">
-            <a href="index.html" class="logo">
+            <a href="{{ auth()->check() && auth()->user()->role_id == 1 ? route('admin.dashboard') : route('seller.index') }}"
+                class="logo">
                 <span>
                     <img src="{{ url('assets/images/admin-logo.jpg') }}" alt="logo" class="logo-sm"
-                    style="width:150px; height:40px; margin-right:50px;">
+                        style="width:150px; height:40px; margin-right:50px;">
                 </span>
             </a>
         </div>
@@ -103,20 +104,22 @@
                         <li class="menu-label pt-0 mt-0">
                             <span>Main Menu</span>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarDashboards">
-                                <i class="iconoir-home-simple menu-icon"></i>
-                                <span>Dashboards</span>
-                            </a>
-                            <div class="collapse " id="sidebarDashboards">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="index.html">Analytics</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end startbarDashboards-->
-                        </li><!--end nav-item-->
+                        @if (auth()->user()->roles_id == 2)
+                            <li class="nav-item">
+                                <a class="nav-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
+                                    aria-expanded="false" aria-controls="sidebarDashboards">
+                                    <i class="iconoir-home-simple menu-icon"></i>
+                                    <span>Dashboards</span>
+                                </a>
+                                <div class="collapse " id="sidebarDashboards">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="index.html">Analytics</a>
+                                        </li><!--end nav-item-->
+                                    </ul><!--end nav-->
+                                </div><!--end startbarDashboards-->
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="sidebarApplications">

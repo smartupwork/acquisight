@@ -7,6 +7,7 @@ use Google\Service\Drive;
 use Google\Service\Drive\DriveFile;
 use Google\Service\Drive\Permission;
 
+
 class GoogleDriveService
 {
     protected $client;
@@ -48,9 +49,9 @@ class GoogleDriveService
         return $subfolder->id;
     }
 
-    public function uploadFile($fileMetadata, $file)
+    public function uploadFile(DriveFile $fileMetadata, $file)
     {
-        $fileContent = file_get_contents($file->getRealPath()); // Get the file content
+        $fileContent = file_get_contents($file->getRealPath());
 
         $driveFile = $this->driveService->files->create($fileMetadata, [
             'data' => $fileContent,
@@ -74,24 +75,24 @@ class GoogleDriveService
     public function shareGoogleDriveFolder($folderId, $email)
     {
         try {
-            
+
             $permission = new \Google\Service\Drive\Permission();
             $permission->setType('user');
             $permission->setEmailAddress($email);
 
-            
+
             $permission->setRole('reader');
             $this->driveService->permissions->create($folderId, $permission, [
-                'sendNotificationEmail' => true,  
+                'sendNotificationEmail' => true,
             ]);
 
-           
+
             $permission->setRole('writer');
             $this->driveService->permissions->create($folderId, $permission, [
                 'sendNotificationEmail' => true,
             ]);
         } catch (\Exception $e) {
-           
+
             \Log::error('Error granting permissions: ' . $e->getMessage());
             throw new \Exception('Failed to grant Google Drive permissions.');
         }
