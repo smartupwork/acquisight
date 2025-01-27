@@ -7,7 +7,7 @@
                     <ul class="nav nav-tabs my-4" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents" role="tab"
-                                aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i> Test
+                                aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>
                                 <span class="badge rounded text-blue bg-blue-subtle ms-1">32</span></a>
                         </li>
                     </ul>
@@ -28,7 +28,7 @@
                                     <table class="table mb-0">
                                         <thead class="table-light">
                                             <tr>
-                                                <th class="border-top-0">Folder Name</th>
+                                                <th class="border-top-0">File Name</th>
                                                 <th class="border-top-0 text-end">Last Modified</th>
                                                 {{-- <th class="border-top-0 text-end">Size</th> --}}
                                                 <th class="border-top-0 text-end">Action</th>
@@ -43,7 +43,8 @@
                                                                 class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                                 <i class="fa-regular fa-file me-1 text-blue"></i>
                                                             </div>
-                                                            <a href="{{ $file['file_path'] }}" target="_blank" class="text-body">{{ $file['file_name'] }}</a>
+                                                            <a href="{{ $file['file_path'] }}"
+                                                                class="text-body">{{ $file['file_name'] }}</a>
                                                         </td>
                                                         <td class="text-end">{{ $file['updated_at'] }}</td>
                                                         {{-- <td class="text-end">{{ $file['size'] }}</td> --}}

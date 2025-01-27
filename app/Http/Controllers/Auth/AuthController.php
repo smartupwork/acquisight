@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -12,6 +13,9 @@ use App\Models\DealInvitation;
 use App\Models\Deal;
 use App\Services\GoogleDriveService;
 use Google\Service\Drive\Permission;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordResetMail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -23,7 +27,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
 
-        
+
         $request->validate([
             'email' => 'required|email|exists:users',
             'password' => 'required',
@@ -44,10 +48,9 @@ class AuthController extends Controller
 
         if ($user->roles_id == 1) {
             return redirect()->route('admin.dashboard');
-        }elseif($user->roles_id == 3) {
+        } elseif ($user->roles_id == 3) {
             return redirect()->route('seller.index');
-        }
-        else {
+        } else {
             return redirect()->route('user.dashboard');
         }
     }
@@ -132,16 +135,16 @@ class AuthController extends Controller
 
         $deal = Deal::findOrFail($invitation->deal_id);
 
-        
+
         if ($deal->drive_deal_id) {
             try {
-                
+
                 $googleDriveService->shareGoogleDriveFolder(
                     $deal->drive_deal_id,
                     $seller->email
                 );
             } catch (\Exception $e) {
-                
+
                 \Log::error('Failed to grant Drive access: ' . $e->getMessage());
                 return redirect('/login-view')->with('error', 'Registration failed due to a Drive access issue.');
             }
@@ -151,6 +154,40 @@ class AuthController extends Controller
             return redirect('/login-view')->with('success', 'You are registered as Seller. Please login.');
         } else {
             return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
+        }
+    }
+
+    public function forgetPassword()
+    {
+
+        return view('auth.forgot');
+    }
+
+    public function requestReset(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+
+        $user = User::where('email', $request->email)->first();
+
+        $password = Str::random(rand(8, 10));
+
+        $user->password = Hash::make($password);
+        $user->save();
+
+        $mail =  Mail::to($user->email)->send(new PasswordResetMail($user, $password));
+
+        if ($mail) {
+            return redirect('/login-view')->with('success', 'Your password is reset, please check yoour email.');
+        } else {
+            return redirect('/login-view')->with('error', 'Sorry, Something went wrong!');
         }
     }
 }

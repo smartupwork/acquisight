@@ -46,6 +46,11 @@
                                             </a>
                                         </div>    <!--end col--> --}}
                                     </div><!--end form-group-->
+                                    <div class="form-group row mt-1">
+                                        <div class="col-sm-12 text-end">
+                                            <a href="{{ route('forgot') }}" class="text-muted font-13"><i class="dripicons-lock"></i> Forgot password?</a>                                    
+                                        </div><!--end col--> 
+                                    </div>
                                     <div class="form-group mb-0 row">
                                         <div class="col-12">
                                             <div class="d-grid mt-3"> 

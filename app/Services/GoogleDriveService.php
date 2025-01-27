@@ -83,13 +83,13 @@ class GoogleDriveService
 
             $permission->setRole('reader');
             $this->driveService->permissions->create($folderId, $permission, [
-                'sendNotificationEmail' => true,
+                'sendNotificationEmail' => false,
             ]);
 
 
             $permission->setRole('writer');
             $this->driveService->permissions->create($folderId, $permission, [
-                'sendNotificationEmail' => true,
+                'sendNotificationEmail' => false,
             ]);
         } catch (\Exception $e) {
 

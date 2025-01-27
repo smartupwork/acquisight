@@ -25,6 +25,11 @@ Route::post('/register', [AuthController::class, 'register'])->name('registerIn'
 Route::get('/seller/register/{token}', [AuthController::class, 'showSellerRegistrationForm'])->name('seller.register');
 Route::post('/seller/register', [AuthController::class, 'registerSeller'])->name('seller.register.submit');
 
+//forget password
+Route::get('/forgot-password', [AuthController::class, 'forgetPassword'])->name('forgot');
+Route::post('/reset-password', [AuthController::class, 'requestReset'])->name('reset');
+
+
 
 Route::middleware(['customAuth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
