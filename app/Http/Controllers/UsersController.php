@@ -80,9 +80,9 @@ class UsersController extends Controller
         $delete = User::findorFail($id);
         $status = $delete->delete();
         if ($status) {
-            request()->session('success', 'User Successfully deleted');
+            return redirect()->route('users.index')->with('success', 'User deleted successfully!');
         } else {
-            request()->session('error', 'There is an error while deleting users');
+            return redirect()->route('users.index')->with('error', 'Sorry, something went wrong!');
         }
         return redirect()->route('users.index');
     }
