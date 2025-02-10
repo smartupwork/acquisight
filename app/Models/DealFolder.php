@@ -12,7 +12,7 @@ class DealFolder extends Model
     protected $fillable = [
         'deal_id',
         'folder_name',
-        'drive_folder_id'
+        'gcs_folder_id'
     ];
 
     public function deal()

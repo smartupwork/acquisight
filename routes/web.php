@@ -9,6 +9,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\SellerController;
 use App\Http\Middleware\CustomAuthMiddleware;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return redirect('/login-view');
@@ -32,6 +33,11 @@ Route::post('/reset-password', [AuthController::class, 'requestReset'])->name('r
 
 
 Route::middleware(['customAuth'])->group(function () {
+
+    Route::get('/test-gcs', [DashboardController::class, 'uploadFile']);
+    Route::post('/submit-gcs', [DashboardController::class, 'submit'])->name('submit-file');
+    
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/admin/dashboard', [DashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
@@ -56,6 +62,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::post('/deals/{deal}/invite-contact', [DealController::class, 'sendInvite'])->name('deals.sendInvite');
     Route::get('/deals/{deal}/view-deal', [DealController::class, 'viewDeal'])->name('deals.view');
     Route::get('/deals/files/{id}', [FileController::class, 'viewFolderFiles'])->name('deal.file.list');
+    Route::get('/files/view/{id}', [FileController::class, 'viewFile']);
     Route::get('/deals/{id}/edit', [DealController::class, 'edit'])->name('deals.edit');
     Route::post('/deals/update', [DealController::class, 'update'])->name('deals.update');
 

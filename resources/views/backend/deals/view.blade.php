@@ -55,7 +55,6 @@
                                                                 class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                                 <i class="fa-regular fa-folder-open me-1 text-blue"></i>
                                                             </div>
-                                                            <!-- Link to view the folder in Google Drive -->
                                                             <a href="{{ route('deal.file.list', ['id' => $folder->id]) }}"
                                                                 class="text-body">{{ $folder->folder_name }}</a>
                                                         </td>
@@ -68,7 +67,7 @@
                                                             <a href="#" class="open-upload-modal"
                                                                 data-folder-name="{{ $folder->folder_name }}"
                                                                 data-folder-id="{{ $folder->id }}"
-                                                                data-drive-folder-id="{{ $folder->drive_folder_id }}">
+                                                                data-drive-folder-id="{{ $folder->gcs_folder_id }}">
                                                                 <i class="las la-upload text-secondary fs-18"></i>
                                                             </a>
                                                             <a href="#"><i

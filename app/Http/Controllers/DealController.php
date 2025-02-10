@@ -13,10 +13,10 @@ use App\Mail\DealInvitationMail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Carbon;
 use Google\Client;
-use Google\Service\Drive;
-use App\Services\GoogleDriveService;
+use App\Services\GcsStorageService;
 use App\Mail\AlertInviteMail;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class DealController extends Controller
 {
@@ -26,66 +26,72 @@ class DealController extends Controller
         return view('backend.deals.index')->with('deals', $deals);
     }
 
-    // public function testIntegration()
-    // {
-    //     $googleDriveService = new \App\Services\GoogleDriveService();
-    //     $googleDriveService->testAccessToSharedFiles();
-    // }
 
     public function create()
     {
         return view('backend.deals.create');
     }
 
-    public function store(Request $request, GoogleDriveService $googleDriveService)
+
+
+    public function store(Request $request, GcsStorageService $gcsStorageService)
     {
         $request->validate([
             'name' => 'required|string',
             'status' => 'required',
         ]);
 
+        DB::beginTransaction();
 
-        $deal = Deal::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'status' => $request->status,
-            'user_id' => Auth::id(),
-        ]);
-
-
-        $dealFolderId = $googleDriveService->createDealFolder($deal->name, $deal->id);
-
-        $deal->update(['drive_deal_id' => $dealFolderId]);
-
-        $subfolders = [
-            'Corporate Documentation',
-            'Tax Returns',
-            'Financial Statements',
-            'Bank Statements',
-            'Real Estate and Leases',
-            'Assets',
-            'Litigation',
-            'HR and Employees',
-            'Products and Services',
-            'Licenses',
-            'Misc',
-        ];
-
-
-        foreach ($subfolders as $subfolderName) {
-
-            $subfolderId = $googleDriveService->createSubfolder($subfolderName, $dealFolderId);
-
-
-            DealFolder::create([
-                'deal_id' => $deal->id,
-                'folder_name' => $subfolderName,
-                'drive_folder_id' => $subfolderId, // Save the Google Drive folder ID
+        try {
+            
+            $deal = Deal::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'status' => $request->status,
+                'user_id' => Auth::id(),
             ]);
-        }
 
-        return redirect()->route('deals.index')->with('success', 'Deal and folders created successfully!');
+            
+            $dealFolderPrefix = $gcsStorageService->createDealFolder($deal->name);
+            $deal->update(['gcs_deal_id' => $dealFolderPrefix]);
+
+           
+            $subfolders = [
+                'Corporate Documentation',
+                'Tax Returns',
+                'Financial Statements',
+                'Bank Statements',
+                'Real Estate and Leases',
+                'Assets',
+                'Litigation',
+                'HR and Employees',
+                'Products and Services',
+                'Licenses',
+                'Misc',
+            ];
+
+            // Create subfolders in GCS
+            $subfolderPrefixes = $gcsStorageService->createSubfolders($dealFolderPrefix, $subfolders);
+
+            // Store subfolder records in the database
+            foreach ($subfolderPrefixes as $subfolderName => $subfolderPrefix) {
+                DealFolder::create([
+                    'deal_id' => $deal->id,
+                    'folder_name' => $subfolderName,
+                    'gcs_folder_id' => $subfolderPrefix,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('deals.index')->with('success', 'Deal and folders created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to create deal and folders: ' . $e->getMessage());
+        }
     }
+
 
 
     public function showInviteContactForm($dealId)
