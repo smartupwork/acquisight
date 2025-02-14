@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use Google\Cloud\Storage\StorageClient;
-use Illuminate\Support\Facades\Storage;
+use Google\Cloud\Iam\V1\Policy;
+use Google\Cloud\Iam\V1\Binding;
+use Google\Type\Expr;
+use Illuminate\Support\Facades\Log;
 
 class GcsStorageService
 {
@@ -42,10 +45,10 @@ class GcsStorageService
         foreach ($subfolders as $subfolderName) {
             $subfolderPrefix = $dealFolderPrefix . $subfolderName . '/';
 
-            // Upload an empty file to create the subfolder in GCS
+
             $this->bucket->upload(
-                '', // Empty file contents
-                ['name' => $subfolderPrefix] // Creates the subfolder
+                '',
+                ['name' => $subfolderPrefix]
             );
 
             $subfolderPrefixes[$subfolderName] = $subfolderPrefix;
@@ -86,15 +89,22 @@ class GcsStorageService
     public function getSignedUrl($filePath, $expiration = 60)
     {
         if (!$filePath) {
+
             return null;
         }
 
         try {
             $object = $this->bucket->object($filePath);
-            return $object->signedUrl(new \DateTime('tomorrow')); // URL expires in 24 hours
+            $signedUrl = $object->signedUrl(new \DateTime('tomorrow')); // 24 hours expiry
+
+            // Log the signed URL to verify
+            \Log::info("Generated Signed URL for {$filePath}: {$signedUrl}");
+
+            return $signedUrl;
         } catch (\Exception $e) {
             \Log::error('GCS Signed URL Error: ' . $e->getMessage());
             return null;
         }
     }
+
 }

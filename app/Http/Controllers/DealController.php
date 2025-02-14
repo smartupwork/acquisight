@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 use Google\Client;
 use App\Services\GcsStorageService;
 use App\Mail\AlertInviteMail;
+use App\Mail\InformAccessMail;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +45,7 @@ class DealController extends Controller
         DB::beginTransaction();
 
         try {
-            
+
             $deal = Deal::create([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -52,11 +53,11 @@ class DealController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
-            
+
             $dealFolderPrefix = $gcsStorageService->createDealFolder($deal->name);
             $deal->update(['gcs_deal_id' => $dealFolderPrefix]);
 
-           
+
             $subfolders = [
                 'Corporate Documentation',
                 'Tax Returns',
@@ -110,7 +111,28 @@ class DealController extends Controller
 
         $seller_email = $request->email;
 
+        
+
         $deal = Deal::findOrFail($dealId);
+
+        $existingUser = User::where('email', $seller_email)->first();
+
+        $existingInvitation = DealInvitation::where('email', $seller_email)
+            ->where('deal_id', $deal->id)
+            ->first();
+
+        if ($existingUser || $existingInvitation) {
+            
+            DealInvitation::create([
+                'deal_id' => $deal->id,
+                'email' => $seller_email,
+                'token' => NULL,
+                'accepted' => 1
+            ]);
+
+            Mail::to($seller_email)->send(new InformAccessMail($deal));
+            return redirect()->route('deals.index')->with('success', 'Invitation sent successfully!');
+        }
 
         $token = Str::random(40);
 

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\DealFolder;
 use App\Models\DealFile;
+use App\Services\GcsStorageService;
+use Illuminate\Support\Facades\Storage;
 
 class SellerController extends Controller
 {
@@ -17,7 +19,7 @@ class SellerController extends Controller
 
         $loggedInUserEmail = Auth::user()->email;
 
-        // Fetch deals associated with the authenticated user and include drive_deal_id
+       
         $deals = DB::table('deals')
             ->join('deal_invitations', 'deals.id', '=', 'deal_invitations.deal_id')
             ->select(
@@ -26,7 +28,7 @@ class SellerController extends Controller
                 'deals.status as deal_status',
                 'deals.created_at as deal_created_at',
                 'deals.description as deal_description',
-                'deals.drive_deal_id as drive_deal_id'
+                'deals.gcs_deal_id as drive_deal_id'
             ) // Include drive_deal_id
             ->where('deal_invitations.email', $loggedInUserEmail)
             ->get();
@@ -45,9 +47,16 @@ class SellerController extends Controller
         ]);
     }
 
-    public function viewFolderFiles($id)
+    public function viewFolderFiles($id, GcsStorageService $gcsStorageService)
     {
+
         $files = DealFile::where('folder_id', $id)->get();
+
+        $files->transform(function ($file) use ($gcsStorageService) {
+            $file->signed_url = $gcsStorageService->getSignedUrl($file->file_path);
+            $file->mime_type = Storage::disk('gcs')->mimeType($file->file_path);
+            return $file;
+        });
 
         return view('backend.seller.files-list', compact('files', 'id'));
     }

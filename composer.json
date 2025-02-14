@@ -8,6 +8,8 @@
     "require": {
         "php": "^8.2",
         "google/apiclient": "^2.0",
+        "google/cloud-iam": "^1.0",
+        "google/cloud-resource-manager": "^1.0",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "league/flysystem-google-cloud-storage": "^3.28",

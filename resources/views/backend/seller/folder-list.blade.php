@@ -68,7 +68,7 @@
                                                             <a href="#" class="open-upload-modal"
                                                                 data-folder-name="{{ $folder->folder_name }}"
                                                                 data-folder-id="{{ $folder->id }}"
-                                                                data-drive-folder-id="{{ $folder->drive_folder_id }}">
+                                                                data-drive-folder-id="{{ $folder->gcs_folder_id }}">
                                                                 <i class="las la-upload text-secondary fs-18"></i>
                                                             </a>
                                                             {{-- <a href="#"><i

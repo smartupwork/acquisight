@@ -17,13 +17,14 @@ class FileController extends Controller
 
     public function store(Request $request, GcsStorageService $gcsStorageService)
     {
+        
         $request->validate([
             'deal_id' => 'required|exists:deals,id',
             'folder_id' => 'required|exists:deal_folders,id',
             'drive_folder_id' => 'required|string',
             'files.*' => 'required|file|max:2048',
         ]);
-
+       
         $uploadedFiles = $request->file('files');
         $gcsFolderPath = $request->drive_folder_id;
 
@@ -56,37 +57,18 @@ class FileController extends Controller
         }
     }
 
-
-    // public function viewFolderFiles($id)
-    // {
-    //     $files = DealFile::where('folder_id', $id)->get();
-    //     return view('backend.files.index', compact('files', 'id'));
-    // }
-
-    // public function viewFile($id, GcsStorageService $gcsStorageService)
-    // {
-    //     $file = DealFile::findOrFail($id);
-    //     $signedUrl = $gcsStorageService->getSignedUrl($file->file_path);
-
-    //     $mimeType = Storage::disk('gcs')->mimeType($file->file_path);
-
-    //     return response()->json([
-    //         'url' => $signedUrl,
-    //         'type' => $mimeType
-    //     ]);
-    // }
-
     public function viewFolderFiles($id, GcsStorageService $gcsStorageService)
     {
+  
         $files = DealFile::where('folder_id', $id)->get();
 
-        // Append signed URL and MIME type to each file
         $files->transform(function ($file) use ($gcsStorageService) {
             $file->signed_url = $gcsStorageService->getSignedUrl($file->file_path);
             $file->mime_type = Storage::disk('gcs')->mimeType($file->file_path);
             return $file;
         });
 
+       
         return view('backend.files.index', compact('files', 'id'));
     }
 }

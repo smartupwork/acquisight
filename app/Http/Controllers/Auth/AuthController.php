@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\DealInvitation;
 use App\Models\Deal;
-use App\Services\GoogleDriveService;
+use App\Services\GcsStorageService;
 use Google\Service\Drive\Permission;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordResetMail;
@@ -106,7 +106,7 @@ class AuthController extends Controller
         return view('auth.seller.register', ['token' => $token, 'email' => $invitation->email]);
     }
 
-    public function registerSeller(Request $request, GoogleDriveService $googleDriveService)
+    public function registerSeller(Request $request, GcsStorageService $gcsStorageService)
     {
 
         $request->validate([
@@ -133,22 +133,6 @@ class AuthController extends Controller
 
         $invitation->update(['accepted' => 1, 'token' => null]);
 
-        $deal = Deal::findOrFail($invitation->deal_id);
-
-
-        if ($deal->drive_deal_id) {
-            try {
-
-                $googleDriveService->shareGoogleDriveFolder(
-                    $deal->drive_deal_id,
-                    $seller->email
-                );
-            } catch (\Exception $e) {
-
-                \Log::error('Failed to grant Drive access: ' . $e->getMessage());
-                return redirect('/login-view')->with('error', 'Registration failed due to a Drive access issue.');
-            }
-        }
 
         if ($seller) {
             return redirect('/login-view')->with('success', 'You are registered as Seller. Please login.');
