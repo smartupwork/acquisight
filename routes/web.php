@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
 use App\Http\Middleware\CustomAuthMiddleware;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,9 @@ Route::post('/register', [AuthController::class, 'register'])->name('registerIn'
 Route::get('/seller/register/{token}', [AuthController::class, 'showSellerRegistrationForm'])->name('seller.register');
 Route::post('/seller/register', [AuthController::class, 'registerSeller'])->name('seller.register.submit');
 
+Route::get('/copy/link/{deal_id}', [AuthController::class, 'showCopyForm'])->name('copy.register');
+Route::post('/store/link', [AuthController::class, 'registerBuyer'])->name('buyer.register.submit');
+
 //forget password
 Route::get('/forgot-password', [AuthController::class, 'forgetPassword'])->name('forgot');
 Route::post('/reset-password', [AuthController::class, 'requestReset'])->name('reset');
@@ -36,9 +40,15 @@ Route::middleware(['customAuth'])->group(function () {
 
     Route::get('/test-gcs', [DashboardController::class, 'uploadFile']);
     Route::post('/submit-gcs', [DashboardController::class, 'submit'])->name('submit-file');
-    
+
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/admin/profile/{id}', [ProfileController::class, 'view'])->name('profile.view');
+    Route::get('/user/profile/{id}', [ProfileController::class, 'user_view'])->name('user.profile.view');
+    
+    Route::post('profile-save', [ProfileController::class, 'store'])->name('profile.submit');
+    Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
 
     Route::get('/admin/dashboard', [DashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
     Route::get('/user/dashboard', [DashboardController::class, 'showUserDashboard'])->name('user.dashboard');
@@ -70,12 +80,13 @@ Route::middleware(['customAuth'])->group(function () {
 
     // folder routes 
     Route::post('/deals/folder/update', [FileController::class, 'store'])->name('folder.upload');
-    
-    
+    Route::post('/log-file-view', [FileController::class, 'logFileView'])->name('log.file.view');
+    Route::get('/view-file-log', [DashboardController::class, 'view_logs'])->name('view.files');
+
+
     // seller routes
 
     Route::get('/seller/deals', [SellerController::class, 'index'])->name('seller.index');
     Route::get('/seller/deals/{deal}/view-deal', [SellerController::class, 'viewDeal'])->name('seller.deals.view');
     Route::get('/seller/deals/files/{id}', [SellerController::class, 'viewFolderFiles'])->name('seller.deal.file.list');
-
 });

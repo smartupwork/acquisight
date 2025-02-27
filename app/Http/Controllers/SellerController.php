@@ -16,10 +16,8 @@ class SellerController extends Controller
 {
     public function index()
     {
-
         $loggedInUserEmail = Auth::user()->email;
 
-       
         $deals = DB::table('deals')
             ->join('deal_invitations', 'deals.id', '=', 'deal_invitations.deal_id')
             ->select(
@@ -29,12 +27,14 @@ class SellerController extends Controller
                 'deals.created_at as deal_created_at',
                 'deals.description as deal_description',
                 'deals.gcs_deal_id as drive_deal_id'
-            ) // Include drive_deal_id
+            )
             ->where('deal_invitations.email', $loggedInUserEmail)
+            ->groupBy('deals.id', 'deals.name', 'deals.status', 'deals.created_at', 'deals.description', 'deals.gcs_deal_id') // Grouping by deal fields
             ->get();
 
         return view('backend.seller.deal-list', ['deals' => $deals]);
     }
+
 
     public function viewDeal($id)
     {

@@ -1,13 +1,14 @@
 @extends('backend.admin.layout')
 @section('admin-files-index-content')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="container-xxl">
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="clearfix">
                     <ul class="nav nav-tabs my-4" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents" role="tab"
-                                aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>
+                            <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents"
+                                role="tab" aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>
                                 <span class="badge rounded text-blue bg-blue-subtle ms-1">32</span></a>
                         </li>
                     </ul>
@@ -41,8 +42,12 @@
                                                             class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                             <i class="fa-regular fa-file me-1 text-blue"></i>
                                                         </div>
-                                                        <a href="#" class="preview-link text-body"
+                                                        {{-- <a href="#" class="preview-link text-body"
                                                             onclick="previewFile('{{ $file->signed_url }}', '{{ $file->mime_type }}')">
+                                                            {{ $file->file_name }}
+                                                        </a> --}}
+                                                        <a href="#" class="preview-link text-body"
+                                                            onclick="previewFile('{{ $file->signed_url }}', '{{ $file->mime_type }}', '{{ $file->id }}', '{{ $file->file_name }}')">
                                                             {{ $file->file_name }}
                                                         </a>
                                                     </td>
@@ -87,7 +92,24 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function previewFile(fileUrl, fileType) {
+        function previewFile(fileUrl, fileType, fileId, fileName) {
+
+            $.ajax({
+                url: '/log-file-view',
+                method: 'POST',
+                data: {
+                    file_id: fileId,
+                    file_name: fileName,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log(response.message);
+                },
+                error: function() {
+                    console.log('Failed to log file view.');
+                }
+            });
+
             var container = $('#fileViewerContainer');
             var fileExtension = fileUrl.split('.').pop().toLowerCase();
 
@@ -132,7 +154,7 @@
                     .then(text => {
                         container.html(
                             `<pre style="white-space: pre-wrap; word-wrap: break-word; padding: 10px;">${text}</pre>`
-                            );
+                        );
                     })
                     .catch(error => {
                         container.html('<p class="text-danger">⚠️ Unable to preview this text file.</p>');

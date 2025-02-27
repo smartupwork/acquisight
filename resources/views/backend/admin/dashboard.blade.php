@@ -8,20 +8,24 @@
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
                                 <p class="text-dark mb-0 fw-semibold fs-14">Users</p>
-                                <h3 class="mt-2 mb-0 fw-bold">11</h3>
+                                <h3 class="mt-2 mb-0 fw-bold">{{ $totalUsers }}</h3>
                             </div>
                             <!--end col-->
                             <div class="col-3 align-self-center">
                                 <div
                                     class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
-                                    <i class="iconoir-hexagon-dice h1 align-self-center mb-0 text-secondary"></i>
+                                    <i class="fas fa-user h1 align-self-center mb-0 text-secondary"></i>
                                 </div>
                             </div>
                             <!--end col-->
                         </div>
                         <!--end row-->
-                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">8.5%</span>
-                            New Users Today</p>
+                        <p class="mb-0 text-truncate text-muted mt-3">
+                            <span class="text-success">
+                                {{ $todayUsers > 0 ? $todayUsers : 'No new users today' }}
+                            </span>
+                            {{ $todayUsers > 0 ? 'New Users Today' : '' }}
+                        </p>
                     </div>
                     <!--end card-body-->
                 </div>
@@ -34,20 +38,24 @@
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
                                 <p class="text-dark mb-0 fw-semibold fs-14">Deals</p>
-                                <h3 class="mt-2 mb-0 fw-bold">18</h3>
+                                <h3 class="mt-2 mb-0 fw-bold">{{ $totalDeals }}</h3>
                             </div>
                             <!--end col-->
                             <div class="col-3 align-self-center">
                                 <div
                                     class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
-                                    <i class="iconoir-clock h1 align-self-center mb-0 text-secondary"></i>
+                                    <i class="fas fa-suitcase h1 align-self-center mb-0 text-secondary"></i>
                                 </div>
                             </div>
                             <!--end col-->
                         </div>
                         <!--end row-->
-                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-success">1.5%</span>
-                            Weekly Avg Deals</p>
+                        <p class="mb-0 text-truncate text-muted mt-3">
+                            <span class="text-success">
+                                {{ $todayDeals > 0 ? $todayDeals : 'No deals today' }}
+                            </span>
+                            {{ $todayDeals > 0 ? 'New Deals Today' : '' }}
+                        </p>
                     </div>
                     <!--end card-body-->
                 </div>
@@ -59,21 +67,25 @@
                     <div class="card-body">
                         <div class="row d-flex justify-content-center border-dashed-bottom pb-3">
                             <div class="col-9">
-                                <p class="text-dark mb-0 fw-semibold fs-14">Contacts</p>
-                                <h3 class="mt-2 mb-0 fw-bold">231</h3>
+                                <p class="text-dark mb-0 fw-semibold fs-14">Files</p>
+                                <h3 class="mt-2 mb-0 fw-bold">{{ $totalFile }}</h3>
                             </div>
                             <!--end col-->
                             <div class="col-3 align-self-center">
                                 <div
                                     class="d-flex justify-content-center align-items-center thumb-xl bg-light rounded-circle mx-auto">
-                                    <i class="iconoir-percentage-circle h1 align-self-center mb-0 text-secondary"></i>
+                                    <i class="fas fa-file h1 align-self-center mb-0 text-secondary"></i>
                                 </div>
                             </div>
                             <!--end col-->
                         </div>
                         <!--end row-->
-                        <p class="mb-0 text-truncate text-muted mt-3"><span class="text-danger">8%</span>
-                            Contacts Rate Weekly</p>
+                        <p class="mb-0 text-truncate text-muted mt-3">
+                            <span class="text-danger">
+                                {{ $todayFile > 0 ? $todayFile : 'No files today' }}
+                            </span>
+                            {{ $todayFile > 0 ? 'New Files Today' : '' }}
+                        </p>
                     </div>
                     <!--end card-body-->
                 </div>

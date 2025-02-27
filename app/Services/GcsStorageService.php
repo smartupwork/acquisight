@@ -59,6 +59,8 @@ class GcsStorageService
 
     public function uploadFile($gcsFolderPath, $file)
     {
+
+        
         $fileName = time() . '-' . $file->getClientOriginalName();
 
         // Ensure the folder path is correctly formatted

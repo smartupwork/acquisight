@@ -16,6 +16,10 @@ class DealFile extends Model
         'file_name'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function deal()
     {
@@ -30,5 +34,20 @@ class DealFile extends Model
     public function uploadedBy()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function fileViews()
+    {
+        return $this->hasMany(FileViewLog::class);
+    }
+
+    public function dealFolder()
+    {
+        return $this->belongsTo(DealFolder::class, 'folder_id');
+    }
+
+    public function fileViewLogs()
+    {
+        return $this->hasMany(FileViewLog::class, 'file_id', 'id');
     }
 }

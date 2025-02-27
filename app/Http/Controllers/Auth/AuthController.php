@@ -16,6 +16,7 @@ use Google\Service\Drive\Permission;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordResetMail;
 use Illuminate\Support\Str;
+use App\Mail\InformAccessMail;
 
 class AuthController extends Controller
 {
@@ -64,7 +65,6 @@ class AuthController extends Controller
         return redirect('/login-view');
     }
 
-
     public function showRegisterForm()
     {
         return view('auth.register');
@@ -103,7 +103,7 @@ class AuthController extends Controller
             return redirect()->route('login-view')->with('info', 'You are already registered.');
         }
 
-        return view('auth.seller.register', ['token' => $token, 'email' => $invitation->email]);
+        return view('auth.seller.register', ['token' => $token, 'email' => $invitation->email, 'roles_id' => $invitation->user_type]);
     }
 
     public function registerSeller(Request $request, GcsStorageService $gcsStorageService)
@@ -113,6 +113,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'roles_id' => 'required'
         ]);
 
 
@@ -126,7 +127,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $invitation->email,
             'password' => Hash::make($request->password),
-            'roles_id' => 3,
+            'roles_id' => $request->roles_id,
             'status' => 'active',
         ]);
 
@@ -172,6 +173,68 @@ class AuthController extends Controller
             return redirect('/login-view')->with('success', 'Your password is reset, please check yoour email.');
         } else {
             return redirect('/login-view')->with('error', 'Sorry, Something went wrong!');
+        }
+    }
+
+    public function showCopyForm($deal_id)
+    {
+
+        return view('auth.buyer.register', ['deal_id' => $deal_id]);
+    }
+
+    public function registerBuyer(Request $request)
+    {
+        $deal_id = $request->deal_id . '/';
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6|confirmed',
+            'roles_id' => 'required'
+        ]);
+
+        $deal = Deal::where('gcs_deal_id', $deal_id)->first();
+
+        $existingUser = User::where('email', $request->email)->first();
+
+        $existingInvitation = DealInvitation::where('email',  $request->email)
+        ->where('deal_id', $deal->id)
+        ->first();
+
+        if ($existingUser || $existingInvitation) {
+            DealInvitation::create([
+                'deal_id' => $deal->id,
+                'email' => $request->email,
+                'token' => NULL,
+                'accepted' => 1,
+                'user_type' => $existingUser->roles_id
+            ]);
+
+            Mail::to($request->email)->send(new InformAccessMail($deal));
+            return redirect()->route('login-view')->with('success', 'Invitation sent successfully!');
+        }
+
+        $buyer = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'roles_id' => $request->roles_id,
+            'status' => 'active',
+        ]);
+
+
+        DealInvitation::create([
+            'deal_id' => $deal->id,
+            'email' => $request->email,
+            'token' => NULL,
+            'accepted' => 1,
+            'user_type' => $request->roles_id
+        ]);
+
+
+        if ($buyer) {
+            return redirect('/login-view')->with('success', 'You are registered. Please login.');
+        } else {
+            return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
         }
     }
 }

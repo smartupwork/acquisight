@@ -28,4 +28,21 @@ class Deal extends Model
     {
         return $this->hasMany(DealFile::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Relationship with Deal Folders
+    public function dealFolders()
+    {
+        return $this->hasMany(DealFolder::class);
+    }
+
+    // Relationship with Deal Files
+    public function dealFiles()
+    {
+        return $this->hasMany(DealFile::class);
+    }
 }

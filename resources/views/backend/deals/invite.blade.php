@@ -17,9 +17,9 @@
                             <div class="mb-3 row">
                                 <label for="role" class="col-sm-2 col-form-label">Select Contact Type</label>
                                 <div class="col-sm-10">
-                                <select class="form-select" id="role">
-                                    <option>Buyer</option>
-                                    <option>Seller</option>
+                                <select class="form-select" id="role" name="roles_id">
+                                    <option value="4">Buyer</option>
+                                    <option value="3">Seller</option>
                                 </select>
                             </div>
                             </div>

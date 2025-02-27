@@ -12,6 +12,7 @@ class DealInvitation extends Model
         'deal_id',
         'email',
         'token',
-        'accepted'
+        'accepted',
+        'user_type'
     ];
 }

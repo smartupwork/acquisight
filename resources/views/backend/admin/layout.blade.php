@@ -16,9 +16,9 @@
     <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
 
     <!-- App css -->
-    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}"  type="text/css" />
-    <link rel="stylesheet" href="{{ url('assets/css/icons.min.css') }}"  type="text/css" />
-    <link rel="stylesheet" href="{{ url('assets/css/app.min.css') }}"  type="text/css" />
+    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ url('assets/css/icons.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ url('assets/css/app.min.css') }}" type="text/css" />
 
 </head>
 
@@ -49,8 +49,8 @@
                     </li> --}}
 
                     <li class="dropdown topbar-item">
-                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown"
-                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
                             <img src="{{ url('assets/images/user-avatar.jpg') }}" alt=""
                                 class="thumb-lg rounded-circle">
                         </a>
@@ -67,7 +67,7 @@
                             </div>
                             <div class="dropdown-divider mt-0"></div>
                             <small class="text-muted px-2 pb-1 d-block">Account</small>
-                            <a class="dropdown-item" href="#"><i
+                            <a class="dropdown-item" href="{{ route('profile.view', ['id' => auth()->id()]) }}"><i
                                     class="las la-user fs-18 me-1 align-text-bottom"></i> Profile</a>
                             <div class="dropdown-divider mb-0"></div>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
@@ -90,7 +90,8 @@
         <div class="brand">
             <a href="{{ route('admin.dashboard') }}" class="logo">
                 <span>
-                    <img src="{{ url('assets/images/admin-logo.jpg') }}" alt="logo" class="logo-sm" style="width:150px; height:40px; margin-right:50px;">
+                    <img src="{{ url('assets/images/admin-logo.jpg') }}" alt="logo" class="logo-sm"
+                        style="width:150px; height:40px; margin-right:50px;">
                 </span>
             </a>
         </div>
@@ -104,59 +105,98 @@
                         <li class="menu-label pt-0 mt-0">
                             <span>Main Menu</span>
                         </li>
+
+                        <!-- Dashboards -->
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarDashboards">
+                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                                href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
+                                aria-expanded="{{ request()->routeIs('admin.dashboard') ? 'true' : 'false' }}"
+                                aria-controls="sidebarDashboards">
                                 <i class="iconoir-home-simple menu-icon"></i>
                                 <span>Dashboards</span>
                             </a>
-                            <div class="collapse " id="sidebarDashboards">
+                            <div class="collapse {{ request()->routeIs('admin.dashboard') ? 'show' : '' }}"
+                                id="sidebarDashboards">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('admin.dashboard') }}">Analytics</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end startbarDashboards-->
-                        </li><!--end nav-item-->
-                        
+                                        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                                            href="{{ route('admin.dashboard') }}">Analytics</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- Users -->
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarApplications">
+                            <a class="nav-link {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'active' : '' }}"
+                                href="#sidebarApplications" data-bs-toggle="collapse" role="button"
+                                aria-expanded="{{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'true' : 'false' }}"
+                                aria-controls="sidebarApplications">
                                 <i class="fas fa-id-badge menu-icon"></i>
                                 <span>Users</span>
                             </a>
-                            <div class="collapse " id="sidebarApplications">
+                            <div class="collapse {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'show' : '' }}"
+                                id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('users.index')}}">User List</a>
+                                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
+                                            href="{{ route('users.index') }}">User List</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('users.create')}}">User Add</a>
+                                        <a class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}"
+                                            href="{{ route('users.create') }}">User Add</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
+
+                        <!-- Deals -->
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarProjects" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarProjects">
+                            <a class="nav-link {{ request()->routeIs('deals.index') ? 'active' : '' }}"
+                                href="#sidebarProjects" data-bs-toggle="collapse" role="button"
+                                aria-expanded="{{ request()->routeIs('deals.index') ? 'true' : 'false' }}"
+                                aria-controls="sidebarProjects">
                                 <i class="fas fa-suitcase menu-icon"></i>
                                 <span>Deals</span>
                             </a>
-                            <div class="collapse " id="sidebarProjects">
+                            <div class="collapse {{ request()->routeIs('deals.index') ? 'show' : '' }}"
+                                id="sidebarProjects">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('deals.index')}}">Deals List</a>
+                                        <a class="nav-link {{ request()->routeIs('deals.index') ? 'active' : '' }}"
+                                            href="{{ route('deals.index') }}">Deals List</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="">Deals Add</a>
+                                        <a class="nav-link" href="{{ route('deals.create') }}">Deals Add</a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                    </ul><!--end navbar-nav--->
+
+                        <!-- Logs -->
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('view.files') ? 'active' : '' }}"
+                                href="#sidebarLogs" data-bs-toggle="collapse" role="button"
+                                aria-expanded="{{ request()->routeIs('view.files') ? 'true' : 'false' }}"
+                                aria-controls="sidebarLogs">
+                                <i class="fas fa-history menu-icon"></i>
+                                <span>Logs</span>
+                            </a>
+                            <div class="collapse {{ request()->routeIs('view.files') ? 'show' : '' }}"
+                                id="sidebarLogs">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('view.files') ? 'active' : '' }}"
+                                            href="{{ route('view.files') }}">View Logs</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </div><!--end startbar-collapse-->
-        </div><!--end startbar-menu-->
+            </div>
+        </div>
+        <!--end startbar-menu-->
     </div><!--end startbar-->
     <div class="startbar-overlay d-print-none"></div>
     <!-- end leftbar-tab-menu-->
@@ -170,7 +210,10 @@
             @yield('admin-deals-invite-content')
             @yield('admin-deals-view-content')
             @yield('admin-files-index-content')
-    
+            @yield('admin-profile-content')
+            @yield('admin-log-view-content')
+
+
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">
                     <div class="row">

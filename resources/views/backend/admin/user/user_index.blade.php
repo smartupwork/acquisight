@@ -33,6 +33,7 @@
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>Status</th>
+                                        <th>Terms Agreed</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -65,7 +66,12 @@
                                                     Null
                                                 @endif
                                             </td>
+                                            <td>
+                                            <span class="badge bg-success" style="">YES</span>
+                                            {{ $user->created_at }}
+                                            <td>
 
+                                            </td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
                                                 <a href="{{ route('users.edit', $user->id) }}"
                                                     class="btn btn-primary btn-sm float-left mr-1"

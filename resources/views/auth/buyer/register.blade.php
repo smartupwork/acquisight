@@ -1,10 +1,12 @@
 @extends('auth.layout')
-@section('register-content')
+@section('seller-register-content')
+    {{-- seller registeration blade --}}
     <div class="container-xxl">
         <div class="row vh-100 d-flex justify-content-center">
             <div class="col-12 align-self-center">
                 <div class="card-body">
                     <div class="row">
+
                         <div class="col-lg-4 mx-auto">
                             <div class="card">
                                 <div class="card-body p-0 bg-black auth-header-box rounded-top">
@@ -17,10 +19,10 @@
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
-                                    <form class="my-4" method="POST" action="{{ route('seller.register.submit') }}">
+                                    <form class="my-4" method="POST" action="{{ route('buyer.register.submit') }}">
                                         @csrf
-                                        {{-- <input type="hidden" name="token" value="{{ $token }}" /> --}}
-
+                                        <input type="hidden" name="roles_id" value="4" />
+                                        <input type="hidden" name="deal_id" value="{{ $deal_id }}" />
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="name">Name</label>
                                             <input type="text" class="form-control" id="name" name="name"
@@ -29,11 +31,10 @@
                                         @error('name')
                                             <span>{{ $message }}</span>
                                         @enderror
-
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="email">Email</label>
                                             <input type="text" class="form-control" id="email" name="email"
-                                                value="" placeholder="Enter email">
+                                                placeholder="Enter email">
                                         </div>
                                         @error('email')
                                             <span>{{ $message }}</span>
@@ -47,14 +48,13 @@
                                         @error('password')
                                             <span>{{ $message }}</span>
                                         @enderror
-
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="userpassword">Confirm Password</label>
                                             <input type="password" class="form-control" name="password_confirmation"
                                                 id="userpassword" placeholder="Confirm password">
                                         </div>
 
-                                        <!-- Terms & Conditions Section -->
+
                                         <div class="form-group row mt-3">
                                             <div class="col-12">
                                                 <div class="form-check form-switch form-switch-success">
@@ -69,7 +69,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Register Button -->
                                         <div class="form-group mb-0 row">
                                             <div class="col-12">
                                                 <div class="d-grid mt-3">
@@ -79,19 +78,17 @@
                                                 </div>
                                             </div><!--end col-->
                                         </div>
-                                    </form><!--end form-->
-                                </div><!--end card-body-->
-                            </div><!--end card-->
-                        </div><!--end col-->
-                    </div><!--end row-->
-                </div><!--end card-body-->
-            </div><!--end col-->
-        </div><!--end row-->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Terms & Conditions Modal -->
-
-    {{-- <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -102,19 +99,23 @@
                     <h5>David Moore & Partners Buyer Non-Disclosure Agreement</h5>
                     <p>I/we understand and agree:</p>
                     <ol>
-                        <li><strong>No Disclosure.</strong> The Recipient (Buyer) will hold the Confidential information in confidence for a
+                        <li><strong>No Disclosure.</strong> The Recipient (Buyer) will hold the Confidential information in
+                            confidence for a
                             period of two (2) years from the date I/we sign this Non-Disclosure Agreement and will not
                             disclose the Confidential information to any person or entity without the prior written consent
                             of David Moore & Partners.</li>
-                        <li><strong>No Copying/Modifying.</strong> The Recipient will not copy or modify any Confidential Information without
+                        <li><strong>No Copying/Modifying.</strong> The Recipient will not copy or modify any Confidential
+                            Information without
                             the prior written consent of the Seller.
                         </li>
-                        <li><strong>Unauthorized Use.</strong> The Recipient shall promptly advise the Seller if the Recipient becomes aware
+                        <li><strong>Unauthorized Use.</strong> The Recipient shall promptly advise the Seller if the
+                            Recipient becomes aware
                             of any possible unauthorized disclosure or use of the Confidential Information.</li>
                         <li>The Recipient will not to contact the landlord, employees, suppliers, franchisor or customers of
                             the Business for Sale without the express written consent of David Moore & Partners.
                         </li>
-                        <li><strong>Non Circumvention.</strong> For a period of two (2) years after the date this agreement was signed, the
+                        <li><strong>Non Circumvention.</strong> For a period of two (2) years after the date this agreement
+                            was signed, the
                             Recipient will not attempt to do business with, or otherwise solicit any business contacts found
                             or otherwise referred by Seller to Recipient for the purpose of circumventing, the result of
                             which shall be to prevent the Seller from realizing or recognizing a profit, fees, or otherwise,
@@ -122,12 +123,14 @@
                             Seller shall be entitled to any commissions due pursuant to this Agreement or relating to such
                             transaction.
                         </li>
-                        <li><strong>Relationship of Parties.</strong> Neither party has an obligation under this Agreement to purchase any
+                        <li><strong>Relationship of Parties.</strong> Neither party has an obligation under this Agreement
+                            to purchase any
                             service or item from the other party, or commercially offer any products using or incorporating
                             the Confidential information. This Agreement does not create any agency, partnership or joint
                             venture. David Moore & Partners is compensated from any transaction that results between the
                             buyer and the seller.</li>
-                        <li><strong>No Warranty and Due Diligence.</strong> The Recipient acknowledges and agrees that the Confidential
+                        <li><strong>No Warranty and Due Diligence.</strong> The Recipient acknowledges and agrees that the
+                            Confidential
                             Information is provided on an “AS IS” basis. David Moore & Partners makes no warranties, express
                             or implied, with respect to the confidential information and hereby expressly disclaims any and
                             all implied warranties of merchantability and fitness for a particular purpose. In no event
@@ -177,79 +180,8 @@
                 </div>
             </div>
         </div>
-    </div> --}}
-
-    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                    <h5>NON-DISCLOSURE AGREEMENT</h5>
-                    <p>This Agreement is made by and between ________________, (“Company”), and Broker, a WY corporation
-                        whose principal mailing address is 677 King Street Charleston SC 29403(“Recipient”).
-                    </p>
-                    <ol>
-                        <li><strong>Definition of Confidentiality.</strong>As used in this Agreement, "Confidential
-                            Information" refers to any information which has commercial value and is either (i) technical
-                            information, including patent, copyright, trade secret, and other proprietary information,
-                            techniques, sketches, drawings, models, inventions, know-how, processes, apparatus, equipment,
-                            algorithms, software programs, software source documents, and formulae related to the current,
-                            future and proposed products and services of Company, or (ii) non-technical information relating
-                            to Company's products, including without limitation pricing, margins, merchandising plans and
-                            strategies, finances, financial and accounting data and information, suppliers, customers,
-                            customer lists, purchasing data, sales and marketing plans, future business plans and any other
-                            information which is proprietary and confidential to Company./li>
-                        <li><strong>No Copying/Modifying.</strong> The Recipient will not copy or modify any Confidential
-                            Information without
-                            the prior written consent of the Seller.
-                        </li>
-                        <li><strong>Nondisclosure and Nonuse Obligations.</strong>The recipient will maintain confidence and
-                            will not disclose, disseminate or use any Confidential Information belonging to Company, whether
-                            or not in written form. Recipient agrees that Recipient shall treat all Confidential Information
-                            of Company with at least the same degree of care as Recipient accords its own confidential
-                            information. Recipient further represents that Recipient exercises at least reasonable care to
-                            protect its own confidential information. If Recipient is not an individual, Recipient agrees
-                            that Recipient shall disclose Confidential Information only to those of its employees who need
-                            to know such information, and certifies that such employees have previously signed a copy of
-                            this Agreement.
-                        </li>
-                        <li><strong>Survival.</strong>This Agreement shall govern all communications between the parties.
-                            Recipient understands that its obligations under Paragraph 2 ("Nondisclosure and Nonuse
-                            Obligations") shall survive the termination of any other relationship between the parties. Upon
-                            termination of any relationship between the parties, Recipient will promptly deliver to Company,
-                            without retaining any copies, all documents and other materials furnished to Recipient by
-                            Company.
-                        </li>
-                        <li><strong>Governing Law.</strong> This Agreement shall be governed in all respects by the laws of
-                            the United States of America and by the laws of the State the Company resides in. </li>
-                        <li><strong>Injunctive Relief.</strong> A breach of any of the promises or agreements contained
-                            herein will result in irreparable and continuing damage to Company for which there will be no
-                            adequate remedy at law, and Company shall be entitled to injunctive relief and/or a decree for
-                            specific performance, and such other relief as may be proper (including monetary damages if
-                            appropriate).
-                        </li>
-                        <li><strong>Entire Agreement.</strong> This Agreement constitutes the entire agreement with respect
-                            to the Confidential Information disclosed herein and supersedes all prior or contemporaneous
-                            oral or written agreements concerning such Confidential Information. This Agreement may only be
-                            changed by mutual agreement of authorized representatives of the parties in writing.
-                        </li>
-                    </ol>
-                    <p> IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written below.</p>
-                </div>
-                <div class="modal-footer">
-                    <input type="checkbox" id="agreeTerms">
-                    <label for="agreeTerms">I agree to the Terms & Conditions</label>
-                    <button type="button" class="btn btn-primary" id="acceptTermsBtn" disabled
-                        data-bs-dismiss="modal">Accept</button>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Enable "Accept" button only when the user checks the "I agree" checkbox in the modal

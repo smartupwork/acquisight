@@ -41,8 +41,12 @@
                                                                 class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                                 <i class="fa-regular fa-file me-1 text-blue"></i>
                                                             </div>
-                                                            <a href="#" class="preview-link text-body"
+                                                            {{-- <a href="#" class="preview-link text-body"
                                                                 onclick="previewFile('{{ $file->signed_url }}', '{{ $file->mime_type }}')">
+                                                                {{ $file->file_name }}
+                                                            </a> --}}
+                                                            <a href="#" class="preview-link text-body"
+                                                                onclick="previewFile('{{ $file->signed_url }}', '{{ $file->mime_type }}', '{{ $file->id }}', '{{ $file->file_name }}')">
                                                                 {{ $file->file_name }}
                                                             </a>
                                                         </td>
@@ -86,7 +90,24 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function previewFile(fileUrl, fileType) {
+        function previewFile(fileUrl, fileType, fileId, fileName) {
+
+            $.ajax({
+                url: '/log-file-view',
+                method: 'POST',
+                data: {
+                    file_id: fileId,
+                    file_name: fileName,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log(response.message);
+                },
+                error: function() {
+                    console.log('Failed to log file view.');
+                }
+            });
+
             var container = $('#fileViewerContainer');
             var fileExtension = fileUrl.split('.').pop().toLowerCase();
 
@@ -122,10 +143,20 @@
                 Your browser does not support the audio tag.
             </audio>
         `);
-            } else if (fileType === 'text/plain') {
-                container.html(`
-                <iframe src="${fileUrl}" width="100%" height="500px" style="border:none;"></iframe>
-            `);
+            }
+            // Text-Based Files (TXT, CSV, JSON, XML, LOG, HTML)
+            else if (['text/plain', 'text/csv', 'application/json', 'application/xml', 'text/xml', 'text/html'].includes(
+                    fileType)) {
+                fetch(fileUrl)
+                    .then(response => response.text())
+                    .then(text => {
+                        container.html(
+                            `<pre style="white-space: pre-wrap; word-wrap: break-word; padding: 10px;">${text}</pre>`
+                        );
+                    })
+                    .catch(error => {
+                        container.html('<p class="text-danger">⚠️ Unable to preview this text file.</p>');
+                    });
             }
             // Microsoft Office Files (DOC, DOCX, XLS, XLSX, PPT, PPTX)
             else if ([
@@ -162,8 +193,6 @@
             $('#filePreviewModal').modal('show');
         }
     </script>
-
-
 
     <script>
         $(document).ready(function() {

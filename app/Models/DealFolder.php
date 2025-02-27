@@ -24,4 +24,9 @@ class DealFolder extends Model
     {
         return $this->hasMany(DealFile::class, 'folder_id');
     }
+
+    public function dealFiles()
+    {
+        return $this->hasMany(DealFile::class);
+    }
 }

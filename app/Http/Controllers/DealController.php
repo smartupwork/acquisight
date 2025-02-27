@@ -111,8 +111,6 @@ class DealController extends Controller
 
         $seller_email = $request->email;
 
-        
-
         $deal = Deal::findOrFail($dealId);
 
         $existingUser = User::where('email', $seller_email)->first();
@@ -122,12 +120,12 @@ class DealController extends Controller
             ->first();
 
         if ($existingUser || $existingInvitation) {
-            
             DealInvitation::create([
                 'deal_id' => $deal->id,
                 'email' => $seller_email,
                 'token' => NULL,
-                'accepted' => 1
+                'accepted' => 1,
+                'user_type' => $existingUser->roles_id
             ]);
 
             Mail::to($seller_email)->send(new InformAccessMail($deal));
@@ -136,11 +134,14 @@ class DealController extends Controller
 
         $token = Str::random(40);
 
+        $user_type = $request->roles_id;
+
         DealInvitation::create([
             'deal_id' => $deal->id,
             'email' => $seller_email,
             'token' => $token,
-            'accepted' => 0
+            'accepted' => 0,
+            'user_type' => $user_type
         ]);
 
         $link = route('seller.register', ['token' => $token]);
@@ -151,9 +152,6 @@ class DealController extends Controller
 
         return redirect()->route('deals.index')->with('success', 'Invitation sent successfully!');
     }
-
-
-
 
     public function viewDeal($id)
     {

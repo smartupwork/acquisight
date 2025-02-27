@@ -10,6 +10,7 @@ use App\Services\GcsStorageService;
 use App\Models\DealFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FileViewLog;
 
 
 class FileController extends Controller
@@ -17,14 +18,14 @@ class FileController extends Controller
 
     public function store(Request $request, GcsStorageService $gcsStorageService)
     {
-        
+
         $request->validate([
             'deal_id' => 'required|exists:deals,id',
             'folder_id' => 'required|exists:deal_folders,id',
             'drive_folder_id' => 'required|string',
             'files.*' => 'required|file|max:2048',
         ]);
-       
+
         $uploadedFiles = $request->file('files');
         $gcsFolderPath = $request->drive_folder_id;
 
@@ -59,7 +60,7 @@ class FileController extends Controller
 
     public function viewFolderFiles($id, GcsStorageService $gcsStorageService)
     {
-  
+
         $files = DealFile::where('folder_id', $id)->get();
 
         $files->transform(function ($file) use ($gcsStorageService) {
@@ -68,7 +69,26 @@ class FileController extends Controller
             return $file;
         });
 
-       
+
         return view('backend.files.index', compact('files', 'id'));
+    }
+
+    public function logFileView(Request $request)
+    {
+        $request->validate([
+            'file_id' => 'required|integer',
+            'file_name' => 'required|string',
+        ]);
+
+        FileViewLog::create([
+            'user_id' => Auth::id(),
+            'file_id' => $request->file_id,
+            'file_name' => $request->file_name,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
+            'viewed_at' => now(),
+        ]);
+
+        return response()->json(['message' => 'File view logged successfully']);
     }
 }

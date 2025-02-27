@@ -23,6 +23,9 @@ class User extends Authenticatable
         'password',
         'roles_id',
         'status',
+        'phone',
+        'dob',
+        'address'
     ];
 
     /**
@@ -50,13 +53,23 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'roles_id');
     }
+
 
     public function deals()
     {
         return $this->hasMany(Deal::class, 'user_id');
     }
 
+    public function dealFiles()
+    {
+        return $this->hasMany(DealFile::class);
+    }
 
+    // Relationship with File View Logs (user who viewed files)
+    public function fileViewLogs()
+    {
+        return $this->hasMany(FileViewLog::class);
+    }
 }

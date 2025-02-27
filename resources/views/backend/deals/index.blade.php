@@ -58,7 +58,7 @@
                                                 <a href="javascript:void(0)" class="btn btn-success btn-sm float-left mr-1"
                                                     style="height:30px; width:30px; border-radius:50%" data-toggle="tooltip"
                                                     title="Copy Deal Link" data-placement="bottom"
-                                                    onclick="copyToClipboard('{{ 'https://drive.google.com/drive/folders/' . $deal->drive_deal_id }}')">
+                                                    onclick="copyToClipboard('{{ url('/') . '/copy/link/' . $deal->gcs_deal_id }}')">
                                                     <i class="fas fa-copy"></i>
                                                 </a>
 
