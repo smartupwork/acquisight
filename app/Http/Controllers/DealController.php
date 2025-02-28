@@ -69,6 +69,7 @@ class DealController extends Controller
                 'HR and Employees',
                 'Products and Services',
                 'Licenses',
+                'Confidential Reviews',
                 'Misc',
             ];
 

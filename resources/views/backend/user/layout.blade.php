@@ -129,7 +129,7 @@
                             <div class="collapse " id="sidebarApplications">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('seller.index') }}">Deals List</a>
+                                        <a class="nav-link" href="{{ route('seller.index') }}">Deals</a>
                                     </li><!--end nav-item-->
                                 </ul><!--end nav-->
                             </div><!--end startbarApplications-->

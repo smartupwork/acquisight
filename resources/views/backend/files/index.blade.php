@@ -26,7 +26,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active show" id="documents" role="tabpanel">
                                 <div class="table-responsive browser_users">
-                                    <table class="table mb-0">
+                                    <table class="table datatable" id="datatable_2">
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="border-top-0">File Name</th>

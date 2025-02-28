@@ -74,18 +74,18 @@ class AuthController extends Controller
     {
 
         $request->validate([
-            'username' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required',
         ]);
 
         $user = User::create([
-            'name' => $request->username,
+            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'roles_id' => $request->role,
+            'roles_id' => 2,
             'status' => 'active',
+            'ip_address' => $request->ip()
         ]);
 
         if ($user) {
@@ -129,6 +129,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'roles_id' => $request->roles_id,
             'status' => 'active',
+            'ip_address' => $request->ip()
         ]);
 
 
@@ -219,6 +220,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'roles_id' => $request->roles_id,
             'status' => 'active',
+            'ip_address' => $request->ip()
         ]);
 
 

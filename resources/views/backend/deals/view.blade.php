@@ -64,16 +64,16 @@
                                                             N/A
                                                         </td> --}}
                                                         <td class="text-end">
-                                                            <a href="#" class="open-upload-modal"
+                                                            <a href="#" class="btn btn-success open-upload-modal"
                                                                 data-folder-name="{{ $folder->folder_name }}"
                                                                 data-folder-id="{{ $folder->id }}"
-                                                                data-drive-folder-id="{{ $folder->gcs_folder_id }}">
-                                                                <i class="las la-upload text-secondary fs-18"></i>
+                                                                data-drive-folder-id="{{ $folder->gcs_folder_id }}">Upload
+                                                                {{-- <i class="las la-upload text-secondary fs-18">Upload</i> --}}
                                                             </a>
-                                                            <a href="#"><i
+                                                            {{-- <a href="#"><i
                                                                     class="las la-pen text-secondary fs-18"></i></a>
                                                             <a href="#"><i
-                                                                    class="las la-trash-alt text-secondary fs-18"></i></a>
+                                                                    class="las la-trash-alt text-secondary fs-18"></i></a> --}}
                                                         </td>
                                                     </tr>
                                                 @endforeach

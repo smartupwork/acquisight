@@ -140,11 +140,11 @@
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
-                                            href="{{ route('users.index') }}">User List</a>
+                                            href="{{ route('users.index') }}">Users</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}"
-                                            href="{{ route('users.create') }}">User Add</a>
+                                            href="{{ route('users.create') }}">Add User</a>
                                     </li>
                                 </ul>
                             </div>
@@ -164,10 +164,10 @@
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link {{ request()->routeIs('deals.index') ? 'active' : '' }}"
-                                            href="{{ route('deals.index') }}">Deals List</a>
+                                            href="{{ route('deals.index') }}">Deals</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('deals.create') }}">Deals Add</a>
+                                        <a class="nav-link" href="{{ route('deals.create') }}">Add Deal</a>
                                     </li>
                                 </ul>
                             </div>

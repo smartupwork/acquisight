@@ -32,8 +32,9 @@
                                         <th>UserName</th>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th>NDA Accepted</th>
+                                        <th>User IP Log</th>
                                         <th>Status</th>
-                                        <th>Terms Agreed</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -43,7 +44,6 @@
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>
-
                                                 @if ($user->roles_id == '1')
                                                     Admin
                                                 @elseif($user->roles_id == '2')
@@ -57,7 +57,13 @@
                                                 @endif
                                             </td>
                                             <td>
-
+                                                <span class="badge bg-success" style="">YES</span>
+                                                {{ $user->created_at }}
+                                            </td>
+                                            <td>
+                                                {{ $user->ip_address }}
+                                            </td>
+                                            <td>
                                                 @if ($user->status == 'active')
                                                     <span class="badge bg-primary" style="">{{ $user->status }}</span>
                                                 @elseif($user->status == 'inactive')
@@ -66,12 +72,6 @@
                                                     Null
                                                 @endif
                                             </td>
-                                            <td>
-                                            <span class="badge bg-success" style="">YES</span>
-                                            {{ $user->created_at }}
-                                            <td>
-
-                                            </td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
                                                 <a href="{{ route('users.edit', $user->id) }}"
                                                     class="btn btn-primary btn-sm float-left mr-1"
@@ -79,7 +79,8 @@
                                                     title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                                                 <form method="POST" action="{{ route('users.destroy', [$user->id]) }}">
                                                     @csrf
-                                                    <button class="btn btn-danger btn-sm dltBtn" data-id={{ $user->id }}
+                                                    <button class="btn btn-danger btn-sm dltBtn"
+                                                        data-id={{ $user->id }}
                                                         style="height:30px; width:30px;border-radius:50%"
                                                         data-toggle="tooltip" data-placement="bottom" title="Delete"><i
                                                             class="fas fa-trash-alt"></i></button>

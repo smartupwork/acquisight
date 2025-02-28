@@ -12,7 +12,6 @@
                         </li>
                     </ul>
                 </div>
-
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -25,7 +24,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active show" id="documents" role="tabpanel">
                                 <div class="table-responsive browser_users">
-                                    <table class="table mb-0">
+                                    <table class="table datatable" id="datatable_2">
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="border-top-0">User Name</th>

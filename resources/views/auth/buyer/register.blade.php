@@ -92,7 +92,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+                    <h5 class="modal-title" id="termsModalLabel">Confidentiality Agreement</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
@@ -184,23 +184,44 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Enable "Accept" button only when the user checks the "I agree" checkbox in the modal
-        document.getElementById("agreeTerms").addEventListener("change", function() {
-            document.getElementById("acceptTermsBtn").disabled = !this.checked;
-        });
-
-        // When "Accept" is clicked in the modal, check the main terms checkbox and enable the register button
-        document.getElementById("acceptTermsBtn").addEventListener("click", function() {
-            document.getElementById("termsCheckbox").checked = true;
-            document.getElementById("registerBtn").disabled = false;
-        });
-
-        // Prevent form submission if the terms checkbox is not checked
-        document.querySelector("form").addEventListener("submit", function(event) {
-            if (!document.getElementById("termsCheckbox").checked) {
-                event.preventDefault();
-                alert("You must agree to the Terms of Use before proceeding.");
-            }
+        document.addEventListener("DOMContentLoaded", function () {
+            var termsModalBody = document.querySelector(".modal-body");
+            var agreeCheckbox = document.getElementById("agreeTerms");
+            var acceptButton = document.getElementById("acceptTermsBtn");
+            var mainTermsCheckbox = document.getElementById("termsCheckbox");
+            var registerButton = document.getElementById("registerBtn");
+    
+            // Initially disable the accept button and checkbox
+            agreeCheckbox.disabled = true;
+            acceptButton.disabled = true;
+    
+            // Listen for scroll event on the modal body
+            termsModalBody.addEventListener("scroll", function () {
+                if (termsModalBody.scrollTop + termsModalBody.clientHeight >= termsModalBody.scrollHeight - 5) {
+                    // Enable the checkbox once scrolled to bottom
+                    agreeCheckbox.disabled = false;
+                }
+            });
+    
+            // Enable the Accept button only when the checkbox is checked
+            agreeCheckbox.addEventListener("change", function () {
+                acceptButton.disabled = !this.checked;
+            });
+    
+            // When "Accept" button is clicked, check the main terms checkbox and enable the register button
+            acceptButton.addEventListener("click", function () {
+                mainTermsCheckbox.checked = true;
+                mainTermsCheckbox.disabled = false; // Enable it for visual clarity
+                registerButton.disabled = false;
+            });
+    
+            // Prevent form submission if the terms checkbox is not checked
+            document.querySelector("form").addEventListener("submit", function (event) {
+                if (!mainTermsCheckbox.checked) {
+                    event.preventDefault();
+                    alert("You must agree to the Terms of Use before proceeding.");
+                }
+            });
         });
     </script>
 @endsection
