@@ -61,7 +61,7 @@
                                                     <input class="form-check-input" type="checkbox" id="termsCheckbox"
                                                         disabled>
                                                     <label class="form-check-label" for="termsCheckbox">
-                                                        By registering, you agree to the
+                                                        Read Required NDA
                                                         <a href="#" class="text-primary" data-bs-toggle="modal"
                                                             data-bs-target="#termsModal">Terms of Use</a>
                                                     </label>
