@@ -60,7 +60,7 @@ class GcsStorageService
     public function uploadFile($gcsFolderPath, $file)
     {
 
-        
+
         $fileName = time() . '-' . $file->getClientOriginalName();
 
         // Ensure the folder path is correctly formatted
@@ -109,4 +109,26 @@ class GcsStorageService
         }
     }
 
+    public function deleteFile($filePath)
+    {
+        try {
+            Log::info("Attempting to delete file: " . $filePath);
+
+            $object = $this->bucket->object($filePath);
+            if (!$object->exists()) {
+                Log::warning("File does not exist in GCS: " . $filePath);
+                return false;
+            }
+
+            $object->delete();
+            Log::info("File deleted successfully from GCS: " . $filePath);
+            return true;
+        } catch (\Exception $e) {
+            Log::error("Error deleting file from GCS: " . $e->getMessage(), [
+                'filePath' => $filePath,
+                'exception' => $e
+            ]);
+            return false;
+        }
+    }
 }

@@ -7,8 +7,8 @@
                     <ul class="nav nav-tabs my-4" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents" role="tab"
-                                aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i> Test
-                                <span class="badge rounded text-blue bg-blue-subtle ms-1">32</span></a>
+                                aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i> Files
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -71,7 +71,7 @@
     <div class="modal fade" id="filePreviewModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header d-flex justify-content-between"">
+                <div class="modal-header d-flex justify-content-between">
                     <h5 class="modal-title">File Preview</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -86,8 +86,10 @@
         </div>
     </div>
 
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 
     <script>
         function previewFile(fileUrl, fileType, fileId, fileName) {

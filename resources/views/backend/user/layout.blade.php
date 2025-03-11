@@ -13,7 +13,7 @@
 
     <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url('assets/css/jsvectormap.min.css') }}">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- App css -->
     <link href="{{ url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />

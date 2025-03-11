@@ -20,7 +20,6 @@
                             <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents"
                                 role="tab" aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>
                                 {{ $deal->name }}
-                                <span class="badge rounded text-blue bg-blue-subtle ms-1">32</span></a>
                         </li>
                     </ul>
                 </div>

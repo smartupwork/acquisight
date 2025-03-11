@@ -8,12 +8,14 @@
                     <ul class="nav nav-tabs my-4" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents"
-                                role="tab" aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>
-                                <span class="badge rounded text-blue bg-blue-subtle ms-1">32</span></a>
+                                role="tab" aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>Files
+                            </a>
                         </li>
                     </ul>
                 </div>
-
+                @php
+                    $userRole = Auth::user()->roles_id ?? null;
+                @endphp
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -57,6 +59,12 @@
                                                         <a href="{{ $file->signed_url }}" target="_blank">
                                                             <i class="las la-download text-secondary fs-18"></i>
                                                         </a>
+                                                        @if ($userRole == 1)
+                                                            <a href="#" class="dltBtn" data-id="{{ $file->id }}"
+                                                                data-path="{{ $file->file_path }}">
+                                                                <i class="las la-trash text-secondary fs-18"></i>
+                                                            </a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -89,6 +97,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -196,12 +205,65 @@
         }
     </script>
 
-
-
     <script>
         $(document).ready(function() {
             $('.close').click(function() {
                 $('#filePreviewModal').modal('hide');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.dltBtn').click(function(e) {
+                e.preventDefault();
+
+                var fileID = $(this).data('id');
+                var filePath = $(this).data('path');
+
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "{{ route('file.delete') }}", // Ensure this route exists
+                            type: "POST",
+                            data: {
+                                file_id: fileID,
+                                file_path: filePath
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    swal("File deleted successfully!", {
+                                        icon: "success",
+                                    });
+                                    location.reload(); // Refresh the page
+                                } else {
+                                    swal(response.message, {
+                                        icon: "error",
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                swal("Something went wrong!", {
+                                    icon: "error",
+                                });
+                            }
+                        });
+                    } else {
+                        swal("Your file is safe!");
+                    }
+                });
             });
         });
     </script>

@@ -23,7 +23,7 @@ class FileController extends Controller
             'deal_id' => 'required|exists:deals,id',
             'folder_id' => 'required|exists:deal_folders,id',
             'drive_folder_id' => 'required|string',
-            'files.*' => 'required|file|max:2048',
+            'files.*' => 'required|file|max:2048000',
         ]);
 
         $uploadedFiles = $request->file('files');
@@ -60,7 +60,6 @@ class FileController extends Controller
 
     public function viewFolderFiles($id, GcsStorageService $gcsStorageService)
     {
-
         $files = DealFile::where('folder_id', $id)->get();
 
         $files->transform(function ($file) use ($gcsStorageService) {
@@ -90,5 +89,31 @@ class FileController extends Controller
         ]);
 
         return response()->json(['message' => 'File view logged successfully']);
+    }
+
+    public function deleteFile(Request $request, GcsStorageService $gcsStorageService)
+    {
+
+
+
+        $file = DealFile::find($request->file_id);
+
+        if (!$file) {
+            return response()->json(['success' => false, 'message' => 'File not found!']);
+        }
+
+        $deleteFromGCS = $gcsStorageService->deleteFile($request->file_path);
+
+        if (!$deleteFromGCS) {
+            return response()->json(['success' => false, 'message' => 'Error deleting file from GCS!']);
+        }
+
+        $file->delete();
+        
+        if ($file) {
+            return response()->json(['success' => true, 'message' => 'File deleted successfully!']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Error deleting file!']);
     }
 }

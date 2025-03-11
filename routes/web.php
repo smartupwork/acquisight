@@ -7,14 +7,17 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
 use App\Http\Middleware\CustomAuthMiddleware;
 use Illuminate\Support\Facades\Storage;
 
-Route::get('/', function () {
-    return redirect('/login-view');
-});
+// Route::get('/', function () {
+//     return redirect('/login-view');
+// });
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/login-view', [AuthController::class, 'showLoginForm'])->name('login-view');
 Route::post('/login', [AuthController::class, 'login'])->name('loggedIn');
@@ -72,6 +75,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::post('/deals/{deal}/invite-contact', [DealController::class, 'sendInvite'])->name('deals.sendInvite');
     Route::get('/deals/{deal}/view-deal', [DealController::class, 'viewDeal'])->name('deals.view');
     Route::get('/deals/files/{id}', [FileController::class, 'viewFolderFiles'])->name('deal.file.list');
+    Route::post('/file/delete', [FileController::class, 'deleteFile'])->name('file.delete');
     Route::get('/files/view/{id}', [FileController::class, 'viewFile']);
     Route::get('/deals/{id}/edit', [DealController::class, 'edit'])->name('deals.edit');
     Route::post('/deals/update', [DealController::class, 'update'])->name('deals.update');
