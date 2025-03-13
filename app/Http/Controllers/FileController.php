@@ -23,7 +23,7 @@ class FileController extends Controller
             'deal_id' => 'required|exists:deals,id',
             'folder_id' => 'required|exists:deal_folders,id',
             'drive_folder_id' => 'required|string',
-            'files.*' => 'required|file|max:2048000',
+            'files.*' => 'required|file|max:25600',
         ]);
 
         $uploadedFiles = $request->file('files');

@@ -14,6 +14,7 @@
     <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url('assets/css/jsvectormap.min.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
     <!-- App css -->
     <link href="{{ url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
@@ -180,7 +181,8 @@
 
     <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('assets/js/simplebar.min.js') }}"></script>
-
+    <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
+    <script src="{{ url('assets/js/datatable.init.js') }}"></script>
     <script src="{{ url('assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ url('assets/js/stock-prices.js') }}"></script>
     <script src="{{ url('assets/js/jsvectormap.min.js') }}"></script>

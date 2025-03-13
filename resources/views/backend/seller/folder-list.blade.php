@@ -1,6 +1,5 @@
 @extends('backend.user.layout')
 @section('seller-deals-view-content')
-
     <div class="container-xxl">
         @if (Session::get('success'))
             <div class=" alert alert-success">
@@ -41,9 +40,8 @@
                                             <tr>
                                                 <th class="border-top-0">Folder Name</th>
                                                 <th class="border-top-0 text-end">Last Modified</th>
-                                                {{-- <th class="border-top-0 text-end">Size</th> --}}
                                                 <th class="border-top-0 text-end">Action</th>
-                                            </tr><!--end tr-->
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @if (!empty($folders) && $folders->count() > 0)
@@ -54,15 +52,12 @@
                                                                 class="d-inline-flex justify-content-center align-items-center thumb-md bg-blue-subtle rounded mx-auto me-1">
                                                                 <i class="fa-regular fa-folder-open me-1 text-blue"></i>
                                                             </div>
-                                                            <!-- Link to view the folder in Google Drive -->
                                                             <a href="{{ route('seller.deal.file.list', ['id' => $folder->id]) }}"
                                                                 class="text-body">{{ $folder->folder_name }}</a>
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ $folder->created_at->format('Y-m-d H:i:s') }}</td>
-                                                        {{-- <td class="text-end">
-                                                            N/A
-                                                        </td> --}}
+                                                            {{ $folder->created_at->format('Y-m-d H:i:s') }}
+                                                        </td>
                                                         <td class="text-end">
                                                             <a href="#" class="btn btn-success open-upload-modal"
                                                                 data-folder-name="{{ $folder->folder_name }}"
@@ -70,10 +65,7 @@
                                                                 data-drive-folder-id="{{ $folder->gcs_folder_id }}">Upload
                                                                 {{-- <i class="las la-upload text-secondary fs-18"></i> --}}
                                                             </a>
-                                                            {{-- <a href="#"><i
-                                                                    class="las la-pen text-secondary fs-18"></i></a>
-                                                            <a href="#"><i
-                                                                    class="las la-trash-alt text-secondary fs-18"></i></a> --}}
+
                                                         </td>
                                                     </tr>
                                                 @endforeach

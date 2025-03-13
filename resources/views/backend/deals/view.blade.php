@@ -1,6 +1,5 @@
 @extends('backend.admin.layout')
 @section('admin-deals-view-content')
-
     <div class="container-xxl">
         @if (Session::get('success'))
             <div class=" alert alert-success">
@@ -16,10 +15,10 @@
             <div class="col-12">
                 <div class="clearfix">
                     <ul class="nav nav-tabs my-4" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents"
-                                role="tab" aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>
-                                {{ $deal->name }}
+                        <a class="nav-link fw-semibold py-2 active" data-bs-toggle="tab" href="#documents" role="tab"
+                            aria-selected="true"><i class="fa-regular fa-folder-open me-1"></i>
+                            {{ $deal->name }}
+                        </a></li>
                         </li>
                     </ul>
                 </div>
@@ -41,9 +40,8 @@
                                             <tr>
                                                 <th class="border-top-0">Folder Name</th>
                                                 <th class="border-top-0 text-end">Last Modified</th>
-                                                {{-- <th class="border-top-0 text-end">Size</th> --}}
                                                 <th class="border-top-0 text-end">Action</th>
-                                            </tr><!--end tr-->
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @if (!empty($folders) && $folders->count() > 0)
@@ -58,10 +56,8 @@
                                                                 class="text-body">{{ $folder->folder_name }}</a>
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ $folder->created_at->format('Y-m-d H:i:s') }}</td>
-                                                        {{-- <td class="text-end">
-                                                            N/A
-                                                        </td> --}}
+                                                            {{ $folder->created_at->format('Y-m-d H:i:s') }}
+                                                        </td>
                                                         <td class="text-end">
                                                             <a href="#" class="btn btn-success open-upload-modal"
                                                                 data-folder-name="{{ $folder->folder_name }}"
@@ -69,10 +65,6 @@
                                                                 data-drive-folder-id="{{ $folder->gcs_folder_id }}">Upload
                                                                 {{-- <i class="las la-upload text-secondary fs-18">Upload</i> --}}
                                                             </a>
-                                                            {{-- <a href="#"><i
-                                                                    class="las la-pen text-secondary fs-18"></i></a>
-                                                            <a href="#"><i
-                                                                    class="las la-trash-alt text-secondary fs-18"></i></a> --}}
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -108,13 +100,11 @@
                         <input type="hidden" name="drive_folder_id" id="drive_folder_id_input" value="">
                         <input type="hidden" name="deal_id" value="{{ $deal->id }}">
 
-                        <!-- File upload input -->
                         <div class="form-group">
                             <label for="fileUpload">Choose a file</label>
                             <input type="file" class="form-control" id="fileUpload" name="files[]" multiple required>
                         </div>
 
-                        <!-- Submit button -->
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
                 </div>
@@ -129,15 +119,13 @@
         $(document).ready(function() {
             $('.open-upload-modal').on('click', function() {
                 var folderName = $(this).data('folder-name');
-                var folderId = $(this).data('folder-id'); // The folder ID that will be passed
-                var driveFolderId = $(this).data('drive-folder-id'); // The drive folder ID
+                var folderId = $(this).data('folder-id');
+                var driveFolderId = $(this).data('drive-folder-id');
 
-                // Set the values in the hidden inputs
                 $('#folder_name_input').val(folderName);
                 $('#folder_id_input').val(folderId);
                 $('#drive_folder_id_input').val(driveFolderId);
 
-                // Show the modal
                 $('#uploadFileModal').modal('show');
             });
         });
