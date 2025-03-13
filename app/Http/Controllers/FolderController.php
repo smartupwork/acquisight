@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\GcsStorageService;
 
 class FolderController extends Controller
 {
@@ -24,7 +25,6 @@ class FolderController extends Controller
         $folderName = $request->input('folder_name');
         $file = $request->file('file');
     
-        // Construct the path where the file will be stored
         $folderPath = public_path("deals_main/{$dealName}_{$dealId}/{$folderName}");
     
         // Check if the folder exists
@@ -38,5 +38,26 @@ class FolderController extends Controller
     
         // Return success response
         return back()->with('success', 'File uploaded successfully to folder: ' . $folderName);
+    }
+
+    public function new_folder_store(Request $request, GcsStorageService $gcsStorageService){
+
+        $request->validate([
+            'gcs_deal_id' => 'required|string',
+            'deal_id' => 'required|integer',
+            'folder_name' => 'required|string',
+        ]);
+
+        $result = $gcsStorageService->newFolder(
+            $request->deal_id,
+            $request->gcs_deal_id,
+            $request->folder_name
+        );
+
+        if($result){
+            return redirect()->back()->with('success', 'Folder Created Successfully.');
+        }
+        
+        return redirect()->back()->with('error', 'Sorry something went wrong.');
     }
 }

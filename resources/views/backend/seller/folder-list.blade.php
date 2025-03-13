@@ -26,9 +26,17 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
-                            <div class="col">
+                            <div class="col-md-6">
                                 <h4 class="card-title">{{ $deal->description }}</h4>
                             </div>
+                            @if (auth()->user()->roles_id == 2)
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                        data-bs-target="#uploadFolderModal" style="float:right;">
+                                        Add Folder
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="card-body pt-0">
@@ -114,7 +122,30 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="uploadFolderModal" tabindex="-1" aria-labelledby="uploadFolderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadFolderModalLabel">Add New Folder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('new.folder.store') }}">
+                        @csrf
+                        <input type="hidden" name="gcs_deal_id" value="{{ $deal->gcs_deal_id }}">
+                        <input type="hidden" name="deal_id" value="{{ $deal->id }}">
+                        <div class="form-group">
+                            <label for="folderUpload">Folder Name</label><br>
+                            <input type="text" class="form-control" id="folderUpload" name="folder_name" required>
+                        </div><br>
 
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -132,6 +163,18 @@
 
                 // Show the modal
                 $('#uploadFileModal').modal('show');
+            });
+
+            $('.open-folder-add-modal').on('click', function() {
+                var folderName = $(this).data('folder-name');
+                var folderId = $(this).data('folder-id');
+                var driveFolderId = $(this).data('drive-folder-id');
+
+                $('#folder_name_input').val(folderName);
+                $('#folder_id_input').val(folderId);
+                $('#drive_folder_id_input').val(driveFolderId);
+
+                $('#uploadFolderModal').modal('show');
             });
         });
     </script>

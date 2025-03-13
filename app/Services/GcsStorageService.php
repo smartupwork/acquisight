@@ -7,6 +7,7 @@ use Google\Cloud\Iam\V1\Policy;
 use Google\Cloud\Iam\V1\Binding;
 use Google\Type\Expr;
 use Illuminate\Support\Facades\Log;
+use App\Models\DealFolder;
 
 class GcsStorageService
 {
@@ -128,6 +129,31 @@ class GcsStorageService
                 'filePath' => $filePath,
                 'exception' => $e
             ]);
+            return false;
+        }
+    }
+
+    public function newFolder($deal_id, $gcs_deal_id, $folder_name)
+    {
+        try {
+
+            $bucket = $this->bucket;
+
+            $folderPath = rtrim($gcs_deal_id, '/') . '/' . rtrim($folder_name, '/') . '/';
+
+            $bucket->upload('', [
+                'name' => $folderPath,
+            ]);
+
+            $folder = new DealFolder();
+            $folder->deal_id = $deal_id;
+            $folder->gcs_folder_id = $folderPath;
+            $folder->folder_name = $folder_name;
+            $folder->save();
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('GCS Storage Error: ' . $e->getMessage());
             return false;
         }
     }

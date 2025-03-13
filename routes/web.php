@@ -84,6 +84,8 @@ Route::middleware(['customAuth'])->group(function () {
 
     // folder routes 
     Route::post('/deals/folder/update', [FileController::class, 'store'])->name('folder.upload');
+    Route::post('/deals/folder/new', [FolderController::class, 'new_folder_store'])->name('new.folder.store');
+    
     Route::post('/log-file-view', [FileController::class, 'logFileView'])->name('log.file.view');
     Route::get('/view-file-log', [DashboardController::class, 'view_logs'])->name('view.files');
 
