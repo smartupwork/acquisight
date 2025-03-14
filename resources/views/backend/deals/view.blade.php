@@ -22,7 +22,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -67,6 +67,16 @@
                                                                 data-folder-id="{{ $folder->id }}"
                                                                 data-drive-folder-id="{{ $folder->gcs_folder_id }}">Upload
                                                             </a>
+                                                            @php
+                                                                $userRole = auth()->user()->roles_id ?? null;
+                                                            @endphp
+
+                                                            @if ($userRole == 1 || $userRole == 2)
+                                                                <a href="#" class="btn btn-danger dltFolder"
+                                                                    data-id="{{ $folder->id }}"
+                                                                    data-path="{{ $folder->gcs_folder_id }}">Delete
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -114,7 +124,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="uploadFolderModal" tabindex="-1" aria-labelledby="uploadFolderModalLabel" aria-hidden="true">
+    <div class="modal fade" id="uploadFolderModal" tabindex="-1" aria-labelledby="uploadFolderModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -140,6 +151,8 @@
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -166,6 +179,63 @@
             $('#drive_folder_id_input').val(driveFolderId);
 
             $('#uploadFolderModal').modal('show');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.dltFolder').click(function(e) {
+                e.preventDefault();
+
+                var folderID = $(this).data('id');
+                var folderPath = $(this).data('path');
+
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this Folder!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "{{ route('folder.delete') }}",
+                            type: "POST",
+                            data: {
+                                folder_id: folderID,
+                                folder_path: folderPath
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    swal(response.message, {
+                                        icon: "success"
+                                    }).then(() => {
+                                        location
+                                            .reload();
+                                    });
+                                } else {
+                                    swal(response.message, {
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                swal("Something went wrong!", {
+                                    icon: "error",
+                                });
+                            }
+                        });
+                    } else {
+                        swal("Your file is safe!");
+                    }
+                });
+            });
         });
     </script>
 @endsection

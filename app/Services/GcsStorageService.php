@@ -157,4 +157,27 @@ class GcsStorageService
             return false;
         }
     }
+
+    public function deleteFolder($folderPath)
+    {
+        try {
+
+            if (substr($folderPath, -1) !== '/') {
+                $folderPath .= '/';
+            }
+
+            $objects = $this->bucket->objects([
+                'prefix' => $folderPath
+            ]);
+
+            foreach ($objects as $object) {
+                $object->delete();
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('GCS Storage Error: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

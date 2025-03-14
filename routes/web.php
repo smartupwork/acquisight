@@ -76,6 +76,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/deals/{deal}/view-deal', [DealController::class, 'viewDeal'])->name('deals.view');
     Route::get('/deals/files/{id}', [FileController::class, 'viewFolderFiles'])->name('deal.file.list');
     Route::post('/file/delete', [FileController::class, 'deleteFile'])->name('file.delete');
+    Route::post('/delete-folder', [FolderController::class, 'deleteFolder'])->name('folder.delete');
     Route::get('/files/view/{id}', [FileController::class, 'viewFile']);
     Route::get('/deals/{id}/edit', [DealController::class, 'edit'])->name('deals.edit');
     Route::post('/deals/update', [DealController::class, 'update'])->name('deals.update');

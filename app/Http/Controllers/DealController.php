@@ -18,6 +18,7 @@ use App\Mail\AlertInviteMail;
 use App\Mail\InformAccessMail;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\DealMeta;
 
 class DealController extends Controller
 {
@@ -53,6 +54,26 @@ class DealController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
+            $deals_meta = DealMeta::create([
+                'deal_id' => $deal->id,
+                'asking_price' => $request->asking_price,
+                'gross_revenue' => $request->gross_revenue,
+                'cash_flow' => $request->cash_flow,
+                'ebitda' => $request->ebitda,
+                'inventory' => $request->inventory,
+                'ffe' => $request->ffe,
+                'business_desc' => $request->business_desc,
+                'location' => $request->location,
+                'no_employee' => $request->no_employee,
+                'real_estate' => $request->real_estate,
+                'rent' => $request->rent,
+                'lease_expiration' => $request->lease_expiration,
+                'facilities' => $request->facilities,
+                'market_outlook' => $request->market_outlook,
+                'selling_reason' => $request->selling_reason,
+                'train_support' => $request->train_support,
+            ]);
+
 
             $dealFolderPrefix = $gcsStorageService->createDealFolder($deal->name);
             $deal->update(['gcs_deal_id' => $dealFolderPrefix]);
@@ -73,10 +94,9 @@ class DealController extends Controller
                 'Misc',
             ];
 
-            // Create subfolders in GCS
+
             $subfolderPrefixes = $gcsStorageService->createSubfolders($dealFolderPrefix, $subfolders);
 
-            // Store subfolder records in the database
             foreach ($subfolderPrefixes as $subfolderName => $subfolderPrefix) {
                 DealFolder::create([
                     'deal_id' => $deal->id,
@@ -226,32 +246,64 @@ class DealController extends Controller
     {
         $deal = Deal::findOrFail($id);
 
+        $deal_meta = DealMeta::where('deal_id', $id)->first();
+
         return response()->json([
+
             'id' => $deal->id,
             'name' => $deal->name,
             'description' => $deal->description,
-            'status' => $deal->status, // Ensure this is either 0 or 1
+            'status' => $deal->status,
+            'deal_meta_id' => $deal_meta->id,
+            'asking_price' => $deal_meta->asking_price,
+            'gross_revenue' => $deal_meta->gross_revenue,
+            'cash_flow' => $deal_meta->cash_flow,
+            'ebitda' => $deal_meta->ebitda,
+            'inventory' => $deal_meta->inventory,
+            'ffe' => $deal_meta->ffe,
+            'business_desc' => $deal_meta->business_desc,
+            'location' => $deal_meta->location,
+            'no_employee' => $deal_meta->no_employee,
+            'real_estate' => $deal_meta->real_estate,
+            'rent' => $deal_meta->rent,
+            'lease_expiration' => $deal_meta->lease_expiration,
+            'facilities' => $deal_meta->facilities,
+            'market_outlook' => $deal_meta->market_outlook,
+            'selling_reason' => $deal_meta->selling_reason,
+            'train_support' => $deal_meta->train_support,
+
         ]);
     }
 
     public function update(Request $request)
     {
-
         $id = $request->deal_id;
+        $deal_meta_id = $request->deal_meta_id;
+
 
         $deal = Deal::findOrFail($id);
 
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'status' => 'required',
         ]);
 
-        $deal->update($request->all());
+        $deal->update([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'status' => $validatedData['status'],
+        ]);
 
-        return redirect()->route('deals.index')->with('success', 'Deal Updated successfully!');
+        $dealMeta = DealMeta::findOrFail($deal_meta_id);
+
+
+        $metaData = $request->except(['_token', '_method', 'deal_id', 'deal_meta_id', 'name', 'description', 'status']);
+
+        $dealMeta->update($metaData);
+
+        return redirect()->route('deals.index')->with('success', 'Deal updated successfully!');
     }
-
 
     public function delete($id)
     {
