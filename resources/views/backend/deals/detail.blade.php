@@ -22,21 +22,24 @@
                                     <h3 class="my-4 font-weight-bold">Business Description</h3>
                                     <p class="fs-14 text-muted">{{ $dealMeta->business_desc ?? 'N/A' }}
                                     </p>
-                                    <a href="{{ route('deals.view', $deal->id) }}" type="button" class="btn btn-primary">Get Started</a>
+                                    <a href="{{ route('deals.view', $deal->id) }}" type="button"
+                                        class="btn btn-primary">Get Started</a>
                                 </div>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="clipboardInput" value="{{ route('buyerregistration.register') }}" readonly>
+                                    <input type="text" class="form-control" id="clipboardInput"
+                                        value="{{ route('buyerregistration.register') }}" readonly>
                                     <button class="btn btn-secondary" type="button" id="copyButton">
                                         <i class="far fa-copy me-2"></i> Copy
                                     </button>
                                 </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1 text-center">
-    
+
                                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            <img src="{{ url($deal->deal_image) }}" class="d-block w-100" alt="Deal Image">
+                                            <img src="{{ asset($deal->deal_image ?? 'assets/images/default.png') }}"
+                                                class="d-block w-100" alt="Deal Image">
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +119,7 @@
                         </div> <!--end row-->
                     </div><!--end card-header-->
                     <div class="card-body pt-0">
-                        
+
                         <dl class="row mb-0">
                             <dt class="col-sm-3">Location:</dt>
                             <dd class="col-sm-9">{{ $dealMeta->location ?? 'N/A' }}</dd>
@@ -142,7 +145,7 @@
                             {{-- <dt class="col-sm-3">Growth & Expansion:</dt>
                             <dd class="col-sm-9">{{ $dealMeta->business_desc ?? 'N/A' }}</dd> --}}
                         </dl>
-                   
+
                     </div><!--end card-body-->
                 </div>
             </div>
@@ -181,16 +184,16 @@
     </div>
 
     <script>
-        document.getElementById('copyButton').addEventListener('click', function () {
+        document.getElementById('copyButton').addEventListener('click', function() {
             let inputField = document.getElementById('clipboardInput');
             inputField.select();
             inputField.setSelectionRange(0, 99999); // For mobile devices
-        
+
             // Copy the text inside the input field
             document.execCommand("copy");
-        
+
             // Provide user feedback
             alert("Copied: " + inputField.value);
         });
-        </script>
+    </script>
 @endsection
