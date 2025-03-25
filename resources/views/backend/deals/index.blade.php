@@ -50,10 +50,14 @@
                                             </td>
                                             <td>{{ $deal->created_at }}</td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
-                                                <a href="{{ route('deals.view', $deal->id) }}"
+                                                {{-- <a href="{{ route('deals.view', $deal->id) }}"
                                                     class="btn btn-success btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                                    title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
+                                                    title="view" data-placement="bottom"><i class="fas fa-eye"></i></a> --}}
+                                                    <a href="{{ route('deals.detail', $deal->id) }}"
+                                                        class="btn btn-success btn-sm float-left mr-1"
+                                                        style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
+                                                        title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
 
                                                 <a href="javascript:void(0)" class="btn btn-success btn-sm float-left mr-1"
                                                     style="height:30px; width:30px; border-radius:50%" data-toggle="tooltip"
@@ -104,7 +108,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('deals.update') }}" method="POST">
+                    <form action="{{ route('deals.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf <!-- CSRF Token -->
                         <input type="hidden" id="dealId" name="deal_id">
                         <input type="hidden" id="deal_meta_id" name="deal_meta_id">
@@ -116,6 +120,10 @@
                         <div class="mb-3">
                             <label for="dealDescription" class="form-label">Description</label>
                             <textarea class="form-control" id="dealDescription" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dealImage" class="form-label">Deal Image</label>
+                            <input type="file" class="form-control" id="dealImage" name="deal_image" required>
                         </div>
                         <div class="mb-3">
                             <label for="asking_price" class="form-label">Asking Price</label>
@@ -254,11 +262,13 @@
                     $('#deal_meta_id').val(response.deal_meta_id);
                     $('#dealName').val(response.name);
                     $('#dealDescription').val(response.description);
+                    $('#dealImage').val(response.deal_image);
                     $('#asking_price').val(response.asking_price);
                     $('#gross_revenue').val(response.gross_revenue);
                     $('#cash_flow').val(response.cash_flow);
                     $('#ebitda').val(response.ebitda);
                     $('#inventory').val(response.inventory);
+                    $('#business_desc').val(response.business_desc);
                     $('#ffe').val(response.ffe);
                     $('#business_des').val(response.business_des);
                     $('#location').val(response.location);

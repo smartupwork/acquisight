@@ -24,6 +24,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('loggedIn');
 
 // general register
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::get('/buyerregistration', [AuthController::class, 'showBuyerForm'])->name('buyerregistration.register');
 Route::post('/register', [AuthController::class, 'register'])->name('registerIn');
 
 // seller register
@@ -68,6 +69,7 @@ Route::middleware(['customAuth'])->group(function () {
     // Deals module routes
 
     Route::get('/deals', [DealController::class, 'index'])->name('deals.index');
+    Route::get('/deals/detail/{deal}', [DealController::class, 'deal_details'])->name('deals.detail');
     Route::get('/deals/create', [DealController::class, 'create'])->name('deals.create'); // Show create user form
     Route::post('/deals/store', [DealController::class, 'store'])->name('deals.store');
     Route::post('/deals/delete/{id}', [DealController::class, 'delete'])->name('deals.destroy');

@@ -29,6 +29,19 @@ class DealController extends Controller
     }
 
 
+    public function deal_details($deal_id)
+    {
+
+        $deal = Deal::findOrFail($deal_id);
+        $dealMeta = DealMeta::where('deal_id', $deal_id)->first();
+
+        return view('backend.deals.detail', [
+            'deal' => $deal,
+            'dealMeta' => $dealMeta,
+        ]);
+    }
+
+
     public function create()
     {
         return view('backend.deals.create');
@@ -41,17 +54,27 @@ class DealController extends Controller
         $request->validate([
             'name' => 'required|string',
             'status' => 'required',
+            'deal_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:36000',
         ]);
 
         DB::beginTransaction();
 
         try {
 
+            $imagePath = null;
+            if ($request->hasFile('deal_image')) {
+                $image = $request->file('deal_image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $imagePath = 'assets/images/deal/' . $imageName;
+                $image->move(public_path('assets/images/deal'), $imageName);
+            }
+
             $deal = Deal::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'status' => $request->status,
                 'user_id' => Auth::id(),
+                'deal_image' => $imagePath,
             ]);
 
             $deals_meta = DealMeta::create([
@@ -282,17 +305,27 @@ class DealController extends Controller
 
 
         $deal = Deal::findOrFail($id);
+       
+        if ($request->hasFile('deal_image')) {
+          
+            if ($deal->deal_image && File::exists(public_path($deal->deal_image))) {
+                File::delete(public_path($deal->deal_image));
+            }
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required',
-        ]);
+           
+            $image = $request->file('deal_image');
+            $imageName = time() . '_' . $image->getClientOriginalName(); 
+            $imagePath = 'assets/images/deal/' . $imageName;
+            $image->move(public_path('assets/images/deal'), $imageName);
+            $deal->deal_image = $imagePath;
+        }
 
+    
         $deal->update([
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
-            'status' => $validatedData['status'],
+            'name' => $request->name,
+            'description' => $request->description,
+            'status' => $request->status,
+            'deal_image' => $deal->deal_image,
         ]);
 
         $dealMeta = DealMeta::findOrFail($deal_meta_id);

@@ -35,6 +35,16 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
+                                <label for="deal_image" class="col-sm-2 col-form-label">Deal Image</label>
+                                <div class="col-sm-10">
+                                    <input type="file" class="form-control" id="deal_image" name="deal_image"
+                                        placeholder="Enter Business Description">
+                                    @if ($errors->has('deal_image'))
+                                        <span class="text-danger">{{ $errors->first('deal_image') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
                                 <label for="asking_price" class="col-sm-2 col-form-label">Asking Price</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="asking_price" name="asking_price"
@@ -105,6 +115,7 @@
                                     @endif
                                 </div>
                             </div>
+                            
                             <div class="mb-3 row">
                                 <label for="about_business" class="col-sm-2 col-form-label">About The Business</label>
                             </div>

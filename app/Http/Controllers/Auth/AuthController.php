@@ -25,6 +25,10 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function showBuyerForm(){
+        return view('auth.buyer.buyerregistration');
+    }
+
     public function login(Request $request)
     {
 
