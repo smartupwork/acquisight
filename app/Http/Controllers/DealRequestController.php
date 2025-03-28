@@ -7,6 +7,7 @@ use App\Models\DealRequest;
 use App\Models\DealInvitation;
 use App\Models\User;
 use App\Mail\DealRequestMail;
+use App\Mail\InformBuyerMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Deal;
 
@@ -83,17 +84,8 @@ class DealRequestController extends Controller
 
     public function getAdminDealRequests()
     {
-        $broker_id = auth()->id();
-
-        $dealRequests = DealRequest::where('broker_id', $broker_id)
-            ->with(['user:id,name,email', 'deal:id,gcs_deal_id'])
-            ->get();
-
-        if ($dealRequests->isEmpty()) {
-            $dealRequests = DealRequest::where('broker_id', 1)
-                ->with(['user:id,name,email', 'deal:id,gcs_deal_id'])
-                ->get();
-        }
+    
+        $dealRequests = DealRequest::with(['user:id,name,email', 'deal:id,gcs_deal_id'])->get();
 
         return view('backend.admin.request.index', ['dealRequests' => $dealRequests]);
     }
@@ -112,6 +104,11 @@ class DealRequestController extends Controller
 
         $dealRequest->status = $request->status;
         $dealRequest->save();
+
+        if ($request->status === 'approved') {
+           
+            Mail::to($dealRequest->user->email)->send(new InformBuyerMail($dealRequest));
+        }
 
         return response()->json(['message' => 'Deal request updated successfully.', 'status' => $dealRequest->status]);
     }

@@ -40,12 +40,22 @@
                                             @php
                                                 $filePath = $deal->deal_image ?? 'assets/images/default.png';
                                                 $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-                                                $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'mkv', 'flv', 'webm', '3gp']; // Supported video formats
+                                                $videoExtensions = [
+                                                    'mp4',
+                                                    'avi',
+                                                    'mov',
+                                                    'wmv',
+                                                    'mkv',
+                                                    'flv',
+                                                    'webm',
+                                                    '3gp',
+                                                ]; // Supported video formats
                                             @endphp
-                                
-                                            @if(in_array($extension, $videoExtensions))
+
+                                            @if (in_array($extension, $videoExtensions))
                                                 <video class="d-block w-100" controls>
-                                                    <source src="{{ asset($filePath) }}" type="video/{{ $extension == '3gp' ? '3gpp' : $extension }}">
+                                                    <source src="{{ asset($filePath) }}"
+                                                        type="video/{{ $extension == '3gp' ? '3gpp' : $extension }}">
                                                     Your browser does not support the video tag.
                                                 </video>
                                             @else
@@ -71,51 +81,82 @@
                         </div> <!--end row-->
                     </div><!--end card-header-->
                     <div class="card-body pt-0">
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    Asking Price:
+                        <ul class="list-group asking-price">
+                            <li class="list-group-item   align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            Asking Price:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9">
+
+                                        <span class="text badge-pill">{{ $dealMeta->asking_price ?? 'N/A' }}</span>
+                                    </div>
                                 </div>
-                                <span class="text-primary badge-pill">{{ $dealMeta->asking_price ?? 'N/A' }}</span>
-                                <span></span>
+
+
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    Gross Revenue:
+                            <li class="list-group-item   align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            Gross Revenue:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9"><span
+                                            class="text badge-pill">{{ $dealMeta->gross_revenue ?? 'N/A' }}</span></div>
                                 </div>
-                                <span class="text-secondary badge-pill">{{ $dealMeta->gross_revenue ?? 'N/A' }}</span>
-                                <span></span>
+
+
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    Cash Flow:
+                            <li class="list-group-item   align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            Cash Flow:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9"><span
+                                            class="text badge-pill">{{ $dealMeta->cash_flow ?? 'N/A' }}</span></div>
                                 </div>
-                                <span class="text-success badge-pill">{{ $dealMeta->cash_flow ?? 'N/A' }}</span>
-                                <span></span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    EBITDA:
+                            <li class="list-group-item   align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            EBITDA:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9"><span class="text">{{ $dealMeta->ebitda ?? 'N/A' }}</span>
+                                    </div>
                                 </div>
-                                <span class="text-warning">{{ $dealMeta->ebitda ?? 'N/A' }}</span>
-                                <span></span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    Inventory:
+                            <li class="list-group-item  align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            Inventory:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9"> <span
+                                            class="text badge-pill">{{ $dealMeta->inventory ?? 'N/A' }}</span></div>
                                 </div>
-                                <span class="text-info badge-pill">{{ $dealMeta->inventory ?? 'N/A' }}</span>
-                                <span></span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    FF&E:
+                            <li class="list-group-item   align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            FF&E:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9"><span
+                                            class="text badge-pill">{{ $dealMeta->ffe ?? 'N/A' }}</span></div>
                                 </div>
-                                <span class="text-info badge-pill">{{ $dealMeta->ffe ?? 'N/A' }}</span>
-                                <span></span>
+
                             </li>
-                        </ul><!--end list-group-->
-                    </div><!--end card-body-->
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -173,19 +214,29 @@
                     </div><!--end card-header-->
                     <div class="card-body pt-0">
                         <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    Reason For Selling:
+                            <li class="list-group-item justify-content-between align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            Reason For Selling:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <span class="text badge-pill">{{ $dealMeta->selling_reason ?? 'N/A' }}</span>
+                                    </div>
                                 </div>
-                                <span class="text-primary badge-pill">{{ $dealMeta->selling_reason ?? 'N/A' }}</span>
-                                <span></span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    Training/Support:
+                            <li class="list-group-item justify-content-between align-items-center">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div>
+                                            Training/Support:
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <span class="text badge-pill">{{ $dealMeta->train_support ?? 'N/A' }}</span>
+                                    </div>
                                 </div>
-                                <span class="text-secondary badge-pill">{{ $dealMeta->train_support ?? 'N/A' }}</span>
-                                <span></span>
                             </li>
                         </ul><!--end list-group-->
                     </div><!--end card-body-->
