@@ -55,7 +55,7 @@ class DealController extends Controller
         $request->validate([
             'name' => 'required|string',
             'status' => 'required',
-            'deal_image' => 'nullable|max:36000',
+            'deal_image' => 'nullable|max:102400',
         ]);
 
         DB::beginTransaction();
