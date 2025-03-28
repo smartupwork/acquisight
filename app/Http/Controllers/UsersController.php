@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,19 +11,21 @@ use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $users = User::orderBy('id', 'ASC')->paginate(10);
         return view('backend.admin.user.user_index')->with('users', $users);
     }
 
-    public function create(){
-         return view('backend.admin.user.user_create');
+    public function create()
+    {
+        return view('backend.admin.user.user_create');
     }
 
     public function store(Request $request)
     {
-   
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:30',
             'email' => 'required|unique:users',
@@ -37,6 +40,7 @@ class UsersController extends Controller
         $user->password = $validatedData['password'];
         $user->roles_id = $validatedData['role'];
         $user->status = $validatedData['status'];
+        $user->ip_address = $request->ip();
         $status = $user->save();
 
         if ($status) {
@@ -46,7 +50,8 @@ class UsersController extends Controller
         }
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $user = User::findOrFail($id);
         return view('backend.admin.user.user_edit')->with('user', $user);
     }
@@ -60,14 +65,15 @@ class UsersController extends Controller
             'email' => 'string|required',
             'role' => 'required|integer|in:1,2,3,4,5',
             'status' => 'required|in:active,inactive',
-        ]);    
+        ]);
 
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->roles_id = $validatedData['role'];
         $user->status = $validatedData['status'];
-        
-        $save= $user->update();
+        $user->ip_address = $request->ip();
+
+        $save = $user->update();
         if ($save) {
             return redirect()->route('users.index')->with('success', 'User updated successfully!');
         } else {
@@ -76,7 +82,8 @@ class UsersController extends Controller
         return redirect()->route('users.index')->with('error', 'Sorry, something wrong.');
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $delete = User::findorFail($id);
         $status = $delete->delete();
         if ($status) {

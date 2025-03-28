@@ -87,7 +87,7 @@
     <div class="startbar d-print-none">
         <!--start brand-->
         <div class="brand">
-            <a href="{{ auth()->check() && auth()->user()->role_id == 1 ? route('admin.dashboard') : route('seller.index') }}"
+            <a href="{{ auth()->check() && auth()->user()->roles_id == 1 ? route('admin.dashboard') : (auth()->check() && auth()->user()->roles_id == 4 ? 'javascript:void(0);' : route('seller.index')) }}"
                 class="logo">
                 <span>
                     <img src="{{ url('assets/images/admin-logo.jpg') }}" alt="logo" class="logo-sm"
@@ -105,40 +105,54 @@
                         <li class="menu-label pt-0 mt-0">
                             <span>Main Menu</span>
                         </li>
-                        @if (auth()->user()->roles_id == 2)
-                            <li class="nav-item">
-                                <a class="nav-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
-                                    aria-expanded="false" aria-controls="sidebarDashboards">
-                                    <i class="iconoir-home-simple menu-icon"></i>
-                                    <span>Dashboards</span>
-                                </a>
-                                <div class="collapse " id="sidebarDashboards">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="index.html">Analytics</a>
-                                        </li><!--end nav-item-->
-                                    </ul><!--end nav-->
-                                </div><!--end startbarDashboards-->
-                            </li>
-                        @endif
+
+                        {{-- Deals Section --}}
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarApplications" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarApplications">
+                            <a class="nav-link" href="#sidebarDeals" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="sidebarDeals">
                                 <i class="iconoir-view-grid menu-icon"></i>
                                 <span>Deals</span>
                             </a>
-                            <div class="collapse " id="sidebarApplications">
+                            <div class="collapse" id="sidebarDeals">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('seller.index') }}">Deals</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end startbarApplications-->
-                        </li><!--end nav-item-->
-                    </ul><!--end navbar-nav--->
+                                        @if (auth()->check() && auth()->user()->roles_id == 4)
+                                            <a class="nav-link"
+                                                href="{{ route('buyer.detail.show', ['id' => auth()->user()->dealInvitation->deal_id ?? 0]) }}">
+                                                Deals
+                                            </a>
+                                        @elseif(auth()->check() && auth()->user()->roles_id == 2)
+                                            <a class="nav-link" href="{{ route('broker.index') }}">Deals</a>
+                                        @else
+                                            <a class="nav-link" href="{{ route('seller.index') }}">Deals</a>
+                                        @endif
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        {{-- Requests Section (Only for Role ID 2) --}}
+                        @if (auth()->check() && auth()->user()->roles_id == 2)
+                            <li class="nav-item">
+                                <a class="nav-link" href="#sidebarRequests" data-bs-toggle="collapse" role="button"
+                                    aria-expanded="false" aria-controls="sidebarRequests">
+                                    <i class="iconoir-view-grid menu-icon"></i>
+                                    <span>Requests</span>
+                                </a>
+                                <div class="collapse" id="sidebarRequests">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('broker.request') }}">Requests</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
-            </div><!--end startbar-collapse-->
-        </div><!--end startbar-menu-->
+            </div>
+        </div>
+        <!--end startbar-menu-->
     </div><!--end startbar-->
     <div class="startbar-overlay d-print-none"></div>
     <!-- end leftbar-tab-menu-->
@@ -147,10 +161,19 @@
         <div class="page-content">
             @yield('user-dasboard-content')
             @yield('seller-deals-index-content')
+            @yield('seller-detail-content')
             @yield('seller-deals-view-content')
             @yield('seller-files-index-content')
+            @yield('buyer-detail-content')
+            @yield('buyer-deals-view-content')
+            @yield('buyer-files-index-content')
             @yield('user-profile-content')
-
+            @yield('broker-deals-index-content')
+            @yield('broker-detail-content')
+            @yield('broker-deals-view-content')
+            @yield('broker-files-index-content')
+            @yield('broker-request-content')
+            
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">
                     <div class="row">

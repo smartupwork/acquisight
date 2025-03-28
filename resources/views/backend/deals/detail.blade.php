@@ -23,7 +23,7 @@
                                     <p class="fs-14 text-muted">{{ $dealMeta->business_desc ?? 'N/A' }}
                                     </p>
                                     <a href="{{ route('deals.view', $deal->id) }}" type="button"
-                                        class="btn btn-primary">Get Started</a>
+                                        class="btn btn-primary">View Files</a>
                                 </div>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="clipboardInput"
@@ -34,12 +34,23 @@
                                 </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1 text-center">
-
                                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            <img src="{{ asset($deal->deal_image ?? 'assets/images/default.png') }}"
-                                                class="d-block w-100" alt="Deal Image">
+                                            @php
+                                                $filePath = $deal->deal_image ?? 'assets/images/default.png';
+                                                $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+                                                $videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'mkv', 'flv', 'webm', '3gp']; // Supported video formats
+                                            @endphp
+                                
+                                            @if(in_array($extension, $videoExtensions))
+                                                <video class="d-block w-100" controls>
+                                                    <source src="{{ asset($filePath) }}" type="video/{{ $extension == '3gp' ? '3gpp' : $extension }}">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            @else
+                                                <img src="{{ asset($filePath) }}" class="d-block w-100" alt="Deal Image">
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -65,43 +76,43 @@
                                 <div>
                                     Asking Price:
                                 </div>
-                                <span
-                                    class="badge border border-primary text-primary badge-pill">{{ $dealMeta->asking_price ?? 'N/A' }}</span>
+                                <span class="text-primary badge-pill">{{ $dealMeta->asking_price ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     Gross Revenue:
                                 </div>
-                                <span
-                                    class="badge border border-secondary text-secondary badge-pill">{{ $dealMeta->gross_revenue ?? 'N/A' }}</span>
+                                <span class="text-secondary badge-pill">{{ $dealMeta->gross_revenue ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     Cash Flow:
                                 </div>
-                                <span
-                                    class="badge border border-success text-success badge-pill">{{ $dealMeta->cash_flow ?? 'N/A' }}</span>
+                                <span class="text-success badge-pill">{{ $dealMeta->cash_flow ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     EBITDA:
                                 </div>
-                                <span
-                                    class="badge border border-warning text-warning">{{ $dealMeta->ebitda ?? 'N/A' }}</span>
+                                <span class="text-warning">{{ $dealMeta->ebitda ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     Inventory:
                                 </div>
-                                <span
-                                    class="badge border border-info text-info badge-pill">{{ $dealMeta->inventory ?? 'N/A' }}</span>
+                                <span class="text-info badge-pill">{{ $dealMeta->inventory ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     FF&E:
                                 </div>
-                                <span
-                                    class="badge border border-info text-info badge-pill">{{ $dealMeta->ffe ?? 'N/A' }}</span>
+                                <span class="text-info badge-pill">{{ $dealMeta->ffe ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                         </ul><!--end list-group-->
                     </div><!--end card-body-->
@@ -166,15 +177,15 @@
                                 <div>
                                     Reason For Selling:
                                 </div>
-                                <span
-                                    class="badge border border-primary text-primary badge-pill">{{ $dealMeta->selling_reason ?? 'N/A' }}</span>
+                                <span class="text-primary badge-pill">{{ $dealMeta->selling_reason ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     Training/Support:
                                 </div>
-                                <span
-                                    class="badge border border-secondary text-secondary badge-pill">{{ $dealMeta->train_support ?? 'N/A' }}</span>
+                                <span class="text-secondary badge-pill">{{ $dealMeta->train_support ?? 'N/A' }}</span>
+                                <span></span>
                             </li>
                         </ul><!--end list-group-->
                     </div><!--end card-body-->

@@ -119,35 +119,35 @@
                         </div>
                         <div class="mb-3">
                             <label for="dealDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="dealDescription" name="description" rows="3" required></textarea>
+                            <textarea class="form-control" id="dealDescription" name="description" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="dealImage" class="form-label">Deal Image</label>
-                            <input type="file" class="form-control" id="dealImage" name="deal_image" required>
+                            <input type="file" class="form-control" id="dealImage" name="deal_image">
                         </div>
                         <div class="mb-3">
                             <label for="asking_price" class="form-label">Asking Price</label>
-                            <input type="text" class="form-control" id="asking_price" name="asking_price" required>
+                            <input type="text" class="form-control" id="asking_price" name="asking_price">
                         </div>
                         <div class="mb-3">
                             <label for="gross_revenue" class="form-label">Gross Revenue Last Year</label>
-                            <input type="text" class="form-control" id="gross_revenue" name="gross_revenue" required>
+                            <input type="text" class="form-control" id="gross_revenue" name="gross_revenue">
                         </div>
                         <div class="mb-3">
                             <label for="cash_flow" class="form-label">Cash Flow</label>
-                            <input type="text" class="form-control" id="cash_flow" name="cash_flow" required>
+                            <input type="text" class="form-control" id="cash_flow" name="cash_flow">
                         </div>
                         <div class="mb-3">
                             <label for="ebitda" class="form-label">EBITDA Adjusted EBITDA (SDE)</label>
-                            <input type="text" class="form-control" id="ebitda" name="ebitda" required>
+                            <input type="text" class="form-control" id="ebitda" name="ebitda">
                         </div>
                         <div class="mb-3">
                             <label for="inventory" class="form-label">Inventory</label>
-                            <input type="text" class="form-control" id="inventory" name="inventory" required>
+                            <input type="text" class="form-control" id="inventory" name="inventory">
                         </div>
                         <div class="mb-3">
                             <label for="ffe" class="form-label">FF&E</label>
-                            <input type="text" class="form-control" id="ffe" name="ffe" required>
+                            <input type="text" class="form-control" id="ffe" name="ffe">
                         </div>
                         <div class="mb-3">
                             <label for="business_desc" class="form-label">Business Description</label>
@@ -155,39 +155,39 @@
                         </div>
                         <div class="mb-3">
                             <label for="location" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="location" name="location" required>
+                            <input type="text" class="form-control" id="location" name="location">
                         </div>
                         <div class="mb-3">
                             <label for="no_employee" class="form-label">Number of Employees</label>
-                            <input type="text" class="form-control" id="no_employee" name="no_employee" required>
+                            <input type="text" class="form-control" id="no_employee" name="no_employee">
                         </div>
                         <div class="mb-3">
                             <label for="real_estate" class="form-label">Real Estate</label>
-                            <input type="text" class="form-control" id="real_estate" name="real_estate" required>
+                            <input type="text" class="form-control" id="real_estate" name="real_estate">
                         </div>
                         <div class="mb-3">
                             <label for="rent" class="form-label">Rent</label>
-                            <input type="text" class="form-control" id="rent" name="rent" required>
+                            <input type="text" class="form-control" id="rent" name="rent">
                         </div>
                         <div class="mb-3">
                             <label for="lease_expiration" class="form-label">Lease Expiration</label>
-                            <input type="text" class="form-control" id="lease_expiration" name="lease_expiration" required>
+                            <input type="text" class="form-control" id="lease_expiration" name="lease_expiration">
                         </div>
                         <div class="mb-3">
                             <label for="facilities" class="form-label">Facilities</label>
-                            <input type="text" class="form-control" id="facilities" name="facilities" required>
+                            <input type="text" class="form-control" id="facilities" name="facilities">
                         </div>
                         <div class="mb-3">
                             <label for="market_outlook" class="form-label">Market Outlook/ Competition</label>
-                            <input type="text" class="form-control" id="market_outlook" name="market_outlook" required>
+                            <input type="text" class="form-control" id="market_outlook" name="market_outlook">
                         </div>
                         <div class="mb-3">
                             <label for="selling_reason" class="form-label">Reason For Selling</label>
-                            <input type="text" class="form-control" id="selling_reason" name="selling_reason" required>
+                            <input type="text" class="form-control" id="selling_reason" name="selling_reason">
                         </div>
                         <div class="mb-3">
                             <label for="train_support" class="form-label">Training/Support</label>
-                            <input type="text" class="form-control" id="train_support" name="train_support" required>
+                            <input type="text" class="form-control" id="train_support" name="train_support">
                         </div>
                         <div class="mb-3">
                             <label for="dealStatus" class="form-label">Status</label>

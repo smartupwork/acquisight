@@ -11,6 +11,7 @@ use App\Models\DealFolder;
 use App\Models\DealFile;
 use App\Services\GcsStorageService;
 use Illuminate\Support\Facades\Storage;
+use App\Models\DealMeta;
 
 class SellerController extends Controller
 {
@@ -33,6 +34,17 @@ class SellerController extends Controller
             ->get();
 
         return view('backend.seller.deal-list', ['deals' => $deals]);
+    }
+
+    public function deals_detail($id)
+    {
+        $deal = Deal::findOrFail($id);
+        $dealMeta = DealMeta::where('deal_id', $id)->first();
+
+        return view('backend.seller.detail', [
+            'deal' => $deal,
+            'dealMeta' => $dealMeta,
+        ]);
     }
 
 

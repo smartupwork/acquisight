@@ -35,6 +35,17 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
+                                <label for="description" class="col-sm-2 col-form-label">Assign Broker</label>
+                                <div class="col-sm-10">
+                                    <select class="form-select" id="broker_email" name="broker_email" aria-label="Select a Broker" required>
+                                        <option value="" selected disabled>Select a Broker</option>
+                                        @foreach($brokers as $broker)
+                                            <option value="{{ $broker->email }}">{{ $broker->email }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
                                 <label for="deal_image" class="col-sm-2 col-form-label">Deal Image</label>
                                 <div class="col-sm-10">
                                     <input type="file" class="form-control" id="deal_image" name="deal_image"

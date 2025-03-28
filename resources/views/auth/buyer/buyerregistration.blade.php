@@ -14,18 +14,28 @@
                                             <img src="{{ url('assets/images/admin-logo.jpg') }}" height="50"
                                                 alt="logo" class="auth-logo">
                                         </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started as Employee</h4>
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started as Buyer
+                                        </h4>
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
-                                    <form class="my-4" action="">
+                                    <form class="my-4" method="POST" action="{{route('buyer.save')}}">
                                         @csrf
                                         {{-- <input type="hidden" name="roles_id" value="4" />
                                         <input type="hidden" name="deal_id" value="{{ $deal_id }}" /> --}}
                                         <div class="form-group mb-2">
+                                            <label class="form-label" for="deals">Deals</label>
+                                            <select class="form-select" id="deals" name="deal_id" aria-label="Select a deal" required>
+                                                <option value="" selected disabled>Select a Deal</option>
+                                                @foreach($deals as $deal)
+                                                    <option value="{{ $deal->id }}">{{ $deal->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-2">
                                             <label class="form-label" for="name">Name</label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                placeholder="Enter Name">
+                                                placeholder="Enter Name" required>
                                         </div>
                                         @error('name')
                                             <span>{{ $message }}</span>
@@ -33,7 +43,7 @@
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="email">Email</label>
                                             <input type="text" class="form-control" id="email" name="email"
-                                                placeholder="Enter email">
+                                                placeholder="Enter email" required>
                                         </div>
                                         @error('email')
                                             <span>{{ $message }}</span>
@@ -42,7 +52,7 @@
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="userpassword">Password</label>
                                             <input type="password" class="form-control" name="password" id="userpassword"
-                                                placeholder="Enter password">
+                                                placeholder="Enter password" required>
                                         </div>
                                         @error('password')
                                             <span>{{ $message }}</span>
@@ -50,7 +60,7 @@
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="userpassword">Confirm Password</label>
                                             <input type="password" class="form-control" name="password_confirmation"
-                                                id="userpassword" placeholder="Confirm password">
+                                                id="userpassword" placeholder="Confirm password" required>
                                         </div>
 
 
@@ -183,39 +193,40 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             var termsModalBody = document.querySelector(".modal-body");
             var agreeCheckbox = document.getElementById("agreeTerms");
             var acceptButton = document.getElementById("acceptTermsBtn");
             var mainTermsCheckbox = document.getElementById("termsCheckbox");
             var registerButton = document.getElementById("registerBtn");
-    
+
             // Initially disable the accept button and checkbox
             agreeCheckbox.disabled = true;
             acceptButton.disabled = true;
-    
+
             // Listen for scroll event on the modal body
-            termsModalBody.addEventListener("scroll", function () {
-                if (termsModalBody.scrollTop + termsModalBody.clientHeight >= termsModalBody.scrollHeight - 5) {
+            termsModalBody.addEventListener("scroll", function() {
+                if (termsModalBody.scrollTop + termsModalBody.clientHeight >= termsModalBody.scrollHeight -
+                    5) {
                     // Enable the checkbox once scrolled to bottom
                     agreeCheckbox.disabled = false;
                 }
             });
-    
+
             // Enable the Accept button only when the checkbox is checked
-            agreeCheckbox.addEventListener("change", function () {
+            agreeCheckbox.addEventListener("change", function() {
                 acceptButton.disabled = !this.checked;
             });
-    
+
             // When "Accept" button is clicked, check the main terms checkbox and enable the register button
-            acceptButton.addEventListener("click", function () {
+            acceptButton.addEventListener("click", function() {
                 mainTermsCheckbox.checked = true;
                 mainTermsCheckbox.disabled = false; // Enable it for visual clarity
                 registerButton.disabled = false;
             });
-    
+
             // Prevent form submission if the terms checkbox is not checked
-            document.querySelector("form").addEventListener("submit", function (event) {
+            document.querySelector("form").addEventListener("submit", function(event) {
                 if (!mainTermsCheckbox.checked) {
                     event.preventDefault();
                     alert("You must agree to the Terms of Use before proceeding.");
