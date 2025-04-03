@@ -61,8 +61,8 @@
                                         class="thumb-md rounded-circle">
                                 </div>
                                 <div class="flex-grow-1 ms-2 text-truncate align-self-center">
-                                    <h6 class="my-0 fw-medium text-dark fs-13">John Doe</h6>
-                                    <small class="text-muted mb-0">Broker</small>
+                                    <h6 class="my-0 fw-medium text-dark fs-13">{{ auth()->user()->name }}</h6>
+                                    <small class="text-muted mb-0">{{ auth()->user()->role->name ?? 'Unknown' }}</small>
                                 </div><!--end media-body-->
                             </div>
                             <div class="dropdown-divider mt-0"></div>
@@ -107,6 +107,7 @@
                         </li>
 
                         <!-- Dashboards -->
+                        @if (auth()->check() && auth()->user()->roles_id == 1)
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
                                 href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
@@ -149,7 +150,7 @@
                                 </ul>
                             </div>
                         </li>
-
+                        @endif
                         <!-- Deals -->
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('deals.index') ? 'active' : '' }}"
@@ -166,14 +167,17 @@
                                         <a class="nav-link {{ request()->routeIs('deals.index') ? 'active' : '' }}"
                                             href="{{ route('deals.index') }}">Deals</a>
                                     </li>
+                                    @if (auth()->check() && auth()->user()->roles_id == 1)
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('deals.create') }}">Add Deal</a>
                                     </li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>
 
                         <!-- Logs -->
+                        @if (auth()->check() && auth()->user()->roles_id == 1)
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('view.files') ? 'active' : '' }}"
                                 href="#sidebarLogs" data-bs-toggle="collapse" role="button"
@@ -192,6 +196,26 @@
                                 </ul>
                             </div>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}"
+                                href="#sidebarRequest" data-bs-toggle="collapse" role="button"
+                                aria-expanded="{{ request()->routeIs('admin.request') ? 'true' : 'false' }}"
+                                aria-controls="sidebarRequest">
+                                <i class="fas fa-universal-access menu-icon"></i>
+                                <span>Requests</span>
+                            </a>
+                            <div class="collapse {{ request()->routeIs('admin.request') ? 'show' : '' }}"
+                                id="sidebarRequest">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}"
+                                            href="{{ route('admin.request') }}">View Requests</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -213,7 +237,8 @@
             @yield('admin-files-index-content')
             @yield('admin-profile-content')
             @yield('admin-log-view-content')
-
+            @yield('admin-request-content')
+            
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">
                     <div class="row">

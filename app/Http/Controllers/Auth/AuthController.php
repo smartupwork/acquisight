@@ -18,6 +18,7 @@ use App\Mail\PasswordResetMail;
 use Illuminate\Support\Str;
 use App\Mail\InformAccessMail;
 
+
 class AuthController extends Controller
 {
     public function showLoginForm()
@@ -25,8 +26,43 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function showBuyerForm(){
-        return view('auth.buyer.buyerregistration');
+    public function showBuyerForm()
+    {
+
+        $deals = Deal::all();
+        return view('auth.buyer.buyerregistration', ['deals' => $deals]);
+    }
+
+    public function save_buyer(Request $request)
+    {
+        $request->validate([
+            'deal_id' => 'required|exists:deals,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        DealInvitation::create([
+            'deal_id' => $request->deal_id,
+            'email' => $request->email,
+            'token' => Null,
+            'accepted' => 1,
+            'user_type' => 4
+        ]);
+
+        $buyer = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'roles_id' => 4,
+            'status' => 'active',
+            'ip_address' => $request->ip()
+        ]);
+
+        Auth::login($buyer);
+
+        return redirect()->route('buyer.detail.show', ['id' => $request->deal_id])
+            ->with('success', 'Registration successful! Redirecting to deal details.');
     }
 
     public function login(Request $request)
@@ -55,6 +91,11 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         } elseif ($user->roles_id == 3) {
             return redirect()->route('seller.index');
+        }elseif($user->roles_id == 2){
+            return redirect()->route('broker.index');
+        }
+        if ($user->roles_id == 4) {
+            return redirect()->route('buyer.detail.show', ['id' => $user->dealInvitation->deal_id ?? 0]);
         } else {
             return redirect()->route('user.dashboard');
         }
@@ -202,8 +243,8 @@ class AuthController extends Controller
         $existingUser = User::where('email', $request->email)->first();
 
         $existingInvitation = DealInvitation::where('email',  $request->email)
-        ->where('deal_id', $deal->id)
-        ->first();
+            ->where('deal_id', $deal->id)
+            ->first();
 
         if ($existingUser || $existingInvitation) {
             DealInvitation::create([

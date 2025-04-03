@@ -44,7 +44,7 @@
                                             </td>
                                             <td>{{ $deal->deal_created_at }}</td>
                                             <td class="d-flex justify-evenly-space align-items-center" style="gap:5px;">
-                                                <a href="{{ route('seller.deals.view', $deal->id) }}"
+                                                <a href="{{ route('seller.detail.show', $deal->id) }}"
                                                     class="btn btn-success btn-sm float-left mr-1"
                                                     style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
                                                     title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>

@@ -44,7 +44,8 @@ class DealController extends Controller
 
     public function create()
     {
-        return view('backend.deals.create');
+        $brokers = User::where('roles_id', 2)->get();
+        return view('backend.deals.create', ['brokers' => $brokers]);
     }
 
 
@@ -54,7 +55,7 @@ class DealController extends Controller
         $request->validate([
             'name' => 'required|string',
             'status' => 'required',
-            'deal_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:36000',
+            'deal_image' => 'nullable|max:102400',
         ]);
 
         DB::beginTransaction();
@@ -75,6 +76,14 @@ class DealController extends Controller
                 'status' => $request->status,
                 'user_id' => Auth::id(),
                 'deal_image' => $imagePath,
+            ]);
+
+           $deal_invitation =  DealInvitation::create([
+                'deal_id' => $deal->id,
+                'email' => $request->broker_email,
+                'token' => Null,
+                'accepted' => 1,
+                'user_type' => 2
             ]);
 
             $deals_meta = DealMeta::create([
@@ -305,22 +314,22 @@ class DealController extends Controller
 
 
         $deal = Deal::findOrFail($id);
-       
+
         if ($request->hasFile('deal_image')) {
-          
+
             if ($deal->deal_image && File::exists(public_path($deal->deal_image))) {
                 File::delete(public_path($deal->deal_image));
             }
 
-           
+
             $image = $request->file('deal_image');
-            $imageName = time() . '_' . $image->getClientOriginalName(); 
+            $imageName = time() . '_' . $image->getClientOriginalName();
             $imagePath = 'assets/images/deal/' . $imageName;
             $image->move(public_path('assets/images/deal'), $imageName);
             $deal->deal_image = $imagePath;
         }
 
-    
+
         $deal->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -335,7 +344,7 @@ class DealController extends Controller
 
         $dealMeta->update($metaData);
 
-        return redirect()->route('deals.index')->with('success', 'Deal updated successfully!');
+        return redirect()->back()->with('success', 'Deal updated successfully!');
     }
 
     public function delete($id)

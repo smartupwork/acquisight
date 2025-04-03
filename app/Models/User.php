@@ -73,4 +73,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(FileViewLog::class);
     }
+
+    public function dealInvitation()
+    {
+        return $this->hasOne(DealInvitation::class, 'email', 'email');
+    }
+
+    public function dealRequests()
+    {
+        return $this->hasMany(DealRequest::class, 'user_id');
+    }
+
+    
+    public function brokerRequests()
+    {
+        return $this->hasMany(DealRequest::class, 'broker_id');
+    }
 }

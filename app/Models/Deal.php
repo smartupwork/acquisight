@@ -11,7 +11,8 @@ class Deal extends Model
         'gcs_deal_id',
         'name',
         'description',
-        'status'
+        'status',
+        'deal_image'
     ];
 
     public function dealCreatedBy()
@@ -34,15 +35,29 @@ class Deal extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Relationship with Deal Folders
     public function dealFolders()
     {
         return $this->hasMany(DealFolder::class);
     }
 
-    // Relationship with Deal Files
+
     public function dealFiles()
     {
         return $this->hasMany(DealFile::class);
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(DealInvitation::class, 'deal_id');
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(DealRequest::class);
+    }
+
+    public function broker()
+    {
+        return $this->hasOneThrough(User::class, DealInvitation::class, 'deal_id', 'email', 'id', 'email');
     }
 }
