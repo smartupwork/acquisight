@@ -20,7 +20,7 @@
                                 <div class="p-3">
                                     <span class="bg-pink-subtle p-1 rounded text-pink fw-medium">{{ $deal->name }}</span>
                                     <h3 class="my-4 font-weight-bold">Business Description</h3>
-                                    <p class="fs-14 text-muted">{{ $dealMeta->business_desc ?? 'N/A' }}
+                                    <p class="fs-14 text-muted">{{ $deal->description ?? 'N/A' }}
                                     </p>
                                     <a href="{{ route('deals.view', $deal->id) }}" type="button"
                                         class="btn btn-primary">View Files</a>
