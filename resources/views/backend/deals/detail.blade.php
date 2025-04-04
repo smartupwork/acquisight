@@ -49,7 +49,7 @@
                                                     'flv',
                                                     'webm',
                                                     '3gp',
-                                                ]; // Supported video formats
+                                                ];
                                             @endphp
 
                                             @if (in_array($extension, $videoExtensions))
