@@ -36,7 +36,7 @@
                                         <!-- If request is not approved, show the request form -->
                                         <form action="{{ route('buyer.deals.request', $deal->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-warning">Request More Information</button>
+                                            <button type="submit" class="btn btn-warning">Request File Access</button>
                                         </form>
                                     @endif
                                 </div>

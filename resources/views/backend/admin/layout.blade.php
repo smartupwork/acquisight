@@ -176,6 +176,25 @@
                             </div>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('deals.settings*') ? 'active' : '' }}"
+                                href="#sidebarDealSettings" data-bs-toggle="collapse" role="button"
+                                aria-expanded="{{ request()->routeIs('deals.settings*') ? 'true' : 'false' }}"
+                                aria-controls="sidebarDealSettings">
+                                <i class="fas fa-cogs menu-icon"></i>
+                                <span>Deal Settings</span>
+                            </a>
+                            <div class="collapse {{ request()->routeIs('deals.settings*') ? 'show' : '' }}"
+                                id="sidebarDealSettings">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('deals.settings') ? 'active' : '' }}"
+                                            href="{{ route('deals.settings') }}">Settings</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
                         <!-- Logs -->
                         @if (auth()->check() && auth()->user()->roles_id == 1)
                         <li class="nav-item">
@@ -235,6 +254,7 @@
             @yield('admin-deals-detail-content')
             @yield('admin-deals-view-content')
             @yield('admin-files-index-content')
+            @yield('admin-deals-setting-content')
             @yield('admin-profile-content')
             @yield('admin-log-view-content')
             @yield('admin-request-content')

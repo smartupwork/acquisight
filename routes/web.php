@@ -15,6 +15,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Middleware\CustomAuthMiddleware;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\DealRequestController;
+use App\Http\Controllers\DealSettingController;
 
 // Route::get('/', function () {
 //     return redirect('/login-view');
@@ -54,7 +55,7 @@ Route::middleware(['customAuth'])->group(function () {
 
     Route::get('/admin/profile/{id}', [ProfileController::class, 'view'])->name('profile.view');
     Route::get('/user/profile/{id}', [ProfileController::class, 'user_view'])->name('user.profile.view');
-    
+
     Route::post('profile-save', [ProfileController::class, 'store'])->name('profile.submit');
     Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
 
@@ -87,12 +88,16 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/deals/{id}/edit', [DealController::class, 'edit'])->name('deals.edit');
     Route::post('/deals/update', [DealController::class, 'update'])->name('deals.update');
 
-   
 
+    // deal setting routes for admin
+
+    Route::get('/admin/deals/settings', [DealSettingController::class, 'index'])->name('deals.settings');
+    Route::put('/settings/list-type/{deal}', [DealSettingController::class, 'update_list_type'])->name('settings.list.type');
     // folder routes 
+
     Route::post('/deals/folder/update', [FileController::class, 'store'])->name('folder.upload');
     Route::post('/deals/folder/new', [FolderController::class, 'new_folder_store'])->name('new.folder.store');
-    
+
     //admin log routes
     Route::post('/log-file-view', [FileController::class, 'logFileView'])->name('log.file.view');
     Route::get('/view-file-log', [DashboardController::class, 'view_logs'])->name('view.files');

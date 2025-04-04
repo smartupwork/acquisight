@@ -29,7 +29,7 @@ class AuthController extends Controller
     public function showBuyerForm()
     {
 
-        $deals = Deal::all();
+        $deals = Deal::where('listing_type', 'public')->get();
         return view('auth.buyer.buyerregistration', ['deals' => $deals]);
     }
 
