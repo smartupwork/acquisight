@@ -34,7 +34,7 @@
                             <i class="iconoir-menu-scale"></i>
                         </button>
                     </li>
-                    <h3 class="mb-0 fw-bold text-truncate">Welcome Back</h3>
+                    <h3 class="mb-0 fw-bold text-truncate">Welcome {{ auth()->user()->name ?? 'Add a name' }}</h3>
 
                 </ul>
                 <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
