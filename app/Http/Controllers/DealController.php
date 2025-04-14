@@ -52,6 +52,7 @@ class DealController extends Controller
 
     public function store(Request $request, GcsStorageService $gcsStorageService)
     {
+
         $request->validate([
             'name' => 'required|string',
             'status' => 'required',
@@ -78,14 +79,17 @@ class DealController extends Controller
                 'deal_image' => $imagePath,
             ]);
 
-           $deal_invitation =  DealInvitation::create([
-                'deal_id' => $deal->id,
-                'email' => $request->broker_email,
-                'token' => Null,
-                'accepted' => 1,
-                'user_type' => 2
-            ]);
-
+            if($request->broker_email){
+               
+                $deal_invitation =  DealInvitation::create([
+                    'deal_id' => $deal->id,
+                    'email' => $request->broker_email,
+                    'token' => Null,
+                    'accepted' => 1,
+                    'user_type' => 2
+                ]);
+            }
+           
             $deals_meta = DealMeta::create([
                 'deal_id' => $deal->id,
                 'asking_price' => $request->asking_price,
