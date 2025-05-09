@@ -10,6 +10,7 @@ use App\Mail\DealRequestMail;
 use App\Mail\InformBuyerMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Deal;
+use Illuminate\Support\Facades\Log;
 
 class DealRequestController extends Controller
 {
@@ -84,7 +85,7 @@ class DealRequestController extends Controller
 
     public function getAdminDealRequests()
     {
-    
+
         $dealRequests = DealRequest::with(['user:id,name,email', 'deal:id,gcs_deal_id'])->get();
 
         return view('backend.admin.request.index', ['dealRequests' => $dealRequests]);
@@ -92,6 +93,7 @@ class DealRequestController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+
         $request->validate([
             'status' => 'required|in:approved,rejected'
         ]);
@@ -106,8 +108,18 @@ class DealRequestController extends Controller
         $dealRequest->save();
 
         if ($request->status === 'approved') {
-           
-            Mail::to($dealRequest->user->email)->send(new InformBuyerMail($dealRequest));
+
+            try {
+                Mail::to($dealRequest->user->email)->send(new InformBuyerMail($dealRequest));
+                Log::info('Email sent successfully to buyer.', [
+                    'user_email' => $dealRequest->user->email
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Failed to send email to buyer.', [
+                    'error' => $e->getMessage(),
+                    'user_email' => $dealRequest->user->email
+                ]);
+            }
         }
 
         return response()->json(['message' => 'Deal request updated successfully.', 'status' => $dealRequest->status]);

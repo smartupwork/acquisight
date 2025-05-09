@@ -5,8 +5,6 @@
 </head>
 <body>
 
-    {{dd($dealRequest)}}
-    <h1>Congratulations!</h1>
     <p>Dear {{ $dealRequest->user->name }},</p>
 
     <p>Your deal request has been <strong>approved</strong>.</p>

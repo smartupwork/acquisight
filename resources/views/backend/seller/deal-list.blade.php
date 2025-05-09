@@ -34,7 +34,7 @@
                                     @foreach ($deals as $deal)
                                         <tr>
                                             <td>{{ $deal->deal_name }}</td>
-                                            <td>{{ $deal->deal_description }}</td>
+                                            <td>{{ \Illuminate\Support\Str::limit($deal->description, 100, '...') }}</td>
                                             <td>
                                                 @if ($deal->deal_status == 1)
                                                     <span class="badge bg-primary" style="">Active</span>

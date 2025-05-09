@@ -114,7 +114,7 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <div>
-                                            Cash Flow:
+                                            Seller Discretionary Income:
                                         </div>
                                     </div>
                                     <div class="col-sm-9"><span
