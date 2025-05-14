@@ -39,7 +39,8 @@
                                         <tr>
                                             <td>{{ $request->user->name ?? 'N/A' }}</td>
                                             <td>{{ $request->user->email ?? 'N/A' }}</td>
-                                            <td>{{ \Illuminate\Support\Str::limit( $request->deal->gcs_deal_id ?? 'N/A', 50, '...') }}</td>
+                                            <td>{{ \Illuminate\Support\Str::limit($request->deal->gcs_deal_id ?? 'N/A', 50, '...') }}
+                                            </td>
                                             <td>
                                                 <span id="status-{{ $request->id }}"
                                                     class="badge 
@@ -81,7 +82,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".update-status").click(function() {
+            $(document).on("click", ".update-status", function() {
                 let requestId = $(this).data("id");
                 let newStatus = $(this).data("status");
                 let button = $(this);
@@ -97,8 +98,7 @@
                     success: function(response) {
                         // Update status badge
                         $(`#status-${requestId}`)
-                            .text(newStatus.charAt(0).toUpperCase() + newStatus.slice(
-                                1)) // Capitalize first letter
+                            .text(newStatus.charAt(0).toUpperCase() + newStatus.slice(1))
                             .removeClass("bg-info bg-danger bg-success")
                             .addClass(newStatus === 'approved' ? 'bg-success' : 'bg-danger');
 
