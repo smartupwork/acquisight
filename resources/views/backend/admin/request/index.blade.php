@@ -39,7 +39,7 @@
                                         <tr>
                                             <td>{{ $request->user->name ?? 'N/A' }}</td>
                                             <td>{{ $request->user->email ?? 'N/A' }}</td>
-                                            <td>{{ \Illuminate\Support\Str::limit($request->deal->gcs_deal_id ?? 'N/A', 50, '...') }}
+                                            <td>{{ \Illuminate\Support\Str::limit($request->deal->gcs_deal_id ?? 'N/A', 30, '...') }}
                                             </td>
                                             <td>
                                                 <span id="status-{{ $request->id }}"
