@@ -21,7 +21,9 @@ use App\Http\Controllers\DealSettingController;
 //     return redirect('/login-view');
 // });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::redirect('/', '/login-view');
 
 Route::get('/login-view', [AuthController::class, 'showLoginForm'])->name('login-view');
 Route::post('/login', [AuthController::class, 'login'])->name('loggedIn');
