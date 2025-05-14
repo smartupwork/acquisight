@@ -252,7 +252,7 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'token' => NULL,
                 'accepted' => 1,
-                'user_type' => $existingUser->roles_id
+                'user_type' => $request->roles_id
             ]);
 
             Mail::to($request->email)->send(new InformAccessMail($deal));
