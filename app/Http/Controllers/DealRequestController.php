@@ -77,8 +77,8 @@ class DealRequestController extends Controller
         $broker_id = auth()->id();
         $dealRequests = DealRequest::where('broker_id', $broker_id)
             ->with(['user:id,name,email', 'deal:id,gcs_deal_id'])
+            ->orderBy('created_at', 'desc')
             ->get();
-
 
         return view('backend.broker.request', ['dealRequests' => $dealRequests]);
     }
@@ -86,7 +86,9 @@ class DealRequestController extends Controller
     public function getAdminDealRequests()
     {
 
-        $dealRequests = DealRequest::with(['user:id,name,email', 'deal:id,gcs_deal_id'])->get();
+        $dealRequests = DealRequest::with(['user:id,name,email', 'deal:id,gcs_deal_id'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('backend.admin.request.index', ['dealRequests' => $dealRequests]);
     }
