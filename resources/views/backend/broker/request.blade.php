@@ -28,6 +28,7 @@
                                     <tr>
                                         <th>Buyer Name</th>
                                         <th>Buyer Email</th>
+                                        <th>Buyer Phone</th>
                                         <th>Deal Title</th>
                                         <th>Status</th>
                                         <th>Request At</th>
@@ -39,7 +40,8 @@
                                         <tr>
                                             <td>{{ $request->user->name ?? 'N/A' }}</td>
                                             <td>{{ $request->user->email ?? 'N/A' }}</td>
-                                            <td>{{ $request->deal->gcs_deal_id ?? 'N/A' }}</td>
+                                            <td>{{ $request->user->phone ?? 'N/A' }}</td>
+                                            <td title="{{ $request->deal->gcs_deal_id ?? 'N/A' }}" style="cursor: pointer;">{{ \Illuminate\Support\Str::limit($request->deal->gcs_deal_id ?? 'N/A', 30, '...') }}
                                             <td>
                                                 <span id="status-{{ $request->id }}"
                                                     class="badge 

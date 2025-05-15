@@ -117,6 +117,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/seller/deals/files/{id}', [SellerController::class, 'viewFolderFiles'])->name('seller.deal.file.list');
 
     //buyer routes
+    Route::get('/buyer/index', [BuyerController::class, 'index'])->name('buyer.index');
     Route::get('/buyer/deals/{id}', [BuyerController::class, 'deals_detail'])->name('buyer.detail.show');
     Route::post('/buyer/deals/{id}/request', [DealRequestController::class, 'store'])->name('buyer.deals.request');
     Route::get('/buyer/deals/{deal}/view-deal', [BuyerController::class, 'viewDeal'])->name('buyer.deals.view');

@@ -76,7 +76,7 @@ class DealRequestController extends Controller
     {
         $broker_id = auth()->id();
         $dealRequests = DealRequest::where('broker_id', $broker_id)
-            ->with(['user:id,name,email', 'deal:id,gcs_deal_id'])
+            ->with(['user:id,name,email,phone', 'deal:id,gcs_deal_id'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -86,7 +86,7 @@ class DealRequestController extends Controller
     public function getAdminDealRequests()
     {
 
-        $dealRequests = DealRequest::with(['user:id,name,email', 'deal:id,gcs_deal_id'])
+        $dealRequests = DealRequest::with(['user:id,name,email,phone', 'deal:id,gcs_deal_id'])
             ->orderBy('created_at', 'desc')
             ->get();
 

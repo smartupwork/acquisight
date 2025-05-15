@@ -35,35 +35,58 @@ class AuthController extends Controller
 
     public function save_buyer(Request $request)
     {
-        $request->validate([
-            'deal_id' => 'required|exists:deals,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        $existingUser = User::where('email', $request->email)->first();
 
-        DealInvitation::create([
-            'deal_id' => $request->deal_id,
-            'email' => $request->email,
-            'token' => Null,
-            'accepted' => 1,
-            'user_type' => 4
-        ]);
+        if ($existingUser) {
+            $existingInvitation = DealInvitation::where('email', $request->email)
+                ->where('deal_id', $request->deal_id)
+                ->first();
 
-        $buyer = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'roles_id' => 4,
-            'status' => 'active',
-            'ip_address' => $request->ip()
-        ]);
+            if ($existingInvitation) {
+                return redirect()->back()->with('info', 'You are already registered for this deal.');
+            }
 
-        Auth::login($buyer);
+            DealInvitation::create([
+                'deal_id' => $request->deal_id,
+                'email' => $request->email,
+                'token' => null,
+                'accepted' => 1,
+                'user_type' => 4
+            ]);
 
-        return redirect()->route('buyer.detail.show', ['id' => $request->deal_id])
-            ->with('success', 'Registration successful! Redirecting to deal details.');
+            Auth::login($existingUser);
+            return redirect()->route('buyer.index');
+        } else {
+            $request->validate([
+                'deal_id' => 'required|exists:deals,id',
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|confirmed|min:6',
+            ]);
+
+            DealInvitation::create([
+                'deal_id' => $request->deal_id,
+                'email' => $request->email,
+                'token' => null,
+                'accepted' => 1,
+                'user_type' => 4
+            ]);
+
+            $buyer = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'roles_id' => 4,
+                'status' => 'active',
+                'ip_address' => $request->ip()
+            ]);
+
+            Auth::login($buyer);
+            return redirect()->route('buyer.index');
+        }
     }
+
 
     public function login(Request $request)
     {
@@ -91,11 +114,12 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         } elseif ($user->roles_id == 3) {
             return redirect()->route('seller.index');
-        }elseif($user->roles_id == 2){
+        } elseif ($user->roles_id == 2) {
             return redirect()->route('broker.index');
         }
         if ($user->roles_id == 4) {
-            return redirect()->route('buyer.detail.show', ['id' => $user->dealInvitation->deal_id ?? 0]);
+            return redirect()->route('buyer.index');
+            // return redirect()->route('buyer.detail.show', ['id' => $user->dealInvitation->deal_id ?? 0]);
         } else {
             return redirect()->route('user.dashboard');
         }
@@ -230,58 +254,67 @@ class AuthController extends Controller
 
     public function registerBuyer(Request $request)
     {
-        $deal_id = $request->deal_id . '/';
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6|confirmed',
-            'roles_id' => 'required'
-        ]);
-
-        $deal = Deal::where('gcs_deal_id', $deal_id)->first();
 
         $existingUser = User::where('email', $request->email)->first();
 
-        $existingInvitation = DealInvitation::where('email',  $request->email)
-            ->where('deal_id', $deal->id)
-            ->first();
+        $deal_id = $request->deal_id . '/';
+        $deal = Deal::where('gcs_deal_id', $deal_id)->first();
 
-        if ($existingUser || $existingInvitation) {
+        if ($existingUser) {
+
+            $existingInvitation = DealInvitation::where('email',  $request->email)
+                ->where('deal_id', $deal->id)
+                ->first();
+
+            if ($existingInvitation) {
+                return redirect()->back()->with('info', 'You are already registered for this deal.');
+            }
+
+
             DealInvitation::create([
                 'deal_id' => $deal->id,
+                'email' => $request->email,
+                'token' => null,
+                'accepted' => 1,
+                'user_type' => $request->roles_id
+            ]);
+
+            Mail::to($request->email)->send(new InformAccessMail($deal));
+            return redirect()->route('login-view')->with('success', 'You have now access to .' . $deal->name . '.. Please login.');
+        } else {
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255',
+                'password' => 'required|string|min:6|confirmed',
+                'roles_id' => 'required'
+            ]);
+
+            $buyer = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'roles_id' => $request->roles_id,
+                'status' => 'active',
+                'ip_address' => $request->ip()
+            ]);
+
+
+            DealInvitation::create([
+                'deal_id' => $request->name,
                 'email' => $request->email,
                 'token' => NULL,
                 'accepted' => 1,
                 'user_type' => $request->roles_id
             ]);
 
-            Mail::to($request->email)->send(new InformAccessMail($deal));
-            return redirect()->route('login-view')->with('success', 'Invitation sent successfully!');
-        }
 
-        $buyer = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'roles_id' => $request->roles_id,
-            'status' => 'active',
-            'ip_address' => $request->ip()
-        ]);
-
-
-        DealInvitation::create([
-            'deal_id' => $deal->id,
-            'email' => $request->email,
-            'token' => NULL,
-            'accepted' => 1,
-            'user_type' => $request->roles_id
-        ]);
-
-
-        if ($buyer) {
-            return redirect('/login-view')->with('success', 'You are registered. Please login.');
-        } else {
-            return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
+            if ($buyer) {
+                return redirect('/login-view')->with('success', 'You are registered. Please login.');
+            } else {
+                return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
+            }
         }
     }
 }

@@ -24,7 +24,6 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'dob' => 'nullable|date',
             'address' => 'nullable|string|max:500',
         ]);
@@ -34,7 +33,6 @@ class ProfileController extends Controller
             $user->update([
                 'name' => $request->input('name'),
                 'phone' => $request->input('phone'),
-                'email' => $request->input('email'),
                 'dob' => $request->input('dob'),
                 'address' => $request->input('address'),
             ]);

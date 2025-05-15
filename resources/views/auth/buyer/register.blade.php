@@ -39,6 +39,14 @@
                                         @error('email')
                                             <span>{{ $message }}</span>
                                         @enderror
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="phone">Phone</label>
+                                            <input type="text" class="form-control" id="phone" name="phone"
+                                                placeholder="Enter phone">
+                                        </div>
+                                        @error('phone')
+                                            <span>{{ $message }}</span>
+                                        @enderror
 
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="userpassword">Password</label>
