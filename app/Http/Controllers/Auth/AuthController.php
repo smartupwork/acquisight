@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\PasswordResetMail;
 use Illuminate\Support\Str;
 use App\Mail\InformAccessMail;
+use App\Mail\VerifyEmail;
 
 
 class AuthController extends Controller
@@ -35,6 +36,7 @@ class AuthController extends Controller
 
     public function save_buyer(Request $request)
     {
+
         $existingUser = User::where('email', $request->email)->first();
 
         if ($existingUser) {
@@ -57,11 +59,23 @@ class AuthController extends Controller
             Auth::login($existingUser);
             return redirect()->route('buyer.index');
         } else {
+
             $request->validate([
                 'deal_id' => 'required|exists:deals,id',
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|confirmed|min:6',
+            ]);
+
+            $buyer = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'verification_token' => Str::random(64),
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'roles_id' => 4,
+                'status' => 'active',
+                'ip_address' => $request->ip(),
             ]);
 
             DealInvitation::create([
@@ -72,21 +86,41 @@ class AuthController extends Controller
                 'user_type' => 4
             ]);
 
-            $buyer = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password),
-                'roles_id' => 4,
-                'status' => 'active',
-                'ip_address' => $request->ip()
-            ]);
+            Mail::to($request->email)->send(new VerifyEmail($buyer));
 
-            Auth::login($buyer);
-            return redirect()->route('buyer.index');
+            return redirect()->route('verification.notice')->with('message', 'Please check your email to verify your account.');
+
         }
     }
 
+    public function verifyEmail($token)
+    {
+        $user = User::where('verification_token', $token)->first();
+
+        if (!$user) {
+            return redirect('/login-view')->with(['error' => 'Invalid verification link.']);
+        }
+
+        $user->update([
+            'email_verified_at' => now(),
+            'verification_token' => null,
+        ]);
+
+        Auth::login($user);
+
+        switch ($user->roles_id) {
+            case 1:
+                return redirect()->route('admin.dashboard');
+            case 2:
+                return redirect()->route('broker.index');
+            case 3:
+                return redirect()->route('seller.index');
+            case 4:
+                return redirect()->route('buyer.index');
+            default:
+                return redirect()->route('user.dashboard');
+        }
+    }
 
     public function login(Request $request)
     {
@@ -103,9 +137,9 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
         }
 
-        // if($user->status == 'inactive'){
-        //     return redirect()->route('login')->with('success', 'You will be notified via email when your account has been activated.');
-        // }
+        if (!$user->email_verified_at) {
+            return redirect()->back()->with(['error' => 'Please verify your email before logging in.']);
+        }
 
 
         Auth::login($user);
@@ -293,6 +327,7 @@ class AuthController extends Controller
             $buyer = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'verification_token' => Str::random(64),
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
                 'roles_id' => $request->roles_id,
@@ -302,7 +337,7 @@ class AuthController extends Controller
 
 
             DealInvitation::create([
-                'deal_id' => $request->name,
+                'deal_id' => $deal->id,
                 'email' => $request->email,
                 'token' => NULL,
                 'accepted' => 1,
@@ -310,11 +345,9 @@ class AuthController extends Controller
             ]);
 
 
-            if ($buyer) {
-                return redirect('/login-view')->with('success', 'You are registered. Please login.');
-            } else {
-                return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
-            }
+            Mail::to($request->email)->send(new VerifyEmail($buyer));
+
+            return redirect()->route('verification.notice')->with('message', 'Please check your email to verify your account.');
         }
     }
 }

@@ -16,12 +16,14 @@ use App\Http\Middleware\CustomAuthMiddleware;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\DealRequestController;
 use App\Http\Controllers\DealSettingController;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return redirect('/login-view');
 // });
 
 // Route::get('/', [HomeController::class, 'index'])->name('home');
+
 
 Route::redirect('/', '/login-view');
 
@@ -33,6 +35,11 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::get('/buyerregistration', [AuthController::class, 'showBuyerForm'])->name('buyerregistration.register');
 Route::post('/buyerregistration/save', [AuthController::class, 'save_buyer'])->name('buyer.save');
 Route::post('/register', [AuthController::class, 'register'])->name('registerIn');
+Route::get('/verify-email/{token}', [AuthController::class, 'verifyEmail'])->name('verify.email');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-notice');
+})->name('verification.notice');
 
 // seller register
 Route::get('/seller/register/{token}', [AuthController::class, 'showSellerRegistrationForm'])->name('seller.register');
