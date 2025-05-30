@@ -126,4 +126,19 @@ class DealRequestController extends Controller
 
         return response()->json(['message' => 'Deal request updated successfully.', 'status' => $dealRequest->status]);
     }
+
+    public function bulkUpdateStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'status' => 'required|string|in:rejected,approved,pending'
+        ]);
+
+        $updatedCount = DealRequest::whereIn('id', $request->ids)
+            ->update(['status' => $request->status]);
+
+        return response()->json([
+            'message' => "$updatedCount deal requests have been updated to '{$request->status}'."
+        ]);
+    }
 }

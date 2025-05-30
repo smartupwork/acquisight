@@ -204,8 +204,10 @@
 
     <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('assets/js/simplebar.min.js') }}"></script>
-    <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
-    <script src="{{ url('assets/js/datatable.init.js') }}"></script>
+    @if (!request()->is('brokers/deal-requests'))
+        <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
+        <script src="{{ url('assets/js/datatable.init.js') }}"></script>
+    @endif
     <script src="{{ url('assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ url('assets/js/stock-prices.js') }}"></script>
     <script src="{{ url('assets/js/jsvectormap.min.js') }}"></script>

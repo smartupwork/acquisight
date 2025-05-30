@@ -136,6 +136,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/broker/index', [BrokerController::class, 'index'])->name('broker.index');
     Route::get('/brokers/deal-requests', [DealRequestController::class, 'getBrokerDealRequests'])->name('broker.request');
     Route::put('/deal-requests/{id}/update-status', [DealRequestController::class, 'updateStatus'])->name('deal-requests.update-status');
+    Route::post('/deal-requests/bulk-update', [DealRequestController::class, 'bulkUpdateStatus'])->name('deal-requests.bulk-update');
     Route::get('/broker/deals/{id}', [BrokerController::class, 'deals_detail'])->name('broker.detail.show');
     Route::get('/broker/deals/{deal}/view-deal', [BrokerController::class, 'viewDeal'])->name('broker.deals.view');
     Route::get('/broker/deals/files/{id}', [BrokerController::class, 'viewFolderFiles'])->name('broker.deal.file.list');

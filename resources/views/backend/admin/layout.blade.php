@@ -62,7 +62,8 @@
                                 </div>
                                 <div class="flex-grow-1 ms-2 text-truncate align-self-center">
                                     <h6 class="my-0 fw-medium text-dark fs-13">{{ auth()->user()->name }}</h6>
-                                    <small class="text-muted mb-0">{{ auth()->user()->role->name ?? 'Unknown' }}</small>
+                                    <small
+                                        class="text-muted mb-0">{{ auth()->user()->role->name ?? 'Unknown' }}</small>
                                 </div><!--end media-body-->
                             </div>
                             <div class="dropdown-divider mt-0"></div>
@@ -108,48 +109,48 @@
 
                         <!-- Dashboards -->
                         @if (auth()->check() && auth()->user()->roles_id == 1)
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-                                href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
-                                aria-expanded="{{ request()->routeIs('admin.dashboard') ? 'true' : 'false' }}"
-                                aria-controls="sidebarDashboards">
-                                <i class="iconoir-home-simple menu-icon"></i>
-                                <span>Dashboards</span>
-                            </a>
-                            <div class="collapse {{ request()->routeIs('admin.dashboard') ? 'show' : '' }}"
-                                id="sidebarDashboards">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-                                            href="{{ route('admin.dashboard') }}">Analytics</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                                    href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
+                                    aria-expanded="{{ request()->routeIs('admin.dashboard') ? 'true' : 'false' }}"
+                                    aria-controls="sidebarDashboards">
+                                    <i class="iconoir-home-simple menu-icon"></i>
+                                    <span>Dashboards</span>
+                                </a>
+                                <div class="collapse {{ request()->routeIs('admin.dashboard') ? 'show' : '' }}"
+                                    id="sidebarDashboards">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                                                href="{{ route('admin.dashboard') }}">Analytics</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
 
-                        <!-- Users -->
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'active' : '' }}"
-                                href="#sidebarApplications" data-bs-toggle="collapse" role="button"
-                                aria-expanded="{{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'true' : 'false' }}"
-                                aria-controls="sidebarApplications">
-                                <i class="fas fa-id-badge menu-icon"></i>
-                                <span>Users</span>
-                            </a>
-                            <div class="collapse {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'show' : '' }}"
-                                id="sidebarApplications">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
-                                            href="{{ route('users.index') }}">Users</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}"
-                                            href="{{ route('users.create') }}">Add User</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                            <!-- Users -->
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'active' : '' }}"
+                                    href="#sidebarApplications" data-bs-toggle="collapse" role="button"
+                                    aria-expanded="{{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'true' : 'false' }}"
+                                    aria-controls="sidebarApplications">
+                                    <i class="fas fa-id-badge menu-icon"></i>
+                                    <span>Users</span>
+                                </a>
+                                <div class="collapse {{ request()->routeIs('users.index') || request()->routeIs('users.create') ? 'show' : '' }}"
+                                    id="sidebarApplications">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}"
+                                                href="{{ route('users.index') }}">Users</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}"
+                                                href="{{ route('users.create') }}">Add User</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                         @endif
                         <!-- Deals -->
                         <li class="nav-item">
@@ -168,9 +169,9 @@
                                             href="{{ route('deals.index') }}">Deals</a>
                                     </li>
                                     @if (auth()->check() && auth()->user()->roles_id == 1)
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('deals.create') }}">Add Deal</a>
-                                    </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('deals.create') }}">Add Deal</a>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>
@@ -197,43 +198,43 @@
 
                         <!-- Logs -->
                         @if (auth()->check() && auth()->user()->roles_id == 1)
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('view.files') ? 'active' : '' }}"
-                                href="#sidebarLogs" data-bs-toggle="collapse" role="button"
-                                aria-expanded="{{ request()->routeIs('view.files') ? 'true' : 'false' }}"
-                                aria-controls="sidebarLogs">
-                                <i class="fas fa-history menu-icon"></i>
-                                <span>Logs</span>
-                            </a>
-                            <div class="collapse {{ request()->routeIs('view.files') ? 'show' : '' }}"
-                                id="sidebarLogs">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('view.files') ? 'active' : '' }}"
-                                            href="{{ route('view.files') }}">View Logs</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('view.files') ? 'active' : '' }}"
+                                    href="#sidebarLogs" data-bs-toggle="collapse" role="button"
+                                    aria-expanded="{{ request()->routeIs('view.files') ? 'true' : 'false' }}"
+                                    aria-controls="sidebarLogs">
+                                    <i class="fas fa-history menu-icon"></i>
+                                    <span>Logs</span>
+                                </a>
+                                <div class="collapse {{ request()->routeIs('view.files') ? 'show' : '' }}"
+                                    id="sidebarLogs">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('view.files') ? 'active' : '' }}"
+                                                href="{{ route('view.files') }}">View Logs</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}"
-                                href="#sidebarRequest" data-bs-toggle="collapse" role="button"
-                                aria-expanded="{{ request()->routeIs('admin.request') ? 'true' : 'false' }}"
-                                aria-controls="sidebarRequest">
-                                <i class="fas fa-universal-access menu-icon"></i>
-                                <span>Requests</span>
-                            </a>
-                            <div class="collapse {{ request()->routeIs('admin.request') ? 'show' : '' }}"
-                                id="sidebarRequest">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}"
-                                            href="{{ route('admin.request') }}">View Requests</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}"
+                                    href="#sidebarRequest" data-bs-toggle="collapse" role="button"
+                                    aria-expanded="{{ request()->routeIs('admin.request') ? 'true' : 'false' }}"
+                                    aria-controls="sidebarRequest">
+                                    <i class="fas fa-universal-access menu-icon"></i>
+                                    <span>Requests</span>
+                                </a>
+                                <div class="collapse {{ request()->routeIs('admin.request') ? 'show' : '' }}"
+                                    id="sidebarRequest">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link {{ request()->routeIs('admin.request') ? 'active' : '' }}"
+                                                href="{{ route('admin.request') }}">View Requests</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                         @endif
                     </ul>
                 </div>
@@ -258,7 +259,7 @@
             @yield('admin-profile-content')
             @yield('admin-log-view-content')
             @yield('admin-request-content')
-            
+
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">
                     <div class="row">
@@ -289,8 +290,10 @@
 
     <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('assets/js/simplebar.min.js') }}"></script>
-    <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
-    <script src="{{ url('assets/js/datatable.init.js') }}"></script>
+    @if (!request()->is('admin/deal-requests'))
+        <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
+        <script src="{{ url('assets/js/datatable.init.js') }}"></script>
+    @endif
     <script src="{{ url('assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ url('assets/js/stock-prices.js') }}"></script>
     <script src="{{ url('assets/js/jsvectormap.min.js') }}"></script>
