@@ -1,6 +1,21 @@
 @extends('auth.layout')
 @section('buyer-register-form-content')
     <div class="container-xxl">
+        @if (Session::get('success'))
+            <div class=" alert alert-success">
+                {{ Session::get('success') }}
+            </div>
+        @endif
+        @if (Session::get('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
+        @if (Session::get('info'))
+            <div class="alert alert-info">
+                {{ Session::get('info') }}
+            </div>
+        @endif
         <div class="row vh-100 d-flex justify-content-center">
             <div class="col-12 align-self-center">
                 <div class="card-body">
@@ -14,7 +29,7 @@
                                             <img src="{{ url('assets/images/admin-logo.jpg') }}" height="50"
                                                 alt="logo" class="auth-logo">
                                         </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started as Buyer
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started
                                         </h4>
                                     </div>
                                 </div>
@@ -44,6 +59,15 @@
                                             <label class="form-label" for="email">Email</label>
                                             <input type="text" class="form-control" id="email" name="email"
                                                 placeholder="Enter email" required>
+                                        </div>
+                                        @error('email')
+                                            <span>{{ $message }}</span>
+                                        @enderror
+
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="phone">Phone</label>
+                                            <input type="text" class="form-control" id="phone" name="phone"
+                                                placeholder="Enter phone number" required>
                                         </div>
                                         @error('email')
                                             <span>{{ $message }}</span>

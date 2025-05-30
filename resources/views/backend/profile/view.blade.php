@@ -130,7 +130,7 @@
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="las la-at"></i></span>
                                                 <input type="text" class="form-control" name="email"
-                                                    value="{{ old('email', $user->email) }}" placeholder="Email">
+                                                    value="{{ old('email', $user->email) }}" placeholder="Email" readonly>
                                             </div>
                                             @error('email')
                                                 <small class="text-danger">{{ $message }}</small>

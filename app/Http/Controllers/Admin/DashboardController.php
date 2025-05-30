@@ -79,8 +79,7 @@ class DashboardController extends Controller
             'dealFile.deal:id,gcs_deal_id',
             'dealFile.dealFolder:id,folder_name'
         ])
-            ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('backend.logs.index', compact('files'));
     }

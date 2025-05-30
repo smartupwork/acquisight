@@ -10,13 +10,13 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\DealRequest;
 
-class InformBuyerMail extends Mailable implements ShouldQueue
+class InformBuyerMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $dealRequest;
 
-    public function __construct(DealRequest $dealRequest)
+    public function __construct($dealRequest)
     {
         $this->dealRequest = $dealRequest;
     }
@@ -24,6 +24,6 @@ class InformBuyerMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->subject('Your Deal Request Has Been Approved')
-                    ->view('emails.deal-approved');
+            ->view('emails.deal-approved');
     }
 }
