@@ -15,7 +15,7 @@
                                             <img src="{{ url('assets/images/admin-logo.jpg') }}" height="50"
                                                 alt="logo" class="auth-logo">
                                         </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started as Seller</h4>
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white fs-18">Let's Get Started</h4>
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
@@ -37,6 +37,14 @@
                                                 placeholder="Enter email">
                                         </div>
                                         @error('email')
+                                            <span>{{ $message }}</span>
+                                        @enderror
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="phone">Phone</label>
+                                            <input type="text" class="form-control" id="phone" name="phone"
+                                                placeholder="Enter phone">
+                                        </div>
+                                        @error('phone')
                                             <span>{{ $message }}</span>
                                         @enderror
 

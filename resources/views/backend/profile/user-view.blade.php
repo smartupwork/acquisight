@@ -98,7 +98,7 @@
                                             class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Name</label>
                                         <div class="col-lg-9 col-xl-8">
                                             <input class="form-control" type="text" name="name"
-                                                value="{{ old('name', $user->name) }}">
+                                                value="{{ $user->name }}">
                                             @error('name')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -130,7 +130,7 @@
                                             <div class="input-group">
                                                 <span class="input-group-text"><i class="las la-at"></i></span>
                                                 <input type="text" class="form-control" name="email"
-                                                    value="{{ old('email', $user->email) }}" placeholder="Email">
+                                                    value="{{ old('email', $user->email) }}" placeholder="Email" readonly>
                                             </div>
                                             @error('email')
                                                 <small class="text-danger">{{ $message }}</small>

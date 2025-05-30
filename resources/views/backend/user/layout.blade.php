@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>Acquisight | Acquisight - Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Acquisight Deals Insight Platform" name="description" />
     <meta content="" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -59,7 +59,8 @@
                                 </div>
                                 <div class="flex-grow-1 ms-2 text-truncate align-self-center">
                                     <h6 class="my-0 fw-medium text-dark fs-13">{{ auth()->user()->name }}</h6>
-                                    <small class="text-muted mb-0">{{ auth()->user()->role->name ?? 'Unknown' }}</small>
+                                    <small
+                                        class="text-muted mb-0">{{ auth()->user()->role->name ?? 'Unknown' }}</small>
                                 </div><!--end media-body-->
                             </div>
                             <div class="dropdown-divider mt-0"></div>
@@ -162,6 +163,7 @@
             @yield('seller-detail-content')
             @yield('seller-deals-view-content')
             @yield('seller-files-index-content')
+            @yield('buyer-deals-index-content')
             @yield('buyer-detail-content')
             @yield('buyer-deals-view-content')
             @yield('buyer-files-index-content')
@@ -171,7 +173,7 @@
             @yield('broker-deals-view-content')
             @yield('broker-files-index-content')
             @yield('broker-request-content')
-            
+
             <footer class="footer text-center text-sm-start d-print-none">
                 <div class="container-xxl">
                     <div class="row">
@@ -202,8 +204,10 @@
 
     <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('assets/js/simplebar.min.js') }}"></script>
-    <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
-    <script src="{{ url('assets/js/datatable.init.js') }}"></script>
+    @if (!request()->is('brokers/deal-requests'))
+        <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
+        <script src="{{ url('assets/js/datatable.init.js') }}"></script>
+    @endif
     <script src="{{ url('assets/js/apexcharts.min.js') }}"></script>
     <script src="{{ url('assets/js/stock-prices.js') }}"></script>
     <script src="{{ url('assets/js/jsvectormap.min.js') }}"></script>

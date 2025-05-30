@@ -10,6 +10,7 @@ use App\Mail\DealRequestMail;
 use App\Mail\InformBuyerMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Deal;
+use Illuminate\Support\Facades\Log;
 
 class DealRequestController extends Controller
 {
@@ -75,23 +76,26 @@ class DealRequestController extends Controller
     {
         $broker_id = auth()->id();
         $dealRequests = DealRequest::where('broker_id', $broker_id)
-            ->with(['user:id,name,email', 'deal:id,gcs_deal_id'])
+            ->with(['user:id,name,email,phone', 'deal:id,gcs_deal_id'])
+            ->orderBy('created_at', 'desc')
             ->get();
-
 
         return view('backend.broker.request', ['dealRequests' => $dealRequests]);
     }
 
     public function getAdminDealRequests()
     {
-    
-        $dealRequests = DealRequest::with(['user:id,name,email', 'deal:id,gcs_deal_id'])->get();
+
+        $dealRequests = DealRequest::with(['user:id,name,email,phone', 'deal:id,gcs_deal_id'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('backend.admin.request.index', ['dealRequests' => $dealRequests]);
     }
 
     public function updateStatus(Request $request, $id)
     {
+
         $request->validate([
             'status' => 'required|in:approved,rejected'
         ]);
@@ -106,10 +110,35 @@ class DealRequestController extends Controller
         $dealRequest->save();
 
         if ($request->status === 'approved') {
-           
-            Mail::to($dealRequest->user->email)->send(new InformBuyerMail($dealRequest));
+
+            try {
+                Mail::to($dealRequest->user->email)->send(new InformBuyerMail($dealRequest));
+                Log::info('Email sent successfully to buyer.', [
+                    'user_email' => $dealRequest->user->email
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Failed to send email to buyer.', [
+                    'error' => $e->getMessage(),
+                    'user_email' => $dealRequest->user->email
+                ]);
+            }
         }
 
         return response()->json(['message' => 'Deal request updated successfully.', 'status' => $dealRequest->status]);
+    }
+
+    public function bulkUpdateStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'status' => 'required|string|in:rejected,approved,pending'
+        ]);
+
+        $updatedCount = DealRequest::whereIn('id', $request->ids)
+            ->update(['status' => $request->status]);
+
+        return response()->json([
+            'message' => "$updatedCount deal requests have been updated to '{$request->status}'."
+        ]);
     }
 }

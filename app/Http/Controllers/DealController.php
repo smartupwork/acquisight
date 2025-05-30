@@ -79,8 +79,8 @@ class DealController extends Controller
                 'deal_image' => $imagePath,
             ]);
 
-            if($request->broker_email){
-               
+            if ($request->broker_email) {
+
                 $deal_invitation =  DealInvitation::create([
                     'deal_id' => $deal->id,
                     'email' => $request->broker_email,
@@ -89,7 +89,7 @@ class DealController extends Controller
                     'user_type' => 2
                 ]);
             }
-           
+
             $deals_meta = DealMeta::create([
                 'deal_id' => $deal->id,
                 'asking_price' => $request->asking_price,

@@ -9,9 +9,54 @@ use App\Models\DealFolder;
 use App\Models\DealFile;
 use Illuminate\Support\Facades\Storage;
 use App\Services\GcsStorageService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BuyerController extends Controller
 {
+
+    public function index()
+    {
+        $loggedInUserEmail = Auth::user()->email;
+
+        $deals = DB::table('deals')
+            ->leftJoin('deal_invitations', 'deals.id', '=', 'deal_invitations.deal_id')
+            ->select(
+                'deals.id as id',
+                'deals.name as deal_name',
+                'deals.status as deal_status',
+                'deals.created_at as deal_created_at',
+                'deals.description as deal_description',
+                'deals.gcs_deal_id as drive_deal_id'
+            )
+            ->where(function ($query) use ($loggedInUserEmail) {
+                $query->where('deal_invitations.email', $loggedInUserEmail)
+                    ->orWhere('deals.listing_type', 'public');
+            })
+            ->groupBy(
+                'deals.id',
+                'deals.name',
+                'deals.status',
+                'deals.created_at',
+                'deals.description',
+                'deals.gcs_deal_id'
+            )
+            ->get();
+
+
+
+        // $deals = DB::table('deals')->select(
+        //     'deals.id as id',
+        //     'deals.name as deal_name',
+        //     'deals.status as deal_status',
+        //     'deals.created_at as deal_created_at',
+        //     'deals.description as deal_description',
+        //     'deals.gcs_deal_id as drive_deal_id'
+        // )->where('listing_type', 'public')->get();
+
+        return view('backend.buyer.index', ['deals' => $deals]);
+    }
+
     public function deals_detail($id)
     {
         $deal = Deal::findOrFail($id);

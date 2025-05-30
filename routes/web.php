@@ -16,12 +16,16 @@ use App\Http\Middleware\CustomAuthMiddleware;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\DealRequestController;
 use App\Http\Controllers\DealSettingController;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return redirect('/login-view');
 // });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'index'])->name('home');
+
+
+Route::redirect('/', '/login-view');
 
 Route::get('/login-view', [AuthController::class, 'showLoginForm'])->name('login-view');
 Route::post('/login', [AuthController::class, 'login'])->name('loggedIn');
@@ -31,6 +35,11 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::get('/buyerregistration', [AuthController::class, 'showBuyerForm'])->name('buyerregistration.register');
 Route::post('/buyerregistration/save', [AuthController::class, 'save_buyer'])->name('buyer.save');
 Route::post('/register', [AuthController::class, 'register'])->name('registerIn');
+Route::get('/verify-email/{token}', [AuthController::class, 'verifyEmail'])->name('verify.email');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-notice');
+})->name('verification.notice');
 
 // seller register
 Route::get('/seller/register/{token}', [AuthController::class, 'showSellerRegistrationForm'])->name('seller.register');
@@ -115,6 +124,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/seller/deals/files/{id}', [SellerController::class, 'viewFolderFiles'])->name('seller.deal.file.list');
 
     //buyer routes
+    Route::get('/buyer/index', [BuyerController::class, 'index'])->name('buyer.index');
     Route::get('/buyer/deals/{id}', [BuyerController::class, 'deals_detail'])->name('buyer.detail.show');
     Route::post('/buyer/deals/{id}/request', [DealRequestController::class, 'store'])->name('buyer.deals.request');
     Route::get('/buyer/deals/{deal}/view-deal', [BuyerController::class, 'viewDeal'])->name('buyer.deals.view');
@@ -126,6 +136,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/broker/index', [BrokerController::class, 'index'])->name('broker.index');
     Route::get('/brokers/deal-requests', [DealRequestController::class, 'getBrokerDealRequests'])->name('broker.request');
     Route::put('/deal-requests/{id}/update-status', [DealRequestController::class, 'updateStatus'])->name('deal-requests.update-status');
+    Route::post('/deal-requests/bulk-update', [DealRequestController::class, 'bulkUpdateStatus'])->name('deal-requests.bulk-update');
     Route::get('/broker/deals/{id}', [BrokerController::class, 'deals_detail'])->name('broker.detail.show');
     Route::get('/broker/deals/{deal}/view-deal', [BrokerController::class, 'viewDeal'])->name('broker.deals.view');
     Route::get('/broker/deals/files/{id}', [BrokerController::class, 'viewFolderFiles'])->name('broker.deal.file.list');

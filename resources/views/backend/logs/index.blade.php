@@ -24,7 +24,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active show" id="documents" role="tabpanel">
                                 <div class="table-responsive browser_users">
-                                    <table class="table datatable" id="datatable_2">
+                                    <table class="table" id="datatable_2">
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="border-top-0">User Name</th>
@@ -61,3 +61,4 @@
         </div>
     </div>
 @endsection
+  
