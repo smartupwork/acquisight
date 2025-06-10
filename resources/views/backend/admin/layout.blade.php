@@ -290,7 +290,7 @@
 
     <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('assets/js/simplebar.min.js') }}"></script>
-    @if (!request()->is('admin/deal-requests'))
+    @if (!request()->is('admin/deal-requests') && !request()->is('admin/users'))
         <script src="{{ url('assets/js/simple-datatables.js') }}"></script>
         <script src="{{ url('assets/js/datatable.init.js') }}"></script>
     @endif

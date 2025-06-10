@@ -79,6 +79,7 @@ Route::middleware(['customAuth'])->group(function () {
     Route::get('/admin/users/{id}/edit', [UsersController::class, 'edit'])->name('users.edit');
     Route::put('/admin/users/update/{id}', [UsersController::class, 'update'])->name('users.update');
     Route::post('/admin/users/delete/{id}', [UsersController::class, 'delete'])->name('users.destroy');
+    Route::post('/users/mass-delete', [UsersController::class, 'massDelete'])->name('users.massDelete');
 
 
 

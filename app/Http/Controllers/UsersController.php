@@ -93,4 +93,15 @@ class UsersController extends Controller
         }
         return redirect()->route('users.index');
     }
+
+    public function massDelete(Request $request)
+    {
+        $userIds = $request->input('user_ids', []);
+        if (!empty($userIds)) {
+            User::whereIn('id', $userIds)->delete();
+            return response()->json(['message' => 'Users deleted']);
+        }
+
+        return response()->json(['message' => 'No users selected'], 422);
+    }
 }
