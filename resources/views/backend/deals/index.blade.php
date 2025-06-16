@@ -134,11 +134,11 @@
                             <input type="text" class="form-control" id="gross_revenue" name="gross_revenue">
                         </div>
                         <div class="mb-3">
-                            <label for="cash_flow" class="form-label">Cash Flow</label>
+                            <label for="cash_flow" class="form-label">Seller Discretionary Income</label>
                             <input type="text" class="form-control" id="cash_flow" name="cash_flow">
                         </div>
                         <div class="mb-3">
-                            <label for="ebitda" class="form-label">EBITDA Adjusted EBITDA (SDE)</label>
+                            <label for="ebitda" class="form-label">EBITDA Adjusted EBITDA</label>
                             <input type="text" class="form-control" id="ebitda" name="ebitda">
                         </div>
                         <div class="mb-3">

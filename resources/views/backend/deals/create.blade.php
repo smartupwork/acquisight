@@ -76,10 +76,10 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="cash_flow" class="col-sm-2 col-form-label">Cash Flow</label>
+                                <label for="cash_flow" class="col-sm-2 col-form-label">Seller Discretionary Income</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="cash_flow" name="cash_flow"
-                                        placeholder="Enter Cash Flow">
+                                        placeholder="Enter Seller Discretionary Income">
                                     @if ($errors->has('cash_flow'))
                                         <span class="text-danger">{{ $errors->first('cash_flow') }}</span>
                                     @endif
@@ -87,7 +87,7 @@
                             </div>
                             <div class="mb-3 row">
                                 <label for="ebitda" class="col-sm-2 col-form-label">EBITDA
-                                    Adjusted EBITDA (SDE)</label>
+                                    Adjusted EBITDA</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="ebitda" name="ebitda"
                                         placeholder="Enter EBITDA">
