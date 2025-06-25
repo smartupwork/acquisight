@@ -89,7 +89,6 @@ class AuthController extends Controller
             Mail::to($request->email)->send(new VerifyEmail($buyer));
 
             return redirect()->route('verification.notice')->with('message', 'Please check your email to verify your account.');
-
         }
     }
 
@@ -226,24 +225,34 @@ class AuthController extends Controller
             return redirect()->route('login-view')->with('success', 'You are already registered, Please Login.');
         }
 
-        $seller = User::create([
+
+        $buyer = User::create([
             'name' => $request->name,
-            'email' => $invitation->email,
+            'email' => $request->email,
+            'verification_token' => Str::random(64),
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'roles_id' => $request->roles_id,
             'status' => 'active',
             'ip_address' => $request->ip()
         ]);
 
+        // $seller = User::create([
+        //     'name' => $request->name,
+        //     'email' => $invitation->email,
+        //     'password' => Hash::make($request->password),
+        //     'roles_id' => $request->roles_id,
+        //     'status' => 'active',
+        //     'ip_address' => $request->ip()
+        // ]);
 
-        $invitation->update(['accepted' => 1, 'token' => null]);
 
+        $invitation->update(['accepted' => 1, 'token' => NULL]);
 
-        if ($seller) {
-            return redirect('/login-view')->with('success', 'You are registered as Seller. Please login.');
-        } else {
-            return redirect('/login-view')->with('error', 'Sorry, something went wrong.');
-        }
+        Mail::to($request->email)->send(new VerifyEmail($buyer));
+
+        return redirect()->route('verification.notice')->with('message', 'Please check your email to verify your account.');
+
     }
 
     public function forgetPassword()

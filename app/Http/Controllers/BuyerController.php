@@ -19,7 +19,13 @@ class BuyerController extends Controller
     {
         $loggedInUserEmail = Auth::user()->email;
 
-        $deals = DB::table('deals')
+        // Step 1: Check if this user has any invitations
+        $hasInvitations = DB::table('deal_invitations')
+            ->where('email', $loggedInUserEmail)
+            ->exists();
+
+        // Step 2: Build the query based on presence of invitations
+        $dealsQuery = DB::table('deals')
             ->leftJoin('deal_invitations', 'deals.id', '=', 'deal_invitations.deal_id')
             ->select(
                 'deals.id as id',
@@ -28,11 +34,17 @@ class BuyerController extends Controller
                 'deals.created_at as deal_created_at',
                 'deals.description as deal_description',
                 'deals.gcs_deal_id as drive_deal_id'
-            )
-            ->where(function ($query) use ($loggedInUserEmail) {
-                $query->where('deal_invitations.email', $loggedInUserEmail)
-                    ->orWhere('deals.listing_type', 'public');
-            })
+            );
+
+        if ($hasInvitations) {
+            // Show only deals the user is invited to
+            $dealsQuery->where('deal_invitations.email', $loggedInUserEmail);
+        } else {
+            // No invites → show only public deals
+            $dealsQuery->where('deals.listing_type', 'public');
+        }
+
+        $deals = $dealsQuery
             ->groupBy(
                 'deals.id',
                 'deals.name',
@@ -43,19 +55,9 @@ class BuyerController extends Controller
             )
             ->get();
 
-
-
-        // $deals = DB::table('deals')->select(
-        //     'deals.id as id',
-        //     'deals.name as deal_name',
-        //     'deals.status as deal_status',
-        //     'deals.created_at as deal_created_at',
-        //     'deals.description as deal_description',
-        //     'deals.gcs_deal_id as drive_deal_id'
-        // )->where('listing_type', 'public')->get();
-
         return view('backend.buyer.index', ['deals' => $deals]);
     }
+
 
     public function deals_detail($id)
     {

@@ -19,6 +19,7 @@ use App\Mail\InformAccessMail;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\DealMeta;
+use App\Mail\VerifyEmail;
 
 class DealController extends Controller
 {
@@ -176,7 +177,12 @@ class DealController extends Controller
             ->where('deal_id', $deal->id)
             ->first();
 
-        if ($existingUser || $existingInvitation) {
+        if ($existingUser) {
+
+            if ($existingInvitation) {
+                return redirect()->back()->with('success', 'User already Collaborating on this deal.');
+            }
+
             DealInvitation::create([
                 'deal_id' => $deal->id,
                 'email' => $seller_email,
@@ -187,27 +193,29 @@ class DealController extends Controller
 
             Mail::to($seller_email)->send(new InformAccessMail($deal));
             return redirect()->route('deals.index')->with('success', 'Invitation sent successfully!');
+
+        } else {
+
+            $token = Str::random(40);
+
+            $user_type = $request->roles_id;
+
+            DealInvitation::create([
+                'deal_id' => $deal->id,
+                'email' => $seller_email,
+                'token' => $token,
+                'accepted' => 0,
+                'user_type' => $user_type
+            ]);
+
+            $link = route('seller.register', ['token' => $token]);
+
+            Mail::to($seller_email)->send(new DealInvitationMail($deal, $link));
+
+            Mail::to($invite_sender_email)->send(new AlertInviteMail($deal, $link, $seller_email));
+
+            return redirect()->route('deals.index')->with('success', 'Invitation sent successfully!');
         }
-
-        $token = Str::random(40);
-
-        $user_type = $request->roles_id;
-
-        DealInvitation::create([
-            'deal_id' => $deal->id,
-            'email' => $seller_email,
-            'token' => $token,
-            'accepted' => 0,
-            'user_type' => $user_type
-        ]);
-
-        $link = route('seller.register', ['token' => $token]);
-
-        Mail::to($seller_email)->send(new DealInvitationMail($deal, $link));
-
-        Mail::to($invite_sender_email)->send(new AlertInviteMail($deal, $link, $seller_email));
-
-        return redirect()->route('deals.index')->with('success', 'Invitation sent successfully!');
     }
 
     public function viewDeal($id)

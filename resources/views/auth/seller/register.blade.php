@@ -39,7 +39,11 @@
                                         @error('email')
                                             <span>{{ $message }}</span>
                                         @enderror
-
+                                        <div class="form-group mb-2">
+                                            <label class="form-label" for="phone">Phone</label>
+                                            <input type="text" class="form-control" id="phone" name="phone"
+                                                placeholder="Enter phone number" required>
+                                        </div>
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="userpassword">Password</label>
                                             <input type="password" class="form-control" name="password" id="userpassword"
@@ -72,8 +76,8 @@
                                         <div class="form-group mb-0 row">
                                             <div class="col-12">
                                                 <div class="d-grid mt-3">
-                                                    <button class="btn btn-primary" type="submit" id="registerBtn" disabled>Register <i
-                                                            class="fas fa-sign-in-alt ms-1"></i>
+                                                    <button class="btn btn-primary" type="submit" id="registerBtn"
+                                                        disabled>Register <i class="fas fa-sign-in-alt ms-1"></i>
                                                     </button>
                                                 </div>
                                             </div><!--end col-->
@@ -95,132 +99,184 @@
                     <h5 class="modal-title" id="termsModalLabel">Confidentiality Agreement</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                @if($roles_id == 4)
-                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                    <h5>NON-DISCLOSURE AGREEMENT</h5>
-                    <p>This Agreement is made by and between ________________, (“Company”), and Broker, a WY corporation
-                        whose principal mailing address is 677 King Street Charleston SC 29403(“Recipient”).
-                    </p>
-                    <ol>
-                        <li><strong>Definition of Confidentiality.</strong>As used in this Agreement, "Confidential
-                            Information" refers to any information which has commercial value and is either (i) technical
-                            information, including patent, copyright, trade secret, and other proprietary information,
-                            techniques, sketches, drawings, models, inventions, know-how, processes, apparatus, equipment,
-                            algorithms, software programs, software source documents, and formulae related to the current,
-                            future and proposed products and services of Company, or (ii) non-technical information relating
-                            to Company's products, including without limitation pricing, margins, merchandising plans and
-                            strategies, finances, financial and accounting data and information, suppliers, customers,
-                            customer lists, purchasing data, sales and marketing plans, future business plans and any other
-                            information which is proprietary and confidential to Company./li>
-                        <li><strong>No Copying/Modifying.</strong> The Recipient will not copy or modify any Confidential
-                            Information without
-                            the prior written consent of the Seller.
-                        </li>
-                        <li><strong>Nondisclosure and Nonuse Obligations.</strong>The recipient will maintain confidence and
-                            will not disclose, disseminate or use any Confidential Information belonging to Company, whether
-                            or not in written form. Recipient agrees that Recipient shall treat all Confidential Information
-                            of Company with at least the same degree of care as Recipient accords its own confidential
-                            information. Recipient further represents that Recipient exercises at least reasonable care to
-                            protect its own confidential information. If Recipient is not an individual, Recipient agrees
-                            that Recipient shall disclose Confidential Information only to those of its employees who need
-                            to know such information, and certifies that such employees have previously signed a copy of
-                            this Agreement.
-                        </li>
-                        <li><strong>Survival.</strong>This Agreement shall govern all communications between the parties.
-                            Recipient understands that its obligations under Paragraph 2 ("Nondisclosure and Nonuse
-                            Obligations") shall survive the termination of any other relationship between the parties. Upon
-                            termination of any relationship between the parties, Recipient will promptly deliver to Company,
-                            without retaining any copies, all documents and other materials furnished to Recipient by
-                            Company.
-                        </li>
-                        <li><strong>Governing Law.</strong> This Agreement shall be governed in all respects by the laws of
-                            the United States of America and by the laws of the State the Company resides in. </li>
-                        <li><strong>Injunctive Relief.</strong> A breach of any of the promises or agreements contained
-                            herein will result in irreparable and continuing damage to Company for which there will be no
-                            adequate remedy at law, and Company shall be entitled to injunctive relief and/or a decree for
-                            specific performance, and such other relief as may be proper (including monetary damages if
-                            appropriate).
-                        </li>
-                        <li><strong>Entire Agreement.</strong> This Agreement constitutes the entire agreement with respect
-                            to the Confidential Information disclosed herein and supersedes all prior or contemporaneous
-                            oral or written agreements concerning such Confidential Information. This Agreement may only be
-                            changed by mutual agreement of authorized representatives of the parties in writing.
-                        </li>
-                    </ol>
-                    <p> IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written below.</p>
-                </div>
+                @if ($roles_id == 4)
+                    <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                        <h5>NON-DISCLOSURE AGREEMENT</h5>
+                        <p>This Agreement is made by and between ________________, (“Company”), and Broker, a WY corporation
+                            whose principal mailing address is 677 King Street Charleston SC 29403(“Recipient”).
+                        </p>
+                        <ol>
+                            <li><strong>Definition of Confidentiality.</strong>As used in this Agreement, "Confidential
+                                Information" refers to any information which has commercial value and is either
+                                (i) technical
+                                information, including patent, copyright, trade secret, and other proprietary information,
+                                techniques, sketches, drawings, models, inventions, know-how, processes, apparatus,
+                                equipment,
+                                algorithms, software programs, software source documents, and formulae related to the
+                                current,
+                                future and proposed products and services of Company, or (ii) non-technical information
+                                relating
+                                to Company's products, including without limitation pricing, margins, merchandising plans
+                                and
+                                strategies, finances, financial and accounting data and information, suppliers, customers,
+                                customer lists, purchasing data, sales and marketing plans, future business plans and any
+                                other
+                                information which is proprietary and confidential to Company./li>
+                            <li><strong>No Copying/Modifying.</strong> The Recipient will not copy or modify any
+                                Confidential
+                                Information without
+                                the prior written consent of the Seller.
+                            </li>
+                            <li><strong>Nondisclosure and Nonuse Obligations.</strong>The recipient will maintain confidence
+                                and
+                                will not disclose, disseminate or use any Confidential Information belonging to Company,
+                                whether
+                                or not in written form. Recipient agrees that Recipient shall treat all Confidential
+                                Information
+                                of Company with at least the same degree of care as Recipient accords its own confidential
+                                information. Recipient further represents that Recipient exercises at least reasonable care
+                                to
+                                protect its own confidential information. If Recipient is not an individual, Recipient
+                                agrees
+                                that Recipient shall disclose Confidential Information only to those of its employees who
+                                need
+                                to know such information, and certifies that such employees have previously signed a copy of
+                                this Agreement.
+                            </li>
+                            <li><strong>Survival.</strong>This Agreement shall govern all communications between the
+                                parties.
+                                Recipient understands that its obligations under Paragraph 2 ("Nondisclosure and Nonuse
+                                Obligations") shall survive the termination of any other relationship between the parties.
+                                Upon
+                                termination of any relationship between the parties, Recipient will promptly deliver to
+                                Company,
+                                without retaining any copies, all documents and other materials furnished to Recipient by
+                                Company.
+                            </li>
+                            <li><strong>Governing Law.</strong> This Agreement shall be governed in all respects by the laws
+                                of
+                                the United States of America and by the laws of the State the Company resides in. </li>
+                            <li><strong>Injunctive Relief.</strong> A breach of any of the promises or agreements contained
+                                herein will result in irreparable and continuing damage to Company for which there will be
+                                no
+                                adequate remedy at law, and Company shall be entitled to injunctive relief and/or a decree
+                                for
+                                specific performance, and such other relief as may be proper (including monetary damages if
+                                appropriate).
+                            </li>
+                            <li><strong>Entire Agreement.</strong> This Agreement constitutes the entire agreement with
+                                respect
+                                to the Confidential Information disclosed herein and supersedes all prior or contemporaneous
+                                oral or written agreements concerning such Confidential Information. This Agreement may only
+                                be
+                                changed by mutual agreement of authorized representatives of the parties in writing.
+                            </li>
+                        </ol>
+                        <p> IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written below.
+                        </p>
+                    </div>
                 @else
-                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                    <h5>David Moore & Partners Buyer Non-Disclosure Agreement</h5>
-                    <p>I/we understand and agree:</p>
-                    <ol>
-                        <li><strong>No Disclosure.</strong> The Recipient (Buyer) will hold the Confidential information in confidence for a
-                            period of two (2) years from the date I/we sign this Non-Disclosure Agreement and will not
-                            disclose the Confidential information to any person or entity without the prior written consent
-                            of David Moore & Partners.</li>
-                        <li><strong>No Copying/Modifying.</strong> The Recipient will not copy or modify any Confidential Information without
-                            the prior written consent of the Seller.
-                        </li>
-                        <li><strong>Unauthorized Use.</strong> The Recipient shall promptly advise the Seller if the Recipient becomes aware
-                            of any possible unauthorized disclosure or use of the Confidential Information.</li>
-                        <li>The Recipient will not to contact the landlord, employees, suppliers, franchisor or customers of
-                            the Business for Sale without the express written consent of David Moore & Partners.
-                        </li>
-                        <li><strong>Non Circumvention.</strong> For a period of two (2) years after the date this agreement was signed, the
-                            Recipient will not attempt to do business with, or otherwise solicit any business contacts found
-                            or otherwise referred by Seller to Recipient for the purpose of circumventing, the result of
-                            which shall be to prevent the Seller from realizing or recognizing a profit, fees, or otherwise,
-                            without the specific written approval of the Seller. If such circumvention shall occur the
-                            Seller shall be entitled to any commissions due pursuant to this Agreement or relating to such
-                            transaction.
-                        </li>
-                        <li><strong>Relationship of Parties.</strong> Neither party has an obligation under this Agreement to purchase any
-                            service or item from the other party, or commercially offer any products using or incorporating
-                            the Confidential information. This Agreement does not create any agency, partnership or joint
-                            venture. David Moore & Partners is compensated from any transaction that results between the
-                            buyer and the seller.</li>
-                        <li><strong>No Warranty and Due Diligence.</strong> The Recipient acknowledges and agrees that the Confidential
-                            Information is provided on an “AS IS” basis. David Moore & Partners makes no warranties, express
-                            or implied, with respect to the confidential information and hereby expressly disclaims any and
-                            all implied warranties of merchantability and fitness for a particular purpose. In no event
-                            shall David Moore & Partners be liable for any direct, indirect, special or consequential damage
-                            in connection with or arising out of the performance, use , or inaccuracies of any portion of
-                            the Confidential Information. The Recipient acknowledges the responsibility to perform a due
-                            diligence review at it’s own cost and expense prior to any acquisition.</li>
-                        <li>Due to the sensitive nature of the financial records and the potential effects violations of
-                            this non-disclosure agreement (“Agreement”) could have on an ongoing basis, the Buyer agrees
-                            that each violation of this Agreement shall have liquidated damages of Twenty Five Thousand
-                            Dollars ($25,000.00) per violation. Violation of this Agreement will cause the Seller to incur
-                            substantial economic damages and losses of types and in amounts which are impossible to compute
-                            and ascertain with certainty as a basis for recovery by the Seller of actual damages. The above
-                            liquidated damages represent a fair, reasonable, and appropriate estimate of the damage likely
-                            to occur for violation of this Agreement. Such liquidated damages are intended to represent
-                            estimated actual damages as the exact amount of damages is indeterminable, the liquidated
-                            damages are not intended as a penalty, and Buyer shall pay them to Seller without limiting David
-                            Moore & Partners’ or the Seller’s right to terminate this Agreement as provided elsewhere.
-                            Examples of a breach of this Agreement include but are not limited to: Disclosing the company
-                            name to anyone that has not signed this NDA. Forwarding emails and financial information to
-                            third parties. Contacting customers, employees, landlords and franchisors.
-                        </li>
-                        <li>The respective obligations of the parties under this Agreement shall survive for a period of two
-                            (2) years following the date hereof.
-                        </li>
-                    </ol>
-                    <p>Smaller transactions do not always have a full set of financials. Small Companies do not have CFO’s
-                        and controllers. Most of these companies operate on a tax accounting basis. We provide Generally
-                        Accepted Recast Financials that are created from Quickbooks, tax returns, and bank statements.
-                        Recast Income Statements are based on assumptions and are not actual financials.
-                    </p>
-                    <p><strong> We handle transactions differently than some brokers. We do not present buyers to sellers
-                            that have not proven they have the ability to pay for, or get financing for business
-                            acquisition. We do not release material that would be considered Due Diligence material (such as
-                            tax returns, customer lists, etc) without a letter of intent. We require in person site visits
-                            prior to accepting any letters of intent. While we understand this may prevent some buyers from
-                            moving forward, our intent is to protect our client’s sensitive information and prevent people
-                            that do not have the ability to “close” from gathering information.
-                        </strong>
-                    </p>
-                </div>
+                    <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                        <h5>David Moore & Partners Buyer Non-Disclosure Agreement</h5>
+                        <p>I/we understand and agree:</p>
+                        <ol>
+                            <li><strong>No Disclosure.</strong> The Recipient (Buyer) will hold the Confidential information
+                                in confidence for a
+                                period of two (2) years from the date I/we sign this Non-Disclosure Agreement and will not
+                                disclose the Confidential information to any person or entity without the prior written
+                                consent
+                                of David Moore & Partners.</li>
+                            <li><strong>No Copying/Modifying.</strong> The Recipient will not copy or modify any
+                                Confidential Information without
+                                the prior written consent of the Seller.
+                            </li>
+                            <li><strong>Unauthorized Use.</strong> The Recipient shall promptly advise the Seller if the
+                                Recipient becomes aware
+                                of any possible unauthorized disclosure or use of the Confidential Information.</li>
+                            <li>The Recipient will not to contact the landlord, employees, suppliers, franchisor or
+                                customers of
+                                the Business for Sale without the express written consent of David Moore & Partners.
+                            </li>
+                            <li><strong>Non Circumvention.</strong> For a period of two (2) years after the date this
+                                agreement was signed, the
+                                Recipient will not attempt to do business with, or otherwise solicit any business contacts
+                                found
+                                or otherwise referred by Seller to Recipient for the purpose of circumventing, the result of
+                                which shall be to prevent the Seller from realizing or recognizing a profit, fees, or
+                                otherwise,
+                                without the specific written approval of the Seller. If such circumvention shall occur the
+                                Seller shall be entitled to any commissions due pursuant to this Agreement or relating to
+                                such
+                                transaction.
+                            </li>
+                            <li><strong>Relationship of Parties.</strong> Neither party has an obligation under this
+                                Agreement to purchase any
+                                service or item from the other party, or commercially offer any products using or
+                                incorporating
+                                the Confidential information. This Agreement does not create any agency, partnership or
+                                joint
+                                venture. David Moore & Partners is compensated from any transaction that results between the
+                                buyer and the seller.</li>
+                            <li><strong>No Warranty and Due Diligence.</strong> The Recipient acknowledges and agrees that
+                                the Confidential
+                                Information is provided on an “AS IS” basis. David Moore & Partners makes no warranties,
+                                express
+                                or implied, with respect to the confidential information and hereby expressly disclaims any
+                                and
+                                all implied warranties of merchantability and fitness for a particular purpose. In no event
+                                shall David Moore & Partners be liable for any direct, indirect, special or consequential
+                                damage
+                                in connection with or arising out of the performance, use , or inaccuracies of any portion
+                                of
+                                the Confidential Information. The Recipient acknowledges the responsibility to perform a due
+                                diligence review at it’s own cost and expense prior to any acquisition.</li>
+                            <li>Due to the sensitive nature of the financial records and the potential effects violations of
+                                this non-disclosure agreement (“Agreement”) could have on an ongoing basis, the Buyer agrees
+                                that each violation of this Agreement shall have liquidated damages of Twenty Five Thousand
+                                Dollars ($25,000.00) per violation. Violation of this Agreement will cause the Seller to
+                                incur
+                                substantial economic damages and losses of types and in amounts which are impossible to
+                                compute
+                                and ascertain with certainty as a basis for recovery by the Seller of actual damages. The
+                                above
+                                liquidated damages represent a fair, reasonable, and appropriate estimate of the damage
+                                likely
+                                to occur for violation of this Agreement. Such liquidated damages are intended to represent
+                                estimated actual damages as the exact amount of damages is indeterminable, the liquidated
+                                damages are not intended as a penalty, and Buyer shall pay them to Seller without limiting
+                                David
+                                Moore & Partners’ or the Seller’s right to terminate this Agreement as provided elsewhere.
+                                Examples of a breach of this Agreement include but are not limited to: Disclosing the
+                                company
+                                name to anyone that has not signed this NDA. Forwarding emails and financial information to
+                                third parties. Contacting customers, employees, landlords and franchisors.
+                            </li>
+                            <li>The respective obligations of the parties under this Agreement shall survive for a period of
+                                two
+                                (2) years following the date hereof.
+                            </li>
+                        </ol>
+                        <p>Smaller transactions do not always have a full set of financials. Small Companies do not have
+                            CFO’s
+                            and controllers. Most of these companies operate on a tax accounting basis. We provide Generally
+                            Accepted Recast Financials that are created from Quickbooks, tax returns, and bank statements.
+                            Recast Income Statements are based on assumptions and are not actual financials.
+                        </p>
+                        <p><strong> We handle transactions differently than some brokers. We do not present buyers to
+                                sellers
+                                that have not proven they have the ability to pay for, or get financing for business
+                                acquisition. We do not release material that would be considered Due Diligence material
+                                (such as
+                                tax returns, customer lists, etc) without a letter of intent. We require in person site
+                                visits
+                                prior to accepting any letters of intent. While we understand this may prevent some buyers
+                                from
+                                moving forward, our intent is to protect our client’s sensitive information and prevent
+                                people
+                                that do not have the ability to “close” from gathering information.
+                            </strong>
+                        </p>
+                    </div>
                 @endif
                 <div class="modal-footer">
                     <input type="checkbox" id="agreeTerms">
@@ -234,39 +290,40 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             var termsModalBody = document.querySelector(".modal-body");
             var agreeCheckbox = document.getElementById("agreeTerms");
             var acceptButton = document.getElementById("acceptTermsBtn");
             var mainTermsCheckbox = document.getElementById("termsCheckbox");
             var registerButton = document.getElementById("registerBtn");
-    
+
             // Initially disable the accept button and checkbox
             agreeCheckbox.disabled = true;
             acceptButton.disabled = true;
-    
+
             // Listen for scroll event on the modal body
-            termsModalBody.addEventListener("scroll", function () {
-                if (termsModalBody.scrollTop + termsModalBody.clientHeight >= termsModalBody.scrollHeight - 5) {
+            termsModalBody.addEventListener("scroll", function() {
+                if (termsModalBody.scrollTop + termsModalBody.clientHeight >= termsModalBody.scrollHeight -
+                    5) {
                     // Enable the checkbox once scrolled to bottom
                     agreeCheckbox.disabled = false;
                 }
             });
-    
+
             // Enable the Accept button only when the checkbox is checked
-            agreeCheckbox.addEventListener("change", function () {
+            agreeCheckbox.addEventListener("change", function() {
                 acceptButton.disabled = !this.checked;
             });
-    
+
             // When "Accept" button is clicked, check the main terms checkbox and enable the register button
-            acceptButton.addEventListener("click", function () {
+            acceptButton.addEventListener("click", function() {
                 mainTermsCheckbox.checked = true;
                 mainTermsCheckbox.disabled = false; // Enable it for visual clarity
                 registerButton.disabled = false;
             });
-    
+
             // Prevent form submission if the terms checkbox is not checked
-            document.querySelector("form").addEventListener("submit", function (event) {
+            document.querySelector("form").addEventListener("submit", function(event) {
                 if (!mainTermsCheckbox.checked) {
                     event.preventDefault();
                     alert("You must agree to the Terms of Use before proceeding.");

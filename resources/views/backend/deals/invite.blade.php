@@ -1,6 +1,16 @@
 @extends('backend.admin.layout')
 @section('admin-deals-invite-content')
     <div class="container-xxl">
+         @if (Session::get('success'))
+            <div class=" alert alert-success">
+                {{ Session::get('success') }}
+            </div>
+        @endif
+        @if (Session::get('error'))
+            <div class="alert alert-danger">
+                {{ Session::get('error') }}
+            </div>
+        @endif
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card">
