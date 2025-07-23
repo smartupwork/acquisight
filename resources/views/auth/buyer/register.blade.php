@@ -192,39 +192,69 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             var termsModalBody = document.querySelector(".modal-body");
             var agreeCheckbox = document.getElementById("agreeTerms");
             var acceptButton = document.getElementById("acceptTermsBtn");
             var mainTermsCheckbox = document.getElementById("termsCheckbox");
             var registerButton = document.getElementById("registerBtn");
-    
+
             // Initially disable the accept button and checkbox
             agreeCheckbox.disabled = true;
             acceptButton.disabled = true;
-    
+
             // Listen for scroll event on the modal body
-            termsModalBody.addEventListener("scroll", function () {
-                if (termsModalBody.scrollTop + termsModalBody.clientHeight >= termsModalBody.scrollHeight - 5) {
+            termsModalBody.addEventListener("scroll", function() {
+                if (termsModalBody.scrollTop + termsModalBody.clientHeight >= termsModalBody.scrollHeight -
+                    5) {
                     // Enable the checkbox once scrolled to bottom
                     agreeCheckbox.disabled = false;
                 }
             });
-    
+
             // Enable the Accept button only when the checkbox is checked
-            agreeCheckbox.addEventListener("change", function () {
+            agreeCheckbox.addEventListener("change", function() {
                 acceptButton.disabled = !this.checked;
             });
-    
+
             // When "Accept" button is clicked, check the main terms checkbox and enable the register button
-            acceptButton.addEventListener("click", function () {
+            acceptButton.addEventListener("click", function() {
                 mainTermsCheckbox.checked = true;
                 mainTermsCheckbox.disabled = false; // Enable it for visual clarity
                 registerButton.disabled = false;
+
+                fetch("https://api.ipify.org?format=json")
+                    .then(response => response.json())
+                    .then(data => {
+                        const ipAddress = data.ip;
+                        const dateTime = new Date().toLocaleString();
+                        const agreementText = document.querySelector(".modal-body").innerText;
+
+                        const fullAgreement =
+                            `David Moore & Partners NDA Acceptance\n\nAccepted on: ${dateTime}\nIP Address: ${ipAddress}\n\nAgreement Text:\n${agreementText}`;
+
+                        // Create a downloadable file
+                        const blob = new Blob([fullAgreement], {
+                            type: "text/plain"
+                        });
+                        const url = URL.createObjectURL(blob);
+
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = `NDA_Agreement_${dateTime.replace(/[:/]/g, "-")}.txt`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        console.error("Could not fetch IP address:", error);
+                    });
+
             });
-    
+
             // Prevent form submission if the terms checkbox is not checked
-            document.querySelector("form").addEventListener("submit", function (event) {
+            document.querySelector("form").addEventListener("submit", function(event) {
                 if (!mainTermsCheckbox.checked) {
                     event.preventDefault();
                     alert("You must agree to the Terms of Use before proceeding.");

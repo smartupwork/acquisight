@@ -320,6 +320,45 @@
                 mainTermsCheckbox.checked = true;
                 mainTermsCheckbox.disabled = false; // Enable it for visual clarity
                 registerButton.disabled = false;
+
+
+                fetch("https://api.ipify.org?format=json")
+                    .then(response => response.json())
+                    .then(data => {
+                        const ipAddress = data.ip;
+                        const dateTime = new Date().toLocaleString();
+                        const agreementText = termsModalBody.innerText;
+
+                        const userAgreement = `
+                            NON-DISCLOSURE AGREEMENT - COPY
+
+                              Accepted by user on: ${dateTime}
+                              User IP Address: ${ipAddress}
+
+                            ------------------------------------------------------------
+                            Agreement Content:
+                            -----------------------------------------------------------
+                            ${agreementText}
+                        `;
+
+                        // Generate downloadable text file
+                        const blob = new Blob([userAgreement], {
+                            type: "text/plain"
+                        });
+                        const url = URL.createObjectURL(blob);
+                        const downloadLink = document.createElement("a");
+                        downloadLink.href = url;
+                        downloadLink.download = `nda_agreement_${dateTime.replace(/[:/]/g, "-")}.txt`;
+
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        document.body.removeChild(downloadLink);
+                        URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        console.error("Failed to fetch IP address:", error);
+                    });
+
             });
 
             // Prevent form submission if the terms checkbox is not checked

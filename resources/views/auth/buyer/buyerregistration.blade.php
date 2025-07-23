@@ -34,15 +34,16 @@
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
-                                    <form class="my-4" method="POST" action="{{route('buyer.save')}}">
+                                    <form class="my-4" method="POST" action="{{ route('buyer.save') }}">
                                         @csrf
                                         {{-- <input type="hidden" name="roles_id" value="4" />
                                         <input type="hidden" name="deal_id" value="{{ $deal_id }}" /> --}}
                                         <div class="form-group mb-2">
                                             <label class="form-label" for="deals">Deals</label>
-                                            <select class="form-select" id="deals" name="deal_id" aria-label="Select a deal" required>
+                                            <select class="form-select" id="deals" name="deal_id"
+                                                aria-label="Select a deal" required>
                                                 <option value="" selected disabled>Select a Deal</option>
-                                                @foreach($deals as $deal)
+                                                @foreach ($deals as $deal)
                                                     <option value="{{ $deal->id }}">{{ $deal->name }}</option>
                                                 @endforeach
                                             </select>
@@ -247,6 +248,35 @@
                 mainTermsCheckbox.checked = true;
                 mainTermsCheckbox.disabled = false; // Enable it for visual clarity
                 registerButton.disabled = false;
+
+                fetch("https://api.ipify.org?format=json")
+                    .then(response => response.json())
+                    .then(data => {
+                        const ipAddress = data.ip;
+                        const dateTime = new Date().toLocaleString();
+                        const agreementText = document.querySelector(".modal-body").innerText;
+
+                        const fullAgreement =
+                            `David Moore & Partners NDA Acceptance\n\nAccepted on: ${dateTime}\nIP Address: ${ipAddress}\n\nAgreement Text:\n${agreementText}`;
+
+                        // Create a downloadable file
+                        const blob = new Blob([fullAgreement], {
+                            type: "text/plain"
+                        });
+                        const url = URL.createObjectURL(blob);
+
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = `NDA_Agreement_${dateTime.replace(/[:/]/g, "-")}.txt`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        console.error("Could not fetch IP address:", error);
+                    });
+
             });
 
             // Prevent form submission if the terms checkbox is not checked
