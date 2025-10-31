@@ -85,116 +85,189 @@
             </div>
         </div>
     </div>
-
+@php
+                    $userRole = Auth::user()->roles_id ?? null;
+                @endphp
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 
-    <script>
-        function previewFile(fileUrl, fileType, fileId, fileName) {
+<script>
+    function previewFile(fileUrl, fileType, fileId, fileName) {
 
-            $.ajax({
-                url: '/log-file-view',
-                method: 'POST',
-                data: {
-                    file_id: fileId,
-                    file_name: fileName,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    console.log(response.message);
-                },
-                error: function() {
-                    console.log('Failed to log file view.');
-                }
-            });
+        const userRole = {{ $userRole ?? 'null' }};
 
-            var container = $('#fileViewerContainer');
-            var fileExtension = fileUrl.split('.').pop().toLowerCase();
 
-            // Reset viewer
-            container.html('');
-
-            // Handle empty/missing files
-            if (!fileUrl || !fileType) {
-                container.html('<p class="text-danger">⚠️ This file is empty or unavailable.</p>');
+        // 🔹 Log file view via AJAX
+        $.ajax({
+            url: '/log-file-view',
+            method: 'POST',
+            data: {
+                file_id: fileId,
+                file_name: fileName,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                console.log(response.message);
+            },
+            error: function() {
+                console.log('Failed to log file view.');
             }
-            // Image Files (PNG, JPEG, GIF, WebP, SVG, BMP, etc.)
-            else if (fileType.startsWith('image/')) {
+        });
+
+        var container = $('#fileViewerContainer');
+        var cleanUrl = fileUrl.split('?')[0];
+        var fileExtension = cleanUrl.split('.').pop().toLowerCase();
+
+        // Reset viewer
+        container.html('');
+
+        // Handle empty/missing files
+        if (!fileUrl || !fileType) {
+            container.html('<p class="text-danger">⚠️ This file is empty or unavailable.</p>');
+        }
+
+        // 🖼️ Image Files
+        else if (fileType.startsWith('image/')) {
+            if (userRole === 4) {
+                container.html(`
+                    <img src="${fileUrl}" class="img-fluid" 
+                         style="max-height: 500px; width: auto;" 
+                         oncontextmenu="return false;">
+                    <p class="text-muted mt-2">Downloads are disabled for your account.</p>
+                `);
+            } else {
                 container.html(`<img src="${fileUrl}" class="img-fluid" style="max-height: 500px; width: auto;">`);
             }
-            // PDF Files
-            else if (fileType === 'application/pdf') {
+        }
+
+        // 📄 PDF Files
+        else if (fileType === 'application/pdf') {
+            if (userRole === 4) {
+                container.html(`
+                    <iframe src="${fileUrl}#toolbar=0" width="100%" height="500px"></iframe>
+                    <p class="text-muted mt-2">Downloads are disabled for your account.</p>
+                `);
+            } else {
                 container.html(`<iframe src="${fileUrl}" width="100%" height="500px"></iframe>`);
             }
-            // Video Files (MP4, WebM, OGG, AVI, MOV)
-            else if (fileType.startsWith('video/')) {
-                container.html(`
-            <video controls width="100%">
-                <source src="${fileUrl}" type="${fileType}">
-                Your browser does not support the video tag.
-            </video>
-        `);
-            }
-            // Audio Files (MP3, WAV, OGG)
-            else if (fileType.startsWith('audio/')) {
-                container.html(`
-            <audio controls>
-                <source src="${fileUrl}" type="${fileType}">
-                Your browser does not support the audio tag.
-            </audio>
-        `);
-            }
-            // Text-Based Files (TXT, CSV, JSON, XML, LOG, HTML)
-            else if (['text/plain', 'text/csv', 'application/json', 'application/xml', 'text/xml', 'text/html'].includes(
-                    fileType)) {
-                fetch(fileUrl)
-                    .then(response => response.text())
-                    .then(text => {
-                        container.html(
-                            `<pre style="white-space: pre-wrap; word-wrap: break-word; padding: 10px;">${text}</pre>`
-                        );
-                    })
-                    .catch(error => {
-                        container.html('<p class="text-danger">⚠️ Unable to preview this text file.</p>');
-                    });
-            }
-            // Microsoft Office Files (DOC, DOCX, XLS, XLSX, PPT, PPTX)
-            else if ([
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'application/vnd.ms-excel',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'application/vnd.ms-powerpoint',
-                    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-                ].includes(fileType)) {
-
-                // Check if the file is public (Google Docs Viewer requires public URLs)
-                if (fileUrl.startsWith('http')) {
-                    container.html(`
-                <iframe src="https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true" 
-                        width="100%" height="500px"></iframe>
-            `);
-                } else {
-                    container.html(
-                        `<p class="text-danger">⚠️ This Office document cannot be previewed. Please download it.</p>`);
-                }
-            }
-            // Unsupported File Types
-            else {
-                container.html(`
-            <p class="text-danger">
-                ⚠️ Preview not available for this file type. 
-                <a href="${fileUrl}" download>Click here to download</a>.
-            </p>
-        `);
-            }
-
-            // Show the modal
-            $('#filePreviewModal').modal('show');
         }
-    </script>
+
+        // 🎬 Video Files
+        else if (fileType.startsWith('video/')) {
+            if (userRole === 4) {
+                container.html(`
+                    <video width="100%" controls controlsList="nodownload">
+                        <source src="${fileUrl}" type="${fileType}">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p class="text-muted mt-2">Downloads are disabled for your account.</p>
+                `);
+            } else {
+                container.html(`
+                    <video width="100%" controls>
+                        <source src="${fileUrl}" type="${fileType}">
+                        Your browser does not support the video tag.
+                    </video>
+                `);
+            }
+        }
+
+        // 🎵 Audio Files
+        else if (fileType.startsWith('audio/')) {
+            if (userRole === 4) {
+                container.html(`
+                    <audio controls controlsList="nodownload">
+                        <source src="${fileUrl}" type="${fileType}">
+                        Your browser does not support the audio tag.
+                    </audio>
+                    <p class="text-muted mt-2">Downloads are disabled for your account.</p>
+                `);
+            } else {
+                container.html(`
+                    <audio controls>
+                        <source src="${fileUrl}" type="${fileType}">
+                        Your browser does not support the audio tag.
+                    </audio>
+                `);
+            }
+        }
+
+        // 🧾 Text/CSV/JSON/XML/HTML Files
+        else if (['text/plain', 'text/csv', 'application/json', 'application/xml', 'text/xml', 'text/html'].includes(fileType)) {
+            fetch(fileUrl)
+                .then(response => response.text())
+                .then(text => {
+                    if (userRole === 4) {
+                        container.html(`
+                            <pre style="white-space: pre-wrap; word-wrap: break-word; padding: 10px;">${text}</pre>
+                            <p class="text-muted mt-2">Downloads are disabled for your account.</p>
+                        `);
+                    } else {
+                        container.html(`
+                            <pre style="white-space: pre-wrap; word-wrap: break-word; padding: 10px;">${text}</pre>
+                            <a href="${fileUrl}" download>Download File</a>
+                        `);
+                    }
+                })
+                .catch(error => {
+                    container.html('<p class="text-danger">⚠️ Unable to preview this text file.</p>');
+                });
+        }
+
+        // 🏢 Office Files (DOC, DOCX, XLS, XLSX, PPT, PPTX)
+        else if ([
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        ].includes(fileType)) {
+            if (fileUrl.startsWith('http')) {
+                if (userRole === 4) {
+                    container.html(`
+                        <iframe 
+                            src="https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}" 
+                            width="100%" height="500px" frameborder="0"></iframe>
+                        <p class="text-muted mt-2">Downloads are disabled for your account.</p>
+                    `);
+                } else {
+                    container.html(`
+                        <iframe 
+                            src="https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true" 
+                            width="100%" height="500px"></iframe>
+                    `);
+                }
+            } else {
+                container.html(`<p class="text-danger">⚠️ This Office document cannot be previewed.</p>`);
+            }
+        }
+
+        //  Unsupported File Types
+        else {
+            if (userRole === 4) {
+                container.html(`
+                    <p class="text-danger">
+                        ⚠️ Preview not available for this file type. Downloads are disabled for your account.
+                    </p>
+                `);
+            } else {
+                container.html(`
+                    <p class="text-danger">
+                        ⚠️ Preview not available for this file type.
+                        <a href="${fileUrl}" download>Click here to download</a>.
+                    </p>
+                `);
+            }
+        }
+
+        // Show modal
+        $('#filePreviewModal').modal('show');
+    }
+</script>
+
 
     <script>
         $(document).ready(function() {

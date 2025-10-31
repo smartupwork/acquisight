@@ -1,0 +1,32 @@
+[07-Aug-2025 17:38:41 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/app.php on line 16
+[07-Aug-2025 17:38:42 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/auth.php:17
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/auth.php on line 17
+[07-Aug-2025 17:39:14 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/cache.php on line 18
+[07-Aug-2025 17:39:30 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/database.php:19
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/database.php on line 19
+[07-Aug-2025 17:40:20 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/filesystems.php:17
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/filesystems.php on line 17
+[07-Aug-2025 17:40:55 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/queue.php:16
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/queue.php on line 16
+[07-Aug-2025 17:41:15 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/services.php:18
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/services.php on line 18
+[07-Aug-2025 17:41:15 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home1/ikbgazmy/public_html/website_2fed2d74/config/session.php:21
+Stack trace:
+#0 {main}
+  thrown in /home1/ikbgazmy/public_html/website_2fed2d74/config/session.php on line 21

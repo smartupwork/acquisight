@@ -60,13 +60,13 @@
                                                 <div class="form-check form-switch form-switch-success">
                                                     <input class="form-check-input" type="checkbox" id="termsCheckbox"
                                                         disabled>
-                                                    <label class="form-check-label" for="termsCheckbox">
-                                                        Read Required NDA
-                                                        <a href="#" class="text-primary" data-bs-toggle="modal"
-                                                            data-bs-target="#termsModal">Terms of Use</a>
-                                                    </label>
+                                                    ⚠️ <strong>NDA Required — </strong>
+                <a href="#" class="text-primary fw-bold" data-bs-toggle="modal" data-bs-target="#termsModal">
+                    Click here to review and accept
+                </a
                                                 </div>
                                             </div>
+                                            
                                         </div>
 
                                         <!-- Register Button -->
